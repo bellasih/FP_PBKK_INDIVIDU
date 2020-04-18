@@ -2,7 +2,9 @@
 
 namespace ServiceLaundry\Dashboard\Controllers\Web;
 
+use ServiceLaundry\Order\Models\Web\Order;
 use Phalcon\Mvc\Controller;
+use Phalcon\Http\Response;
 
 class IndexController extends Controller
 {

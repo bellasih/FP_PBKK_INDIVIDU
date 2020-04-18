@@ -23,7 +23,7 @@ class GoodsController extends SecureController
     {
         if(!$this->request->isPost())
         {
-            $this->response->redirect();
+            return $this->response->redirect('goods');
         }
 
         $form = new GoodsForm();
@@ -51,7 +51,7 @@ class GoodsController extends SecureController
         {
             $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
         }
-        return $this->response->redirect();
+        return $this->response->redirect('goods');
     }
 
     public function editGoodsAction()

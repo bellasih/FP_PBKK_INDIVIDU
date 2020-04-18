@@ -4,14 +4,24 @@ namespace ServiceLaundry\Expense\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
 use Phalcon\Mvc\Controller;
+use Phalcon\Http\Response;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ExpenseController extends SecureController
 {
     public function showExpenseAction()
     {
         $datas = Expense::find();
-
-        $this->view->expense = $datas;
+        $currentPage = (int) $_GET['page'];
+        $paginator = new PaginatorModel(
+            [
+                'data'  => $datas,
+                'limit' => 10,
+                'page'  => $currentPage,
+            ]
+        );
+        $page = $paginator->getPaginate();
+        $this->view->page = $page;
     }
 
     public function createExpenseAction()
@@ -146,11 +156,12 @@ class ExpenseController extends SecureController
                 }
                 else
                 {
+                    $expense->delete();
                     $this->flashSession->success('Data Pengeluaran berhasil dihapus');
                 }
             }
         }
 
-        $this->response->redirect('expense');
+       return $this->response->redirect('expense');
     }
 }

@@ -35,7 +35,7 @@ CREATE TABLE Pickup_Delivery(
 	pd_status varchar(20) not null,
 	pd_driver varchar(100),
 	pd_type int not null,
-	pd_time_est timestamp
+	pd_time_est timestamp not null
 );
 
 CREATE TABLE Payment(
@@ -72,4 +72,12 @@ CREATE TABLE Item(
 CREATE TABLE Order_Item(
 	item_id int FOREIGN KEY REFERENCES Item(item_id) ON DELETE CASCADE,
 	order_id int FOREIGN KEY REFERENCES Orders(order_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Comment(
+	comment_id int not null identity(1,1) PRIMARY KEY,
+	user_id int FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
+	comment_content text not null,
+	comment_status varchar(50) not null,
+	comment_date timestamp not null
 );

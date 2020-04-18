@@ -32,6 +32,11 @@ class PickupDelivery extends Model
         return $this->pd_id;
     }
 
+    public function getOrderId()
+    {
+        return $this->order_id;
+    }
+
     public function getPdStatus()
     {
         return $this->pd_status;
