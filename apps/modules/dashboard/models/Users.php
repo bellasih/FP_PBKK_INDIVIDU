@@ -57,9 +57,24 @@ class Users extends Model
         return $this->name;
     }
 
+    public function getGender()
+    {
+        return $this->gender;
+    }
+
     public function getAddress()
     {
         return $this->address;
+    }
+
+    public function getRegisterDate()
+    {
+        return $this->register_date;
+    }
+
+    public function getRole()
+    {
+        return $this->role;
     }
 
     public function getPhone()
