@@ -1,10 +1,12 @@
 <?php
 
-namespace ServiceLaundry\Order\Controllers\Web;
+namespace ServiceLaundry\Dashboard\Controllers\Web;
 
+use ServiceLaundry\Common\Controllers\SecureController;
 use Phalcon\Mvc\Controller;
+use Phalcon\Http\Response;
 
-class AccountController extends Controller
+class AccountController extends SecureController
 {
     public function showAccountAction()
     {

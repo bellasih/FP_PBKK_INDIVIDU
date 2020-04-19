@@ -3,6 +3,7 @@
 namespace ServiceLaundry\Expense\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
+use ServiceLaundry\Expense\Forms\Web\ExpenseForm;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;

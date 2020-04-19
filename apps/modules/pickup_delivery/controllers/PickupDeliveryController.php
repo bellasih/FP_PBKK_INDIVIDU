@@ -3,6 +3,7 @@
 namespace ServiceLaundry\PickupDelivery\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
+use ServiceLaundry\PickupDelivery\Forms\Web\PickupDeliveryForm;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
@@ -75,7 +76,7 @@ class PickupDeliveryController extends SecureController
             $this->response->redirect('pickup_delivery');
         }
 
-        $form = new ExpenseForm();
+        $form = new PickupDeliveryForm();
         if(!$form->isValid($this->request->getPost()))
         {
             foreach ($form->getMessages() as $msg)

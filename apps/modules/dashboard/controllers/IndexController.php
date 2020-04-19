@@ -2,7 +2,9 @@
 
 namespace ServiceLaundry\Dashboard\Controllers\Web;
 
+use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Order\Models\Web\Order;
+use ServiceLaundry\Dashboard\Forms\Web\UserForm;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 
@@ -17,9 +19,18 @@ class IndexController extends Controller
     {
         $completed_order    = Order::count(['condition'=>'Pesanan Telah Selesai']);
         $unprocessed_order  = Order::count(['condition'=>'Pesanan Belum Diproses']);
+
+        $this->view->form               = new UserForm();
+        $this->view->completed_order    = $completed_order;
+        $this->view->unprocessed_order  = $unprocessed_order;
     }
 
     public function createAdminAction()
+    {
+
+    }
+
+    public function loginAdminAction()
     {
 
     }
@@ -55,7 +66,7 @@ class IndexController extends Controller
         if($this->request->hasFiles() == true)
         {
             $username       = $this->request->getPost('username');
-            $password       = $this->request->getPost('password');
+            $password       = $this->security->hash($this->request->getPost('password'));
             $name           = $this->request->getPost('name');
             $gender         = $this->request->getPost('gender');
             $address        = $this->request->getPost('address');

@@ -8,6 +8,7 @@ use Phalcon\Events\Manager;
 use Phalcon\Mvc\View;
 use Phalcon\Mvc\ViewBaseInterface;
 use Phalcon\Mvc\View\Engine\Volt;
+use Phalcon\Http\Response\Cookies;
 use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
 
@@ -21,33 +22,6 @@ $container->setShared('session', function() {
 
 	return $session;
 });
-
-$container['dispatcher'] = function() {
-
-    $eventsManager = new Manager();
-
-    $eventsManager->attach(
-        'dispatch:beforeException',
-        function (Event $event, $dispatcher, Exception $exception) {
-            // 404
-            if ($exception instanceof DispatchException) {
-                $dispatcher->forward(
-                    [
-                        'controller' => 'index',
-                        'action'     => 'fourOhFour',
-                    ]
-                );
-
-                return false;
-            }
-        }
-    );
-
-    $dispatcher = new Dispatcher();
-    $dispatcher->setEventsManager($eventsManager);
-
-    return $dispatcher;
-};
 
 $container['url'] = function() use ($config) {
 	$url = new \Phalcon\Url();
@@ -106,6 +80,17 @@ $container->set(
 );
 
 $container->set(
+    'cookies',
+    function () {
+        $cookies = new Cookies();
+
+        $cookies->useEncryption(false);
+
+        return $cookies;
+    }
+);
+
+$container->set(
     'flash',
     function () {
         $flash = new FlashDirect(
@@ -153,4 +138,35 @@ $container['db'] = function () {
     ];
 
     return new $class($params);
+};
+
+/*
+* Event Manager for Dispatcher
+*/
+
+$container['dispatcher'] = function() {
+
+    $eventsManager = new Manager();
+
+    $eventsManager->attach(
+        'dispatch:beforeException',
+        function (Event $event, $dispatcher, Exception $exception) {
+            // 404
+            if ($exception instanceof DispatchException) {
+                $dispatcher->forward(
+                    [
+                        'controller' => 'index',
+                        'action'     => 'fourOhFour',
+                    ]
+                );
+
+                return false;
+            }
+        }
+    );
+
+    $dispatcher = new Dispatcher();
+    $dispatcher->setEventsManager($eventsManager);
+
+    return $dispatcher;
 };
