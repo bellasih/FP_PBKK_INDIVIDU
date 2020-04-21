@@ -3,36 +3,42 @@
 namespace ServiceLaundry\Dashboard\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
-use ServiceLaundry\Order\Models\Web\Order;
 use ServiceLaundry\Dashboard\Forms\Web\UserForm;
+use ServiceLaundry\Order\Models\Web\Orders;
+use ServiceLaundry\Order\Models\Web\Service;
+use ServiceLaundry\Dashboard\Models\Web\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
+use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class IndexController extends Controller
 {
     public function indexAction()
     {
+        $completed_order    = count(Orders::find("order_status = 'Pesanan Sudah Selesai'"));
+        $unprocessed_order  = count(Orders::find("order_status = 'Pesanan Belum Selesai'"));
+        $datas              = Service::find();
 
-    }
+        // (isset($_GET['page'])) ?  $currentPage = 1 : 0;
+        // $paginator      = new PaginatorModel(
+        //     [
+        //         'model'  => $datas,
+        //         'limit' => 2,
+        //         'page'  => $currentPage,
+        //     ]
+        // );
 
-    public function dashboardAction()
-    {
-        $completed_order    = Order::count(['condition'=>'Pesanan Telah Selesai']);
-        $unprocessed_order  = Order::count(['condition'=>'Pesanan Belum Diproses']);
+        // $page  = $paginator->paginate();
 
-        $this->view->form               = new UserForm();
+        // var_dump($$page->getItems());
+        // die();
+
+        // $this->view->page               = $paginator->paginate(); 
         $this->view->completed_order    = $completed_order;
         $this->view->unprocessed_order  = $unprocessed_order;
-    }
-
-    public function createAdminAction()
-    {
-
-    }
-
-    public function loginAdminAction()
-    {
-
+        $this->view->datas              = $datas;
+        $this->view->form               = new UserForm();
+        $this->view->pick('views/index');
     }
 
     public function storeAdminAction()

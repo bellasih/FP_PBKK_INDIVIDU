@@ -1,13 +1,11 @@
 <?php
 
-namespace ServiceLaundry\Expense\Forms\Web;
-namespace ServiceLaundry\Common\Forms;
+namespace ServiceLaundry\Goods\Forms\Web;
 
 use ServiceLaundry\Common\Forms\BaseForm;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
 use Phalcon\Forms\Element\Submit;
-use Phalcon\Forms\Element\File;
 
 use Phalcon\Tag;
 
@@ -38,10 +36,8 @@ class GoodsForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $good_stock->setLabel('Stok Barang');
-        $good_stock->addValidator([
-           new PresenceOf(['message'=>'Stock Barang belum diisi']),
-           new Digit(['message'=>'Stock Barang hanya berisi angka']), 
-        ]);
+        $good_stock->addValidator(new PresenceOf(['message'=>'Stock Barang belum diisi']));
+        $good_stock->addValidator(new Digit(['message'=>'Stock Barang hanya berisi angka']));
         
         $submit = new Submit ('Simpan',
         [

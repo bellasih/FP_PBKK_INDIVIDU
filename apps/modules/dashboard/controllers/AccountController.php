@@ -14,6 +14,7 @@ class AccountController extends SecureController
         $data_admin = Users::findFirst("username='$username'");
 
         $this->view->profile_data = $data_admin;
+        $this->view->pick('profile');
     }
 
     public function changePasswordAction()

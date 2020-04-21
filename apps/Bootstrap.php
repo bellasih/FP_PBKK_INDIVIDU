@@ -38,7 +38,7 @@ class Bootstrap extends Application
             $_SERVER["REQUEST_URI"]
         );
     
-        $response->send();
+		$response->send();
 	}
 
 	private function _registerServices()

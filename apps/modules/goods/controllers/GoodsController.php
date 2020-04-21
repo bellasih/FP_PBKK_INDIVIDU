@@ -4,30 +4,37 @@ namespace ServiceLaundry\Goods\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Goods\Forms\Web\GoodsForm;
+use ServiceLaundry\Goods\Models\Web\Goods;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
-class GoodsController extends SecureController
+// class GoodsController extends SecureController
+class GoodsController extends Controller
 {
-    public function showGoodsAction()
+    public function indexAction()
     {
         $datas = Goods::find();
-        $currentPage = (int) $_GET['page'];
-        $paginator = new PaginatorModel(
-            [
-                'data'  => $datas,
-                'limit' => 10,
-                'page'  => $currentPage,
-            ]
-        );
-        $page = $paginator->getPaginate();
-        $this->view->page = $page;
+        // $currentPage = (int) $_GET['page'];
+        // $paginator = new PaginatorModel(
+        //     [
+        //         'data'  => $datas,
+        //         'limit' => 10,
+        //         'page'  => $currentPage,
+        //     ]
+        // );
+        // $page = $paginator->paginate();
+        // $this->view->page = $page;
+
+        $this->view->datas  = $datas;
+        $this->view->form   = new GoodsForm();
+        $this->view->pick('views/index');
     }
 
     public function createGoodsAction()
     {
-
+        $this->view->form = new GoodsForm();
+        $this->view->pick('goods/add');
     }
 
     public function storeGoodsAction()

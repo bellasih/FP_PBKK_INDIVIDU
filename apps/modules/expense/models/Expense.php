@@ -30,6 +30,11 @@ class Expense extends Model
         return $this->expense_id;
     }
 
+    public function getAdminId()
+    {
+        return $this->admin_id;
+    }
+
     public function getExpenseNote()
     {
         return $this->expense_note;

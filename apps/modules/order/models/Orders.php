@@ -16,7 +16,7 @@ class Orders extends Model
 
     public function initialize()
     {
-        $this->setSource('Order');
+        $this->setSource('Orders');
     }
 
     public function construct($service_id,$user_id,$order_total,$order_date,$finish_date,$order_status)

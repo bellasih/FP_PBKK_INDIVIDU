@@ -10,14 +10,14 @@
 
 <div class="row-centered">
 	<div class="card login-card">
-		<img class="avatar" src="{{url('assets/logo1.png')}}">
-		<h1 class="text-center text-secondary">Log In <span class="text-danger">Operator</span></h1>
+		<img class="avatar" src="{{url('assets/logo.png')}}">
+		<h1 class="text-center text-secondary">Log In <span class="text-info">Administrator</span></h1>
 		<div class="notif-block">
-			{% if message != '' %}
-				<div class="alert alert-danger text-center">{{ this.flash.error(message)}}</div>
+			{% if flash != null  %}
+				<div class="alert alert-danger text-center">{{ flash.output() }}</div>
 			{% endif %}
 		</div>
-		<div class="col-md-6" style="margin-left:40px;">
+		<div class="col-md-6" style="margin-left:12vw;">
 			{{ form.startForm()}}
 				<div class="form-group">
 					{{form.render('username') }}

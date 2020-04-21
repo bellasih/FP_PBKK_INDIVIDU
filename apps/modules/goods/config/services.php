@@ -4,7 +4,7 @@ use Phalcon\Mvc\View;
 
 $di['view'] = function () {
     $view = new View();
-    $view->setViewsDir(__DIR__ . '/modules/goods/views');
+    $view->setViewsDir(__DIR__ . '/../');
 
     $view->registerEngines(
         [

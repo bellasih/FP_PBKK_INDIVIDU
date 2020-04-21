@@ -4,30 +4,36 @@ namespace ServiceLaundry\Expense\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Expense\Forms\Web\ExpenseForm;
+use ServiceLaundry\Expense\Models\Web\Expense;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
+
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
-class ExpenseController extends SecureController
+class ExpenseController extends Controller
 {
-    public function showExpenseAction()
+    public function indexAction()
     {
         $datas = Expense::find();
-        $currentPage = (int) $_GET['page'];
-        $paginator = new PaginatorModel(
-            [
-                'data'  => $datas,
-                'limit' => 10,
-                'page'  => $currentPage,
-            ]
-        );
-        $page = $paginator->getPaginate();
-        $this->view->page = $page;
+        // $currentPage = (int) $_GET['page'];
+        // $paginator = new PaginatorModel(
+        //     [
+        //         'data'  => $datas,
+        //         'limit' => 10,
+        //         'page'  => $currentPage,
+        //     ]
+        // );
+        // $page = $paginator->paginate();
+        // $this->view->page = $page;
+        $this->view->datas = $datas;
+        $this->view->form = new ExpenseForm();
+        $this->view->pick('views/index');
     }
 
     public function createExpenseAction()
     {
-
+        $this->view->form   = new ExpenseForm();
+        $this->view->pick('expense/add');
     }
 
     public function storeExpenseAction()
@@ -162,7 +168,6 @@ class ExpenseController extends SecureController
                 }
             }
         }
-
        return $this->response->redirect('expense');
     }
 }

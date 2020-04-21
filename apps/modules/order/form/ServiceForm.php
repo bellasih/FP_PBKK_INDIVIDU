@@ -33,10 +33,8 @@ class ServiceForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $service_price->setLabel('Harga Service');
-        $service_price->addValidator([
-            new PresenceOf(['message'=>'Harga Service belum diisi']),
-            new Digit(['message'=>'Harga Service hanya berisi angka']),
-        ]);
+        $service_price->addValidator(new PresenceOf(['message'=>'Harga Service belum diisi']));
+        $service_price->addValidator(new Digit(['message'=>'Harga Service hanya berisi angka']));
 
         $service_photo = new File('service_photo', [
             'placeholder'   => 'Cari File',

@@ -15,7 +15,6 @@ class Module implements ModuleDefinitionInterface
         $loader->registerNamespaces([
             'ServiceLaundry\PickupDelivery\Controllers\Web'     => __DIR__ . '/controllers',
             'ServiceLaundry\PickupDelivery\Models\Web'          => __DIR__ . '/models',
-            'ServiceLaundry\PickupDelivery\Views\Web'           => __DIR__ . '/views',
             'ServiceLaundry\PickupDelivery\Forms\Web'           => __DIR__ . '/form',
         ]);
 

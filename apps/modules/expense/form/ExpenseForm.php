@@ -1,7 +1,6 @@
 <?php
 
 namespace ServiceLaundry\Expense\Forms\Web;
-namespace ServiceLaundry\Common\Forms;
 
 use ServiceLaundry\Common\Forms\BaseForm;
 use Phalcon\Forms\Element\Text;
@@ -31,10 +30,8 @@ class ExpenseForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $expense_total->setLabel('Total Pengeluaran');
-        $expense_total->addValidator([
-            new PresenceOf(['message'=>'Total Pengeluaran belum diisi']),
-            new Digit(['message'=>'Total Pengeluaran hanya terdiri dari angka']),
-        ]);
+        $expense_total->addValidator(new PresenceOf(['message'=>'Total Pengeluaran belum diisi']));
+        $expense_total->addValidator(new Digit(['message'=>'Total Pengeluaran hanya terdiri dari angka']));
     
         $invoice = new File('invoice', [
             'placeholder'   => 'Cari File',

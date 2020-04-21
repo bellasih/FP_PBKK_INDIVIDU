@@ -6,7 +6,6 @@
 </head>
 <body>
 	{% include '../layouts/navbar.volt' %}
-
 	{% block content %} {% endblock %}
 	<div class="clearfix bottom-content">
 		<div class="row" style="position: absolute; bottom: 8px; width: 100%; color: white"> 

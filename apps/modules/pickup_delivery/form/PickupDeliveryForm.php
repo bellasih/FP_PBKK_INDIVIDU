@@ -1,7 +1,6 @@
 <?php
 
 namespace ServiceLaundry\PickupDelivery\Forms\Web;
-namespace ServiceLaundry\Common\Forms;
 
 use ServiceLaundry\Common\Forms\BaseForm;
 use Phalcon\Forms\Element\Text;
@@ -16,7 +15,7 @@ use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Digit;
 use Phalcon\Validation\Validator\Alpha;
 
-class PickupDelivery extends BaseForm
+class PickupDeliveryForm extends BaseForm
 {
     public function initialize()
     {
@@ -32,20 +31,16 @@ class PickupDelivery extends BaseForm
             'class'         => 'form-control'
         ]);
         $pd_driver->setLabel('Nama Driver');
-        $pd_driver->addValidator([
-            new PresenceOf(['message'=>'Nama Driver belum diisi']),
-            new Alpha(['message'=>'Nama Driver hanya terdiri dari huruf']),
-        ]);
+        $pd_driver->addValidator(new PresenceOf(['message'=>'Nama Driver belum diisi']));
+        $pd_driver->addValidator(new Alpha(['message'=>'Nama Driver hanya terdiri dari huruf']));
 
         $pd_type = new Text('pd_type', [
             'placeholder'   => 'Masukkan Tipe Pickup Delivery',
             'class'         => 'form-control'
         ]);
         $pd_type->setLabel('Tipe Pickup Delivery');
-        $pd_type->addValidator([
-            new PresenceOf(['message'=>'Tipe Pickup Delivery']),
-            new Alpha(['message'=>'Tipe Pickup Delivery hanya terdiri dari huruf']),
-        ]);
+        $pd_type->addValidator(new PresenceOf(['message'=>'Tipe Pickup Delivery']));
+        $pd_type->addValidator(new Alpha(['message'=>'Tipe Pickup Delivery hanya terdiri dari huruf']));
 
         $pd_time_est = new Date('pd_time_est', [
             'placeholder'   => 'Pilih tanggal dan waktu',

@@ -1,6 +1,8 @@
 <?php
 
-use Phalcon\Session\Adapter\Files as Session;
+// use Phalcon\Session\Adapter\Files as Session;
+use Phalcon\Session\Adapter\Stream as SessionStream;
+use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Security;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Events\Event;
@@ -11,17 +13,24 @@ use Phalcon\Mvc\View\Engine\Volt;
 use Phalcon\Http\Response\Cookies;
 use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
+use Phalcon\Escaper;
 
 $container['config'] = function() use ($config) {
 	return $config;
 };
 
 $container->setShared('session', function() {
-    $session = new Session();
+
+    $session = new SessionManager();
+    $files = new SessionStream([
+        'savePath'  => APP_PATH . '/tmp',
+    ]);
+    $session->setAdapter($files);
 	$session->start();
 
 	return $session;
 });
+
 
 $container['url'] = function() use ($config) {
 	$url = new \Phalcon\Url();
@@ -44,7 +53,7 @@ $container['voltService'] = function (ViewBaseInterface $view) use ($container, 
     $volt->setOptions(
         [
             'always'    => $compileAlways,
-            'extension' => '.php',
+            'extension' => '.compiled',
             'separator' => '_',
             'stat'      => true,
             'path'      => $config->application->cacheDir,
@@ -93,15 +102,15 @@ $container->set(
 $container->set(
     'flash',
     function () {
-        $flash = new FlashDirect(
-            [
+        $escaper    = new Escaper();
+        $flash      = new FlashDirect($escaper);
+        $flash->setImplicitFlush(false);
+        $flash->setCssClasses([        
                 'error'   => 'alert alert-danger',
-                'success' => 'alert alert-success',
+                'success' => 'alert alert-success', 
                 'notice'  => 'alert alert-info',
-                'warning' => 'alert alert-warning',
-            ]
-        );
-
+                'warning' => 'alert alert-warning'
+        ]);
         return $flash;
     }
 );
@@ -109,15 +118,21 @@ $container->set(
 $container->set(
     'flashSession',
     function () {
-        $flash = new FlashSession(
-            [
-                'error'   => 'alert alert-danger',
-                'success' => 'alert alert-success',
-                'notice'  => 'alert alert-info',
-                'warning' => 'alert alert-warning',
-            ]
-        );
+        $escaper    = new Escaper();
+        $session    = new SessionManager();
+        $files      = new SessionStream([
+            'savePath'  => APP_PATH . '/tmp',
+        ]);
+        $session->setAdapter($files);
 
+        $flash = new FlashSession($escaper,$session);
+        $flash->setImplicitFlush(false);
+        $flash->setCssClasses([        
+                'error'   => 'alert alert-danger',
+                'success' => 'alert alert-success', 
+                'notice'  => 'alert alert-info',
+                'warning' => 'alert alert-warning'
+        ]);
         $flash->setAutoescape(false);
         
         return $flash;

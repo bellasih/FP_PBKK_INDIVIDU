@@ -3,15 +3,22 @@
 namespace ServiceLaundry\Dashboard\Controllers\Web;
 
 use ServiceLaundry\Dashboard\Forms\Web\LoginForm;
+use ServiceLaundry\Dashboard\Models\Web\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
+use Phalcon\Escaper;
+use Phalcon\Flash\Direct;
+
 
 class AuthenticationController extends Controller
 {
-    private $message = "";
+    public $message = "";
 
     public function createLoginAction()
     {
+        $escaper    = new Escaper();
+        $flash      = new Direct($escaper);
+
         $user_rem = null;
         $remCookies = $this->cookies->get('remember');
         $remCookies = $remCookies->getValue();
@@ -24,18 +31,25 @@ class AuthenticationController extends Controller
         }
         
         if(isset($_COOKIE['remember'])){
-            die();
             $user_rem = [
                 'username' => $_COOKIE['remember']['username'],
                 'password' => $_COOKIE['remember']['password']
             ];
         }
 
-        $this->view->form = new LoginForm($user_rem);
+        $flash->error("Anda harus memasukkan username dan password untuk masuk");
+
+        $this->view->form       = new LoginForm($user_rem);
+        $this->view->flash      = $flash;
+        $this->view->pick('views/createLogin');
     }
 
     public function storeLoginAction()
     {
+        echo 'masuk';
+        $escaper    = new Escaper();
+        $flash      = new Direct($escaper);
+
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         $remember = $this->request->getPost('remember');
@@ -69,19 +83,26 @@ class AuthenticationController extends Controller
             else{
                 $this->security->hash(rand());
                 $this->message = "Password salah";
-                $this->dispatcher->forward(['action'=> 'create']);
+                return $this->dispatcher->forward(['action'=> 'createLogin']);
             }
         }
         else {
             if($password==="" | $username==="")
             {
-                $this->message = "Anda harus memasukkan username dan password untuk masuk";
+                $flash->error("Anda harus memasukkan username dan password untuk masuk");
             }  
             else
             {
                 $this->message = "Username dan/atau password salah.";
             }
-            $this->dispatcher->forward(['action'=> 'create']);
+            return $this->dispatcher->forward(['action'=> 'createLogin']);
+            // return $this->response->redirect('/login');
         }
+    }
+
+    public function destroyAction()
+    {
+        unset($this->session->auth);
+     	$this->response->redirect('login');   
     }
 }

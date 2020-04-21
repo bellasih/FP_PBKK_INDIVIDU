@@ -12,6 +12,17 @@ return array(
         'defaultAction'                 => 'index'
     ],
 
+    'expense' => [
+        'namespace'                     => 'ServiceLaundry\Expense',
+        'webControllerNamespace'        => 'ServiceLaundry\Expense\Controllers\Web',
+        'apiControllerNamespace'        => '',
+        'className'                     => 'ServiceLaundry\Expense\Module',
+        'path'                          => APP_PATH . '/modules/expense/Module.php',
+        'defaultRouting'                => true,
+        'defaultController'             => 'Expense',
+        'defaultAction'                 => 'index'
+    ],
+
     'order' => [
         'namespace'                     => 'ServiceLaundry\Order',
         'webControllerNamespace'        => 'ServiceLaundry\Order\Controllers\Web',
@@ -42,16 +53,6 @@ return array(
         'path'                          => APP_PATH . '/modules/goods/Module.php',
         'defaultRouting'                => true,
         'defaultController'             => 'Goods',
-        'defaultAction'                 => 'index'
-    ],
-
-    'expense' => [
-        'namespace'                     => 'ServiceLaundry\Expense',
-        'webControllerNamespace'        => 'ServiceLaundry\Expense\Controllers\Web',
-        'apiControllerNamespace'        => '',
-        'path'                          => APP_PATH . '/modules/expense/Module.php',
-        'defaultRouting'                => true,
-        'defaultController'             => 'Expense',
         'defaultAction'                 => 'index'
     ]
 );

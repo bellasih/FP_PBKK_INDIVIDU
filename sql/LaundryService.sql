@@ -5,7 +5,7 @@ CREATE TABLE Users (
 	name varchar(50) not null,
 	gender char(1) not null,
 	address varchar(100) not null,
-	register_date timestamp not null,
+	register_date datetime not null,
 	role int not null,
 	phone varchar(15) not null,
 	email varchar(30) not null,
@@ -35,7 +35,7 @@ CREATE TABLE Pickup_Delivery(
 	pd_status varchar(20) not null,
 	pd_driver varchar(100),
 	pd_type int not null,
-	pd_time_est timestamp not null
+	pd_time_est datetime not null
 );
 
 CREATE TABLE Payment(
@@ -43,7 +43,7 @@ CREATE TABLE Payment(
 	order_id int FOREIGN KEY REFERENCES Orders(order_id) ON DELETE CASCADE,
 	admin_id int FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
 	payment_status varchar(15) not null,
-	payment_time timestamp not null
+	payment_time datetime not null
 );
 
 CREATE TABLE Goods(
@@ -79,5 +79,5 @@ CREATE TABLE Comment(
 	user_id int FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
 	comment_content text not null,
 	comment_status varchar(50) not null,
-	comment_date timestamp not null
+	comment_date datetime not null
 );

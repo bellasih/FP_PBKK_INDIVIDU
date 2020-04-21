@@ -4,14 +4,16 @@ namespace ServiceLaundry\PickupDelivery\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\PickupDelivery\Forms\Web\PickupDeliveryForm;
+use ServiceLaundry\PickupDelivery\Models\Web\PickupDelivery;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 
-class PickupDeliveryController extends SecureController
+// class PickupDeliveryController extends SecureController
+class PickupDeliveryController extends Controller
 {
-    public function showPickupDeliveryAction()
+    public function indexAction()
     {
         $datas = PickupDelivery::find();
         $currentPage = (int) $_GET['page'];
@@ -22,13 +24,16 @@ class PickupDeliveryController extends SecureController
                 'page'  => $currentPage,
             ]
         );
-        $page = $paginator->getPaginate();
+        $page = $paginator->paginate();
         $this->view->page = $page; 
+        $this->view->form = new PickupDeliveryForm();
+        $this->view->pick('views/index');
     }
 
     public function createPickupDeliveryAction()
     {
-
+        $this->view->form = new PickupDeliveryForm();
+        $this->view->pick('pickup_delivery/add');
     }
 
     public function storePickupDeliveryAction()
@@ -66,7 +71,6 @@ class PickupDeliveryController extends SecureController
             $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
         }
         return $this->response->redirect('pickup_delivery');
-
     }
 
     public function editPickupDeliveryAction()

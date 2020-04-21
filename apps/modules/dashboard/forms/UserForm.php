@@ -1,7 +1,6 @@
 <?php
 
 namespace ServiceLaundry\Dashboard\Forms\Web;
-namespace ServiceLaundry\Common\Forms;
 
 use ServiceLaundry\Common\Forms\BaseForm;
 
@@ -43,15 +42,13 @@ class UserForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $password->setLabel('Password');
-        $password->addValidator([
-            new PresenceOf(['message'=>'Password belum diisi']),
-            new Regex(
+        $password->addValidator(new PresenceOf(['message'=>'Password belum diisi']));
+        $password->addValidator(new Regex(
                 [
                     'pattern'=>'/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
                     'message'=>'Password minimum terdiri dari 8 karakter, paling sedikit satu huruf dan satu angka' 
                 ]
-            ),
-        ]);
+        ));
 
         $name = new Text('name',
         [
@@ -59,10 +56,8 @@ class UserForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $name->setLabel('Nama');
-        $name->addValidator([
-            new PresenceOf(['message'=>'Nama belum diisi']),
-            new Alpha(['message'=>'Nama hanya terdiri dari huruf']),
-        ]);
+        $name->addValidator(new PresenceOf(['message'=>'Nama belum diisi']));
+        $name->addValidator(new Alpha(['message'=>'Nama hanya terdiri dari huruf']));
 
         $jk_perempuan = new Radio('P',
         [
@@ -92,10 +87,8 @@ class UserForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $phone->setLabel('Nomor Telepon');
-        $phone->addValidator([
-            new PresenceOf(['message'=>'Nomor telepon belum diisi']),
-            new Digit(['message'=>'Nomor telepon hanya terdiri dari angka']),
-        ]);
+        $phone->addValidator(new PresenceOf(['message'=>'Nomor telepon belum diisi']));
+        $phone->addValidator(new Digit(['message'=>'Nomor telepon hanya terdiri dari angka']));
 
         $email = new Text('email',
         [
@@ -103,10 +96,8 @@ class UserForm extends BaseForm
             'class'         => 'form-control'
         ]);
         $email->setLabel('Email');
-        $email->addValidator([
-            new PresenceOf(['message'=>'Email belum diisi']),
-            new Email(['message'=>'Email tidak valid']),
-        ]);
+        $email->addValidator(new PresenceOf(['message'=>'Email belum diisi']));
+        $email->addValidator(new Email(['message'=>'Email tidak valid']));
         
         $profile_img = new File('profile_img',
         [
