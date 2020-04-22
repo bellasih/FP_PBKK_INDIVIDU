@@ -14,20 +14,25 @@ class GoodsController extends Controller
 {
     public function indexAction()
     {
-        $datas = Goods::find();
-        // $currentPage = (int) $_GET['page'];
-        // $paginator = new PaginatorModel(
-        //     [
-        //         'data'  => $datas,
-        //         'limit' => 10,
-        //         'page'  => $currentPage,
-        //     ]
-        // );
-        // $page = $paginator->paginate();
-        // $this->view->page = $page;
+        /*
+        * Manual pagination
+        */ 
+        $array_data     = array();
+        (!isset($_GET['page'])) ? $currentPage = 1 : $currentPage = (int) $this->request->getQuery('page');
+        $number_page    = 3;
+        $offset         = ($currentPage-1) * $number_page;
+        $total_row      = count(Goods::find());
+        $total_page     = ceil($total_row/$number_page);
 
-        $this->view->datas  = $datas;
-        $this->view->form   = new GoodsForm();
+        $sql            = Goods::find([
+                            'limit'     => $number_page,
+                            'offset'    => $offset,
+                        ]);
+        $this->view->page           = $sql;
+        $this->view->page_number    = $currentPage;
+        $this->view->page_last      = $total_page;
+        $this->view->offset         = $offset;
+        $this->view->form           = new GoodsForm();
         $this->view->pick('views/index');
     }
 
@@ -52,7 +57,8 @@ class GoodsController extends Controller
                 $this->message[$msg->getField()] = $msg;
             }
         }
-        $admin_id         = $this->session->has('auth')['id'];
+        // $admin_id         = $this->session->has('auth')['id'];
+        $admin_id         = 1;
         $goods_name       = $this->request->getPost('goods_name');
         $unit_price       = $this->request->getPost('unit_price');
         $good_stock       = $this->request->getPost('good_stock');
@@ -72,7 +78,7 @@ class GoodsController extends Controller
         return $this->response->redirect('goods');
     }
 
-    public function editGoodsAction()
+    public function updateGoodsAction()
     {
         if(!$this->request->isPost())
         {
@@ -92,7 +98,8 @@ class GoodsController extends Controller
         $good       = Goods::findFirst("goods_id='$goods_id'");
         if($good != null)
         {
-            $admin_id       = $this->session->has('auth')['id'];
+            // $admin_id       = $this->session->has('auth')['id'];
+            $admin_id       = 1;
             $goods_name     = $this->request->getPost('goods_name');
             $unit_price     = $this->request->getPost('unit_price');
             $good_stock     = $this->request->getPost('good_stock');
@@ -123,6 +130,7 @@ class GoodsController extends Controller
         }
 
         $goods_id   = $this->request->getPost('goods_id');
+
         if($goods_id != null)
         {
             $good     = Goods::findFirst("goods_id='$goods_id'");

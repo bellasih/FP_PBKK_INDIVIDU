@@ -34,6 +34,26 @@ class Orders extends Model
         return $this->service_id;
     }
 
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    public function getServiceId()
+    {
+        return $this->user_id;
+    }
+
+    public function getOrderDate()
+    {
+        return $this->order_date;
+    }
+
+    public function getOrderTotal()
+    {
+        return $this->order_total;
+    }
+
     public function getFinishDate()
     {
         return $this->finish_date;

@@ -15,6 +15,7 @@
 <script type="text/javascript" src="<?= $this->url->get('js/bootstrap-select.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/tagsinput.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/Chart.js') ?>"></script>
+<script type="text/javascript" src="<?= $this->url->get('js/javascript.js') ?>"></script>
 	<title>Dashboard Admin</title>
 </head>
 <body>
@@ -143,7 +144,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" style="height:70vh; overflow-y:auto;">
-                <form>
+                <form class="UserForm" action="add/admin" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label><b><?= $form->getLabel('name') ?></b></label>
                         <?= $form->render('name') ?>
@@ -189,6 +190,7 @@
                     </div>
             </div>
             <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
                     <div class="form-group">
                         <div class="text-center">
                             <?= $form->render('Simpan') ?>

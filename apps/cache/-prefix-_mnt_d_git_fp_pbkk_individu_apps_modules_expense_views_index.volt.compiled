@@ -15,6 +15,7 @@
 <script type="text/javascript" src="<?= $this->url->get('js/bootstrap-select.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/tagsinput.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/Chart.js') ?>"></script>
+<script type="text/javascript" src="<?= $this->url->get('js/javascript.js') ?>"></script>
 	<title>Pengeluaran</title>
 </head>
 <body>
@@ -69,17 +70,16 @@
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6">
                     <a href="#tambahPengeluaranModal"  class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Pengeluaran</span></a>
-                    <a href="#hapusPengeluaranModal" id="coba2" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
+                    <a id="multi-uwus" href="#hapusPengeluaranModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
                 </div>
             </div>
         </div>
-            <?php if ($datas != null) { ?>
+            <?php if ($page != null) { ?>
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th></th>
                         <th>No.</th>
-                        <th>Nama Admin</th>
                         <th>Catatan Pengeluaran</th>
                         <th>Total Pengeluaran</th>
                         <th>Aksi</th>
@@ -87,7 +87,7 @@
                 </thead>
                 <tbody>
                 <?php $i = 1; ?>
-                    <?php foreach ($datas as $t) { ?>
+                    <?php foreach ($page as $t) { ?>
                         <tr>
                             <td>
                                 <span class="custom-checkbox">
@@ -96,20 +96,29 @@
                                 </span>
                             </td>
                             <td><?= $i ?></td>
-                            <td><?= $t->getAdminId() ?></td>
                             <td><?= $t->getExpenseNote() ?></td>
                             <td><?= $t->getExpenseTotal() ?></td>
                             <td>
                                 <!--change to button-->
                                 <a href="#lihatInvoiceModal<?= $t->getId() ?>" class="view" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" title="Lihat"></i></a>
                                 <a href="#editExpenseModal<?= $t->getId() ?>" class="edit" data-toggle="modal" data-remote="<?= $this->url->get('edit/pickup_Expense?') ?>"><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="<?= $t->getId() ?>"></i></a>
-                                <a href="#deleteExpenseModal<?= $t->getId() ?>" class="delete" data-toggle="modal"><i class="fa fa-trash-o" data-toggle="tooltip"  title="Hapus" value='<?= $t->getId() ?>'></i></a>
                             </td>
                         </tr>
                     <?php $i = $i + 1; ?>
                     <?php } ?>
                 </tbody>
             </table>
+            <div class="text-center text-lg">
+                <a href='/expense'>First</a>
+                <?php if ($page_number - 1 >= 1) { ?>
+                <a href='/expense?page=<?= $page_number - 1 ?>'>Previous</a>
+                <?php } ?>
+                <?php if ($page_number + 1 <= $page_last) { ?>
+                <a href='/expense?page=<?= $page_number + 1 ?>'>Next</a>
+                <?php } ?>
+                <a href='/expense?page=<?= $page_last ?>'>Last</a>
+                <p class="text-success">Anda berada di halaman <?= $page_number ?> dari <?= $page_last ?></p>
+            </div>
             <?php } else { ?>
                 <h2 class="text-danger text-center">Tidak ada data yang dapat ditampilkan</h2>
             <?php } ?>
@@ -121,7 +130,7 @@
 <div id="tambahPengeluaranModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form class="ExpenseForm" action="add/expense" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">						
                     <h4 class="modal-title">Tambah Pengeluaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -152,13 +161,13 @@
 <div id="hapusPengeluaranModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="expense" action="delete/expense" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Hapus Pengeluaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">				
-                    <input type='hidden' value='' name='id_laporans' id='hiddens'>
+                    <input type='hidden' value='' name='expense_id' id='expense_id'>
                     <p>Apakah Anda yakin untuk menghapus data yang telah dipilih ?</p>
                 </div>
                 <div class="modal-footer">
@@ -169,6 +178,58 @@
         </div>
     </div>
 </div>
+
+<?php foreach ($page as $t) { ?>
+<div id="editExpenseModal<?= $t->getId() ?>" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="update/expense" method="POST" enctype="multipart/form-data">
+                <div class="modal-header">						
+                    <h4 class="modal-title">Edit Pengeluaran</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="expense_id" name="expense_id" value="<?= $t->getId() ?>">
+                    <div class="form-group">
+                        <label><b>Catatan Pengeluaran</b></label>
+                        <p><textarea class="form-control" name="expense_note" id="expense_note"><?= $t->getExpenseNote() ?></textarea></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Total Pengeluaran</b></label>
+                        <p><input type="text" class="form-control" name="expense_total" id="expense_total" value="<?= $t->getExpenseTotal() ?>"></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Bukti Resi</b></label>
+                        <p><input type="file" class="form-control" name="invoice" id="invoice"></p>
+                    </div>						
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
+                    <input type="submit" class="btn btn-success" id="Simpan" nama="Simpan" value="Simpan">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="lihatInvoiceModal<?= $t->getId() ?>" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="modal-header">						
+                    <h4 class="modal-title">Bukti Resi</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <embed src=<?= $t->getInvoice() ?> width="350px" height="500px">	
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<?php } ?>
 
 
 	<div class="clearfix bottom-content">

@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-           {% if page.items != null %}
+           {% if datas != null %}
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -35,8 +35,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% set i = 1, skipped = (page.current-1) * page.limit %}
-                    {% for t in page.items %}
+                    {% set i = 1 %}
+                    {% for t in datas %}
                         <tr>
                             <td>
                                 <span class="custom-checkbox">
@@ -44,13 +44,15 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>{{skipped + i}}</td>
+                            <td>{{i}}</td>
                             <td>{{t.getUserId()}}</td>
                             <td>{{t.getServiceId()}}</td>
                             <td>{{t.getOrderTotal()}}</td>
+                            <td>{{t.getOrderDate()}}</td>
                             <td>{{t.getFinishDate()}}</td>
                             <td>{{t.getOrderStatus()}}</td>
                             <td>
+                                <a href="#lihatItemModal{{t.getId()}}" class="view" data-toggle="modal" data-remote="{{url('edit/pickup_Order?')}}"><i class="fa fa-eye" data-toggle="tooltip" title="Lihat" value="{{t.getId()}}"></i></a>
                                 <a href="#editOrderModal{{t.getId()}}" class="edit" data-toggle="modal" data-remote="{{url('edit/pickup_Order?')}}"><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
                                 <a href="#deleteOrderModal{{t.getId()}}" class="delete" data-toggle="modal"><i class="fa fa-trash-o" data-toggle="tooltip"  title="Hapus" value='{{t.getId()}}'></i></a>
                             </td>

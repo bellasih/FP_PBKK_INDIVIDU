@@ -15,16 +15,18 @@ class OrderController extends Controller
     public function indexAction()
     {
         $datas = Orders::find();
-        $currentPage = (int) $_GET['page'];
-        $paginator = new PaginatorModel(
-            [
-                'data'  => $datas,
-                'limit' => 10,
-                'page'  => $currentPage,
-            ]
-        );
-        $page = $paginator->paginate();
-        $this->view->page = $page;
+        // $currentPage = (int) $_GET['page'];
+        // $paginator = new PaginatorModel(
+        //     [
+        //         'model'  => $datas,
+        //         'limit' => 10,
+        //         'page'  => $currentPage,
+        //     ]
+        // );
+        // $page = $paginator->paginate();
+        // $this->view->page = $page;
+
+        $this->view->datas = $datas;
         $this->view->pick('views/index');
     }
 

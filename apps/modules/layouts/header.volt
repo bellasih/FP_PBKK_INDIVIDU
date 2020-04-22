@@ -12,3 +12,4 @@
 <script type="text/javascript" src="{{ url("js/bootstrap-select.js") }}"></script>
 <script type="text/javascript" src="{{ url("js/tagsinput.js") }}"></script>
 <script type="text/javascript" src="{{ url("js/Chart.js") }}"></script>
+<script type="text/javascript" src="{{ url("js/javascript.js") }}"></script>

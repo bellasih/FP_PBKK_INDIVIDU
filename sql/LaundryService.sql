@@ -12,6 +12,8 @@ CREATE TABLE Users (
 	profile_img varchar(50)
 );
 
+
+
 CREATE TABLE Service(
 	service_id int not null identity(1,1) PRIMARY KEY,
 	service_name varchar(50) not null,
@@ -59,7 +61,7 @@ CREATE TABLE Expense(
 	admin_id int FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
 	expense_note text not null,
 	expense_total decimal(10,2) not null,
-	invoice varchar(50) not null
+	invoice varchar(200) not null
 );
 
 CREATE TABLE Item(

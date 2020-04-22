@@ -89,7 +89,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" style="height:70vh; overflow-y:auto;">
-                <form>
+                <form class="UserForm" action="add/admin" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
                         <label><b>{{form.getLabel('name')}}</b></label>
                         {{form.render('name')}}
@@ -135,6 +135,7 @@
                     </div>
             </div>
             <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
                     <div class="form-group">
                         <div class="text-center">
                             {{form.render('Simpan')}}

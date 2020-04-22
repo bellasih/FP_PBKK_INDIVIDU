@@ -7,7 +7,7 @@ use ServiceLaundry\PickupDelivery\Forms\Web\PickupDeliveryForm;
 use ServiceLaundry\PickupDelivery\Models\Web\PickupDelivery;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+use Phalcon\Paginator\Adapter\NativeArray;
 
 
 // class PickupDeliveryController extends SecureController
@@ -15,25 +15,38 @@ class PickupDeliveryController extends Controller
 {
     public function indexAction()
     {
-        $datas = PickupDelivery::find();
-        $currentPage = (int) $_GET['page'];
-        $paginator = new PaginatorModel(
-            [
-                'data'  => $datas,
-                'limit' => 10,
-                'page'  => $currentPage,
-            ]
-        );
-        $page = $paginator->paginate();
-        $this->view->page = $page; 
-        $this->view->form = new PickupDeliveryForm();
+        /*
+        * Manual pagination
+        */ 
+        $array_data     = array();
+        (!isset($_GET['page'])) ? $currentPage = 1 : $currentPage = (int) $this->request->getQuery('page');
+        $number_page    = 3;
+        $offset         = ($currentPage-1) * $number_page;
+        $total_row      = count(PickupDelivery::find());
+        $total_page     = ceil($total_row/$number_page);
+
+        $sql            = PickupDelivery::find([
+                            'limit'     => $number_page,
+                            'offset'    => $offset,
+                        ]);
+        $this->view->page           = $sql;
+        $this->view->page_number    = $currentPage;
+        $this->view->page_last      = $total_page;
+        $this->view->offset         = $offset;
+        $this->view->form           = new PickupDeliveryForm();
+
+
         $this->view->pick('views/index');
     }
 
-    public function createPickupDeliveryAction()
+    public function editPickupDeliveryAction()
     {
-        $this->view->form = new PickupDeliveryForm();
-        $this->view->pick('pickup_delivery/add');
+        $pd_id  = $this->request->getQuery('pd_id');
+        $datas  = PickupDelivery::findFirst("pd_id='$pd_id'");
+
+        $this->view->forms = new PickupDeliveryForm($datas);
+        $this->view->pd_id  = $pd_id;
+        $this->view->pick('views/index');
     }
 
     public function storePickupDeliveryAction()
@@ -51,15 +64,16 @@ class PickupDeliveryController extends Controller
                 $this->message[$msg->getField()] = $msg;
             }
         }
-        $admin_id           = $this->session->has('auth')['id'];
-        $order_id           = $this->request->getPost('order_id');
+        // $admin_id           = $this->session->has('auth')['id'];
+        // $order_id           = $this->request->getPost('order_id');
+        $order_id           = 3;
         $pd_status          = $this->request->getPost('pd_status');
         $pd_driver          = $this->request->getPost('pd_driver');
         $pd_type            = $this->request->getPost('pd_type');
         $pd_time_est        = $this->request->getPost('pd_time_est');
 
         $pd = new PickupDelivery();
-        $pd->construct($admin_id,$order_id,$pd_status,$pd_driver,$pd_type,$pd_time_est);
+        $pd->construct($order_id,$pd_status,$pd_driver,$pd_type,$pd_time_est);
 
         if($pd->save())
         {
@@ -73,7 +87,7 @@ class PickupDeliveryController extends Controller
         return $this->response->redirect('pickup_delivery');
     }
 
-    public function editPickupDeliveryAction()
+    public function updatePickupDeliveryAction()
     {
         if(!$this->request->isPost())
         {
@@ -93,14 +107,14 @@ class PickupDeliveryController extends Controller
         $pd         = PickupDelivery::findFirst("pd_id='$pd_id'");
         if($pd != null)
         {
-            $admin_id           = $this->session->has('auth')['id'];
             $order_id           = $pd->getOrderId();
             $pd_status          = $this->request->getPost('pd_status');
             $pd_driver          = $this->request->getPost('pd_driver');
             $pd_type            = $this->request->getPost('pd_type');
             $pd_time_est        = $this->request->getPost('pd_time_est');
 
-            $pd->construct($admin_id,$order_id,$pd_status,$pd_driver,$pd_type,$pd_time_est);
+            $pd->construct($order_id,$pd_status,$pd_driver,$pd_type,$pd_time_est);
+
             if($pd->update())
             {
                 $this->flashSession->success('Data Pickup Delivery berhasil diubah');
@@ -124,26 +138,30 @@ class PickupDeliveryController extends Controller
             return $this->response->redirect('pickup_delivery');
         }
 
-        $pd_id      = $this->request->getPost('pd_id');
-        if($pd_id != null)
-        {
-            $pd     = PickupDelivery::findFirst("pd_id='$pd_id'");
-            if($pd != null)
+        $pd_id_string     = $this->request->getPost('pd_id');
+        $pd_id_array      = explode(",", $pd_id_string);
+
+        foreach($pd_id_array as $pd_id){
+            if($pd_id != null)
             {
-                if($pd->delete())
+                $pd     = PickupDelivery::findFirst("pd_id='$pd_id'");
+                if($pd != null)
                 {
-                    $this->flashSession->success('Data Pickup Delivery berhasil dihapus');
+                    if($pd->delete())
+                    {
+                        $this->flashSession->success('Data Pickup Delivery berhasil dihapus');
+                    }
+                    else
+                    {
+                        $this->flashSession->error('Data Pickup Delivery tidak berhasil dihapus. Mohon coba ulang kembali');
+                    }
                 }
                 else
                 {
-                    $this->flashSession->error('Data Pickup Delivery tidak berhasil dihapus. Mohon coba ulang kembali');
+                    $this->flashSession->error('Data Pickup Delivery tidak dapat ditemukan. Mohon coba ulang kembali');
                 }
             }
-            else
-            {
-                $this->flashSession->error('Data Pickup Delivery tidak dapat ditemukan. Mohon coba ulang kembali');
-            }
+            return $this->response->redirect('pickup_delivery');
         }
-        return $this->response->redirect('pickup_delivery');
     }
 }

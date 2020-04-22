@@ -15,11 +15,11 @@
                     <div class="col-sm-6"></div>
                     <div class="col-sm-6">
                         <a href="#tambahDeliveryModal"  class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Pickup Delivery</span></a>
-                        <a href="#hapusDeliveryModal" id="coba2" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
+                        <a id="multi-uwus" href="#deleteDeliveryModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
                     </div>
                 </div>
             </div>
-            {% if page.items != null %}
+            {% if page != null %}
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -34,8 +34,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                {% set i = 1, skipped = (page.current-1) * page.limit %}
-                    {% for t in page.items %}
+                    {% set i = 1 %}
+                    {% for t in page %}
                         <tr>
                             <td>
                                 <span class="custom-checkbox">
@@ -43,21 +43,31 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>{{skipped + i}}</td>
+                            <td>{{offset + i}}</td>
                             <td>{{t.getOrderId()}}</td>
                             <td>{{t.getPdStatus()}}</td>
                             <td>{{t.getPdDriver()}}</td>
                             <td>{{t.getPdType()}}</td>
-                            <td>{{t.getPdEstimasi()}}</td>
+                            <td>{{t.getPdTimeEst()}}</td>
                             <td>
-                                <a href="#editDeliveryModal{{t.getId()}}" class="edit" data-toggle="modal" data-remote="{{url('edit/pickup_delivery?')}}"><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
-                                <a href="#deleteDeliveryModal{{t.getId()}}" class="delete" data-toggle="modal"><i class="fa fa-trash-o" data-toggle="tooltip"  title="Hapus" value='{{t.getId()}}'></i></a>
+                                <a href="#editDeliveryModal{{t.getId()}}" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
                             </td>
                         </tr>
                     {% set i = i + 1 %}
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="text-center text-lg">
+                <a href='/pickup_delivery'>First</a>
+                {% if page_number - 1 >= 1 %}
+                <a href='/pickup_delivery?page={{page_number - 1}}'>Previous</a>
+                {% endif %}
+                {% if page_number + 1 <= page_last %}
+                <a href='/pickup_delivery?page={{page_number + 1 }}'>Next</a>
+                {% endif %}
+                <a href='/pickup_delivery?page={{page_last}}'>Last</a>
+                <p class="text-success">Anda berada di halaman {{page_number}} dari {{page_last}}</p>
+            </div>
             {% else %}
                 <h2 class="text-danger text-center">Tidak ada data yang dapat ditampilkan</h2>
             {% endif %}
@@ -69,7 +79,7 @@
 <div id="tambahDeliveryModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form class="PickupDeliveryForm" action="add/pickup_delivery" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Tambah Pickup Delivery</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -101,16 +111,16 @@
     </div>
 </div>
 
-<div id="hapusDeliveryModal" class="modal fade">
+<div id="deleteDeliveryModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="pickup_delivery" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Hapus Pickup Delivery</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">				
-                    <input type='hidden' value='' name='id_laporans' id='hiddens'>
+                    <input type='hidden' value='' name='pd_id' id='pd_id'>
                     <p>Apakah Anda yakin untuk menghapus data yang telah dipilih ?</p>
                 </div>
                 <div class="modal-footer">
@@ -121,4 +131,42 @@
         </div>
     </div>
 </div>
+
+{% for t in page %}
+<div id="editDeliveryModal{{t.getId()}}" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="edit/pickup_delivery" method="POST">
+                <div class="modal-header">						
+                    <h4 class="modal-title">Edit Pickup Delivery</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="pd_id" name="pd_id" value="{{t.getId()}}">
+                    <div class="form-group">
+                        <label><b>Status Pickup Delivery</b></label>
+                        <p><input type="text" class="form-control" name="pd_status" id="pd_status" value="{{t.getPdStatus()}}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Driver Pickup Delivery</b></label>
+                        <p><input type="text" class="form-control" name="pd_driver" id="pd_driver" value="{{t.getPdDriver()}}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Tipe Pickup Delivery</b></label>
+                        <p><input type="text" class="form-control" name="pd_type" id="pd_type" value="{{t.getPdType()}}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Estimasi Waktu</b></label>
+                        <p><input type="text" class="form-control" name="pd_time_est" id="pd_time_est" value="{{t.getPdTimeEst()}}"></p>
+                    </div>							
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
+                    <input type="submit" class="btn btn-success" id="Simpan" nama="Simpan" value="Simpan">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}

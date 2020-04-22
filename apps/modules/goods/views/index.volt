@@ -15,11 +15,11 @@
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6">
                     <a href="#tambahBarangModal"  class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Barang</span></a>
-                    <a href="#hapusBarangModal" id="coba2" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
+                    <a id="multi-uwus" href="#hapusBarangModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
                 </div>
             </div>
         </div>
-        {% if datas != null %}
+        {% if page != null %}
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -33,7 +33,7 @@
                 </thead>
                 <tbody>
                 {% set i = 1 %}
-                    {% for t in datas %}
+                    {% for t in page %}
                         <tr>
                             <td>
                                 <span class="custom-checkbox">
@@ -47,14 +47,24 @@
                             <td>{{t.getGoodStock()}}</td>
                             <td>
                                 <!--change to button-->
-                                <a href="#editExpenseModal{{t.getId()}}" class="edit" data-toggle="modal" data-remote="{{url('edit/pickup_Expense?')}}"><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
-                                <a href="#deleteExpenseModal{{t.getId()}}" class="delete" data-toggle="modal"><i class="fa fa-trash-o" data-toggle="tooltip"  title="Hapus" value='{{t.getId()}}'></i></a>
+                                <a href="#editBarangModal{{t.getId()}}" class="edit" data-toggle="modal" data-remote="{{url('edit/pickup_Expense?')}}"><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
                             </td>
-                        </tr>
+                        </tr> 
                     {% set i = i + 1 %}
                     {% endfor %}
                 </tbody>
             </table>
+            <div class="text-center text-lg">
+                <a href='/goods'>First</a>
+                {% if page_number - 1 >= 1 %}
+                <a href='/goods?page={{page_number - 1}}'>Previous</a>
+                {% endif %}
+                {% if page_number + 1 <= page_last %}
+                <a href='/goods?page={{page_number + 1 }}'>Next</a>
+                {% endif %}
+                <a href='/goods?page={{page_last}}'>Last</a>
+                <p class="text-success">Anda berada di halaman {{page_number}} dari {{page_last}}</p>
+            </div>
             {% else %}
                 <h2 class="text-danger text-center">Tidak ada data yang dapat ditampilkan</h2>
             {% endif %}
@@ -65,7 +75,7 @@
 <div id="tambahBarangModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form class="GoodsForm" action="add/goods" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Tambah Barang</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -96,13 +106,13 @@
 <div id="hapusBarangModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form>
+            <form action="goods" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Hapus Barang</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">				
-                    <input type='hidden' value='' name='id_laporans' id='hiddens'>
+                    <input type='hidden' value='{{t.getId()}}' name='goods_id' id='goods_id'>
                     <p>Apakah Anda yakin untuk menghapus data yang telah dipilih ?</p>
                 </div>
                 <div class="modal-footer">
@@ -114,4 +124,37 @@
     </div>
 </div>
 
+{% for t in page %}
+<div id="editBarangModal{{t.getId()}}" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="update/goods" method="POST">
+                <div class="modal-header">						
+                    <h4 class="modal-title">Edit Barang</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="goods_id" name="goods_id" value="{{t.getId()}}">
+                    <div class="form-group">
+                        <label><b>Nama Barang</b></label>
+                        <p><input type="text" class="form-control" name="goods_name" id="goods_name" value="{{t.getGoodsName()}}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Harga per Unit</b></label>
+                        <p><input type="text" class="form-control" name="unit_price" id="unit_price" value="{{t.getUnitPrice()}}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label><b>Stock Barang</b></label>
+                        <p><input type="text" class="form-control" name="good_stock" id="good_stock" value="{{t.getGoodStock()}}"></p>
+                    </div>						
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
+                    <input type="submit" class="btn btn-success" id="Simpan" nama="Simpan" value="Simpan">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
 {% endblock %}

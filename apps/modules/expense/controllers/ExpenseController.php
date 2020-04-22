@@ -14,18 +14,24 @@ class ExpenseController extends Controller
 {
     public function indexAction()
     {
-        $datas = Expense::find();
-        // $currentPage = (int) $_GET['page'];
-        // $paginator = new PaginatorModel(
-        //     [
-        //         'data'  => $datas,
-        //         'limit' => 10,
-        //         'page'  => $currentPage,
-        //     ]
-        // );
-        // $page = $paginator->paginate();
-        // $this->view->page = $page;
-        $this->view->datas = $datas;
+        /*
+        * Manual pagination
+        */ 
+        $array_data     = array();
+        (!isset($_GET['page'])) ? $currentPage = 1 : $currentPage = (int) $this->request->getQuery('page');
+        $number_page    = 3;
+        $offset         = ($currentPage-1) * $number_page;
+        $total_row      = count(Expense::find());
+        $total_page     = ceil($total_row/$number_page);
+
+        $sql            = Expense::find([
+                            'limit'     => $number_page,
+                            'offset'    => $offset,
+                        ]);
+        $this->view->page           = $sql;
+        $this->view->page_number    = $currentPage;
+        $this->view->page_last      = $total_page;
+        $this->view->offset         = $offset;
         $this->view->form = new ExpenseForm();
         $this->view->pick('views/index');
     }
@@ -54,7 +60,8 @@ class ExpenseController extends Controller
 
         if($this->request->hasFiles() == true)
         {
-            $admin_id         = $this->session->has('auth')['id'];
+            // $admin_id         = $this->session->has('auth')['id'];
+            $admin_id         = 1;
             $expense_note     = $this->request->getPost('expense_note');
             $expense_total    = $this->request->getPost('expense_total');
             $invoice          = "temp.jpg";
@@ -66,10 +73,10 @@ class ExpenseController extends Controller
             {
                 foreach($this->request->getUploadedFiles() as $file)
                 {
-                    $filename_toDB  = "img\\img_invoice\\" . $expense_id . '.' .$file->getExtension();
-                    $save_file      = BASE_PATH . '\\public\\' . $filename_toDB;
+                    $filename_toDB  = "img_invoice/" . $expense->getId() . '.' .$file->getExtension();
+                    $save_file      = BASE_PATH . '/public/' . $filename_toDB;
                     $file->moveTo($save_file);
-                    $expense->construct($admin_id,$expense_note,$expense_total,$invoice);
+                    $expense->construct($admin_id,$expense_note,$expense_total,$filename_toDB);
                     $expense->update();
                 }
                 $this->flashSession->success('Data Pengeluaran baru berhasil ditambahkan');
@@ -79,11 +86,11 @@ class ExpenseController extends Controller
             {
                 $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
             }
-            return $this->response->redirect();
+            return $this->response->redirect('expense');
         }
     }
 
-    public function editExpenseAction()
+    public function updateExpenseAction()
     {
         if(!$this->request->isPost())
         {
@@ -103,7 +110,6 @@ class ExpenseController extends Controller
         {
             $expense_id = $this->request->getPost('expense_id');
             $expense    = Expense::findFirst("expense_id='$expense_id'");
-
             if($expense==null)
             {
                 $this->flashSession->error('Terjadi error saat pencarian data. Mohon coba ulang kembali');
@@ -111,32 +117,28 @@ class ExpenseController extends Controller
 
             if($expense != null && $this->request->hasFiles() == true)
             {
-                $old_file       = BASE_PATH . '\\public\\' .$expense->getInvoice();
-                $admin_id       = $this->session->has('auth')['id'];
+                $old_file       = BASE_PATH . '/public/' .$expense->getInvoice();
+                // $admin_id       = $this->session->has('auth')['id'];
+                $admin_id       = 1;
                 $expense_note   = $this->request->getPost('expense_note');
                 $expense_total  = $this->request->getPost('expense_total');
                 $invoice        = $expense->getInvoice();
 
-                $expense->construct($admin_id,$expense_note,$expense_total,$invoice);
-                if($expense->update())
+                if(!unlink($old_file))
                 {
-                    if(!unlink($old_file))
-                    {
-                        $this->flashSession->error('File lama tidak dapat dihapus');
-                    }
-                    else
-                    {
-                        foreach($this->request->getUploadedFiles() as $file)
-                        {
-                            $save_file = BASE_PATH . '\\public\\img\\img_invoicce\\' .$expense->getId(). '.' .$file->getExtension();
-                            $file->moveTo($save_file);
-                        }
-                        $this->flashSession->success('Data Pengeluaran berhasil diperbarui');
-                    }
+                    $this->flashSession->error('File lama tidak dapat dihapus');
                 }
                 else
                 {
-                    $this->flashSession->error('Terjadi kesalahan saat memperbarui data. Mohon coba ulang kembali');
+                    foreach($this->request->getUploadedFiles() as $file)
+                    {
+                        $filename_toDB  = 'img_invoice/' .$expense_id. '.' .$file->getExtension();
+                        $save_file      = BASE_PATH . '/public/' .$filename_toDB;
+                        $file->moveTo($save_file);
+                        $expense->construct($admin_id,$expense_note,$expense_total,$filename_toDB);
+                        $expense->update();
+                    }
+                    $this->flashSession->success('Data Pengeluaran berhasil diperbarui');
                 }
             }    
         }
@@ -150,13 +152,15 @@ class ExpenseController extends Controller
             return $this->response->redirect('expense');
         }
 
-        $expense_id = $this->request->getPost('expense_id');
-        if($expense_id != null)
+        $expense_ids     = $this->request->getPost('expense_id');
+        $expense_array  = explode(",",$expense_ids);
+
+        foreach($expense_array as $expense_id)
         {
             $expense = Expense::findFirst("expense_id='$expense_id'");
             if($expense != null)
             {
-                $old_file   = BASE_PATH . '\\public\\' .$expense->getInvoice();
+                $old_file   = BASE_PATH . '/public/' .$expense->getInvoice();
                 if(!unlink($old_file))
                 {
                     $this->flashSession->error('File tidak dapat ditemukan');
@@ -168,6 +172,7 @@ class ExpenseController extends Controller
                 }
             }
         }
+
        return $this->response->redirect('expense');
     }
 }

@@ -29,12 +29,6 @@ $container['router'] = function() use ($defaultModule, $modules) {
 	/**
 	 * Error Routing
 	 */
-	// $router->addGet('/dashboard', [
-	// 	'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
-	// 	'module'		=> 'dashboard',
-	// 	'controller' 	=> "Index",
-	// 	'action' 		=> "index"
-	// ]);
 
 	$router->addGet('/forbidden', [
 		'namespace' 	=> 'ServiceLaundry\Common\Controllers',
@@ -103,7 +97,7 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'editExpense'
 	]);
 
-	$router->addPost('/edit/expense',[
+	$router->addPost('/update/expense',[
 		'namespace'		=> 'ServiceLaundry\Expense\Controllers\Web',
 		'module'		=> 'expense',
 		'controller'	=> 'Expense',
@@ -141,7 +135,7 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'editGoods'
 	]);
 
-	$router->addPost('/edit/goods',[
+	$router->addPost('/update/goods',[
 		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
 		'module'		=> 'goods',
 		'controller'	=> 'Goods',

@@ -15,9 +15,9 @@ class IndexController extends Controller
 {
     public function indexAction()
     {
-        $completed_order    = count(Orders::find("order_status = 'Pesanan Sudah Selesai'"));
-        $unprocessed_order  = count(Orders::find("order_status = 'Pesanan Belum Selesai'"));
-        $datas              = Service::find();
+        $unprocessed_order      = count(Orders::find("order_status = 'Unfinished'"));
+        $completed_order        = count(Orders::find("order_status = 'Finished'"));
+        $datas                  = Service::find();
 
         // (isset($_GET['page'])) ?  $currentPage = 1 : 0;
         // $paginator      = new PaginatorModel(
@@ -83,16 +83,16 @@ class IndexController extends Controller
             $profile_img    = "temp.jpg";
 
             $admin = new Users();
-            $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$phone,$profile_img);
+            $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$profile_img);
 
             if($admin->save())
             {
                 foreach($this->request->getUploadedFiles() as $file)
                 {
-                    $filename_toDB  = "img\\img_profile\\" . $admin->username . '.' .$file->getExtension();
-                    $save_file      = BASE_PATH . '\\public\\' . $filename_toDB;
+                    $filename_toDB  = "img_profile/" . $admin->getId() . '.' .$file->getExtension();
+                    $save_file      = BASE_PATH . '/public/' . $filename_toDB;
                     $file->moveTo($save_file);
-                    $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$phone,$profile_img);
+                    $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$profile_img);
                     $admin->update();
                 }
                 $this->flashSession->success('Admin baru berhasil ditambahkan');

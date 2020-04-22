@@ -12,3 +12,4 @@
 <script type="text/javascript" src="<?= $this->url->get('js/bootstrap-select.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/tagsinput.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/Chart.js') ?>"></script>
+<script type="text/javascript" src="<?= $this->url->get('js/javascript.js') ?>"></script>
