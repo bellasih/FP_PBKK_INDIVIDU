@@ -8,6 +8,9 @@
 <link href="<?= $this->url->get('css/bootstrap.min.css') ?>" rel="stylesheet">
 <link id="css-main" href="<?= $this->url->get('css/codebase.min.css') ?>" rel="stylesheet">
 <link href="<?= $this->url->get('css/fontawesome.min.css') ?>" rel="stylesheet">
+<link href="<?= $this->url->get('css/bootstrap-select.css') ?>" rel="stylesheet">
+<link href="<?= $this->url->get('css/tagsinput.css') ?>" rel="stylesheet">
+<link href="<?= $this->url->get('css/Chart.css') ?>" rel="stylesheet">
 
 <script type="text/javascript" src="<?= $this->url->get('js/jquery-3.3.1.min.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/bootstrap.bundle.min.js') ?>"></script>
@@ -22,7 +25,9 @@
 	<!-- Header Content -->
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
-            <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
+             <?php if ($this->session->get('auth')) { ?>
+                <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
+            <?php } ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -30,13 +35,13 @@
                 <ul class="navbar-nav mr-auto">
                     <?php if ($this->session->get('auth')) { ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="<?= $this->url->get('dashboard') ?>">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('expense') ?>">Pengeluaran</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('goods') ?>">Barang</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="<?= $this->url->get('service') ?>">Service Laundry</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('order') ?>">Pesanan</a>
@@ -44,11 +49,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('pickup_delivery') ?>">Jasa Antar-Jemput</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="<?= $this->url->get('payment') ?>">Pembayaran</a>
+                        </li>
                     <?php } ?>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <?php if ($this->session->get('auth')) { ?>
-                        <a class="nav-link text-light" href="<?= $this->url->get('profile') ?>">Selamat Datang, <span class="text-info"><?= $this->session->get('auth')['username'] ?></span></a>
+                        <?php $val = 'profile?id=' . $this->session->get('auth')['id']; ?>
+                        <a class="nav-link text-light" href="<?= $this->url->get($val) ?>">Selamat Datang, <span class="text-info"><?= $this->session->get('auth')['username'] ?></span></a>
                         <a class="nav-link btn btn-danger" href="<?= $this->url->get('logout') ?>">Log Out</a>
                     <?php } else { ?>
                         <a class="nav-link text-light" href="<?= $this->url->get('login') ?>">Log In</a>
@@ -61,6 +70,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div class="card alert alert-danger"><?= $this->flashSession->output() ?></div>
         <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
@@ -69,7 +79,7 @@
             <div class="row">
                 <div class="col-sm-6"></div>
                 <div class="col-sm-6">
-                    <a href="#tambahBarangModal"  class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Barang</span></a>
+                    <a href="#tambahBarangModal" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Barang</span></a>
                     <a id="multi-uwus" href="#hapusBarangModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
                 </div>
             </div>

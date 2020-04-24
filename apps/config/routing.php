@@ -29,7 +29,6 @@ $container['router'] = function() use ($defaultModule, $modules) {
 	/**
 	 * Error Routing
 	 */
-
 	$router->addGet('/forbidden', [
 		'namespace' 	=> 'ServiceLaundry\Common\Controllers',
 		'controller' 	=> "Error",
@@ -48,15 +47,22 @@ $container['router'] = function() use ($defaultModule, $modules) {
 	$router->addGet('/login', [
 		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
 		'module'		=> 'dashboard',
-		'controller' 	=> "Authentication",
-		'action' 		=> "createLogin"
+		'controller' 	=> 'Authentication',
+		'action' 		=> 'createLogin'
 	]);
 
 	$router->addPost('/login', [
 		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
 		'module'		=> 'dashboard',
-		'controller' 	=> "Authentication",
-		'action' 		=> "storeLogin"
+		'controller' 	=> 'Authentication',
+		'action' 		=> 'storeLogin'
+	]);
+
+	$router->addGet('/logout', [
+		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
+		'module'		=> 'dashboard',
+		'controller' 	=> 'Authentication',
+		'action' 		=> 'logout'
 	]);
 
 	$router->addPost('/add/admin',[
@@ -64,6 +70,34 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'module'		=> 'dashboard',
 		'controller'	=> 'Index',
 		'action'		=> 'storeAdmin'
+	]);
+
+	$router->addGet('/profile',[
+		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
+		'module'		=> 'dashboard',
+		'controller'	=> 'Authentication',
+		'action'		=> 'showAccount'
+	]);
+
+	$router->addPost('/update/user',[
+		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
+		'module'		=> 'dashboard',
+		'controller'	=> 'Authentication',
+		'action'		=> 'updateProfile'
+	]);
+
+	$router->addPost('/update/password',[
+		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
+		'module'		=> 'dashboard',
+		'controller'	=> 'Authentication',
+		'action'		=> 'changePassword'
+	]);
+
+	$router->addPost('/update/image',[
+		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
+		'module'		=> 'dashboard',
+		'controller'	=> 'Authentication',
+		'action'		=> 'changeProfilImage'
 	]);
 
 	/*
@@ -88,13 +122,6 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'module'		=> 'expense',
 		'controller'	=> 'Expense',
 		'action'		=> 'deleteExpense'
-	]);
-
-	$router->addGet('/edit/expense',[
-		'namespace'		=> 'ServiceLaundry\Expense\Controllers\Web',
-		'module'		=> 'expense',
-		'controller'	=> 'Expense',
-		'action'		=> 'editExpense'
 	]);
 
 	$router->addPost('/update/expense',[
@@ -128,13 +155,6 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'deleteGoods'
 	]);
 
-	$router->addGet('/edit/goods',[
-		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
-		'module'		=> 'goods',
-		'controller'	=> 'Goods',
-		'action'		=> 'editGoods'
-	]);
-
 	$router->addPost('/update/goods',[
 		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
 		'module'		=> 'goods',
@@ -152,16 +172,22 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'index'
 	]);
 
-
-	$router->addGet('/detail/order',[
+	$router->addGet('/payment',[
 		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
 		'module'		=> 'order',
-		'controller'	=> 'Order',
-		'action'		=> 'detailItem'
+		'controller'	=> 'Payment',
+		'action'		=> 'index'
+	]);
+
+	$router->addGet('/service',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Service',
+		'action'		=> 'index'
 	]);
 
 	/*
-	* Cek routing module 
+	* Cek routing module delivery
 	*/
 	$router->addGet('/pickup_delivery',[
 		'namespace'		=> 'ServiceLaundry\PickupDelivery\Controllers\Web',
@@ -184,62 +210,12 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'deletePickupDelivery'
 	]);
 
-	$router->addGet('/edit/pickup_delivery',[
-		'namespace'		=> 'ServiceLaundry\PickupDelivery\Controllers\Web',
-		'module'		=> 'pickup_delivery',
-		'controller'	=> 'PickupDelivery',
-		'action'		=> 'editPickupDelivery'
-	]);
-
 	$router->addPost('/edit/pickup_delivery',[
 		'namespace'		=> 'ServiceLaundry\PickupDelivery\Controllers\Web',
 		'module'		=> 'pickup_delivery',
 		'controller'	=> 'PickupDelivery',
 		'action'		=> 'updatePickupDelivery'
 	]);
-
-
-	/**
-	 * Module Routing
-	 */
-	// foreach ($modules as $moduleName => $module) {
-
-	// 	if ($module['defaultRouting'] == true) {
-	// 		/**
-	// 		 * Default Module routing
-	// 		 */
-	// 		$router->add('/'. $moduleName . '/:params', array(
-	// 			'namespace' => $module['webControllerNamespace'],
-	// 			'module' => $moduleName,
-	// 			'controller' => isset($module['defaultController']) ? $module['defaultController'] : 'index',
-	// 			'action' => isset($module['defaultAction']) ? $module['defaultAction'] : 'index',
-	// 			'params'=> 1
-	// 		));
-			
-	// 		$router->add('/'. $moduleName . '/:controller/:params', array(
-	// 			'namespace' => $module['webControllerNamespace'],
-	// 			'module' => $moduleName,
-	// 			'controller' => 1,
-	// 			'action' => isset($module['defaultAction']) ? $module['defaultAction'] : 'index',
-	// 			'params' => 2
-	// 		));
-
-	// 		$router->add('/'. $moduleName . '/:controller/:action/:params', array(
-	// 			'namespace' => $module['webControllerNamespace'],
-	// 			'module' => $moduleName,
-	// 			'controller' => 1,
-	// 			'action' => 2,
-	// 			'params' => 3
-	// 		));	
-	// 	} else {
-			
-	// 		$webModuleRouting = APP_PATH . '/modules/'. $moduleName .'/config/routes/web.php';
-			
-	// 		if (file_exists($webModuleRouting) && is_file($webModuleRouting)) {
-	// 			include $webModuleRouting;
-	// 		}
-	// 	}
-	// }
 	
     $router->removeExtraSlashes(true);
     

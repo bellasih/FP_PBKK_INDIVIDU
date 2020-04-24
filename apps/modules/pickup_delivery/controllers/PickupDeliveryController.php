@@ -10,9 +10,13 @@ use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\NativeArray;
 
 
-// class PickupDeliveryController extends SecureController
-class PickupDeliveryController extends Controller
+class PickupDeliveryController extends SecureController
 {
+    public function initialize()
+    {
+        $this->beforeExecutionRouter();
+    }
+    
     public function indexAction()
     {
         /*
@@ -33,9 +37,8 @@ class PickupDeliveryController extends Controller
         $this->view->page_number    = $currentPage;
         $this->view->page_last      = $total_page;
         $this->view->offset         = $offset;
+        $this->view->flashSession   = $this->flashSession;
         $this->view->form           = new PickupDeliveryForm();
-
-
         $this->view->pick('views/index');
     }
 
@@ -61,12 +64,11 @@ class PickupDeliveryController extends Controller
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->message[$msg->getField()] = $msg;
+                $this->flashSession->error([$msg->getField()]);
             }
         }
-        // $admin_id           = $this->session->has('auth')['id'];
-        // $order_id           = $this->request->getPost('order_id');
-        $order_id           = 3;
+        $admin_id           = $this->session->has('auth')['id'];
+        $order_id           = $this->request->getPost('order_id');
         $pd_status          = $this->request->getPost('pd_status');
         $pd_driver          = $this->request->getPost('pd_driver');
         $pd_type            = $this->request->getPost('pd_type');
@@ -99,7 +101,7 @@ class PickupDeliveryController extends Controller
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->messages[$msg->getField()] = $msg;
+                $this->flashSession->error([$msg->getField()]);
             }
         }
 

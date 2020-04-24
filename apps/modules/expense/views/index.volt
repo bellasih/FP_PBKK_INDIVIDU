@@ -40,7 +40,7 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>{{i}}</td>
+                            <td>{{offset + i}}</td>
                             <td>{{t.getExpenseNote()}}</td>
                             <td>{{t.getExpenseTotal()}}</td>
                             <td>

@@ -10,7 +10,7 @@ class SecureController extends Controller
     {
         if(!$this->session->has('auth'))
         {
-            return $this->response->redirect('login');
+            return $this->response->redirect("login");
         }
     }
 

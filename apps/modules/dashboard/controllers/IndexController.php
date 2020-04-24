@@ -11,32 +11,36 @@ use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
-class IndexController extends Controller
+class IndexController extends SecureController
 {
+    public function initialize()
+    {
+        $this->beforeExecutionRouter();
+    }
+
     public function indexAction()
     {
         $unprocessed_order      = count(Orders::find("order_status = 'Unfinished'"));
         $completed_order        = count(Orders::find("order_status = 'Finished'"));
-        $datas                  = Service::find();
+        $datas                  = Service::find(['limit' => 3]);
+        /*
+        *   Data for Chart
+        */
+        $query = $this
+        ->modelsManager
+        ->createQuery("SELECT Payment.payment_time AS dates , SUM(order_total) AS total FROM ServiceLaundry\Order\Models\Web\Orders AS Orders , ServiceLaundry\Order\Models\Web\Payment AS Payment 
+                        WHERE Orders.order_id = Payment.order_id AND  Payment.payment_status='Lunas'
+                        GROUP BY Payment.payment_time
+                        ORDER BY Payment.payment_time DESC
+                        LIMIT 5");
+                        
+        $temp   = $query->execute();
+        $chart  = $temp->toArray();   
 
-        // (isset($_GET['page'])) ?  $currentPage = 1 : 0;
-        // $paginator      = new PaginatorModel(
-        //     [
-        //         'model'  => $datas,
-        //         'limit' => 2,
-        //         'page'  => $currentPage,
-        //     ]
-        // );
-
-        // $page  = $paginator->paginate();
-
-        // var_dump($$page->getItems());
-        // die();
-
-        // $this->view->page               = $paginator->paginate(); 
         $this->view->completed_order    = $completed_order;
         $this->view->unprocessed_order  = $unprocessed_order;
         $this->view->datas              = $datas;
+        $this->view->chart              = $chart;
         $this->view->form               = new UserForm();
         $this->view->pick('views/index');
     }
@@ -92,7 +96,7 @@ class IndexController extends Controller
                     $filename_toDB  = "img_profile/" . $admin->getId() . '.' .$file->getExtension();
                     $save_file      = BASE_PATH . '/public/' . $filename_toDB;
                     $file->moveTo($save_file);
-                    $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$profile_img);
+                    $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$filename_toDB);
                     $admin->update();
                 }
                 $this->flashSession->success('Admin baru berhasil ditambahkan');

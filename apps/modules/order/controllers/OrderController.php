@@ -4,45 +4,60 @@ namespace ServiceLaundry\Order\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Order\Models\Web\Orders;
+use ServiceLaundry\Order\Models\Web\Item;
+use ServiceLaundry\Order\Models\Web\OrderItem;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
+use Phalcon\Di;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 use Phalcon\Mvc\Model\Manager;
 
-//class OrderController extends SecureController
-class OrderController extends Controller
+class OrderController extends SecureController
 {
+    public function initialize()
+    {
+        $this->beforeExecutionRouter();
+    }
+    
     public function indexAction()
     {
-        $datas = Orders::find();
-        // $currentPage = (int) $_GET['page'];
-        // $paginator = new PaginatorModel(
-        //     [
-        //         'model'  => $datas,
-        //         'limit' => 10,
-        //         'page'  => $currentPage,
-        //     ]
-        // );
-        // $page = $paginator->paginate();
-        // $this->view->page = $page;
+        /*
+        * Manual pagination
+        */ 
+        $array_data     = array();
+        (!isset($_GET['page'])) ? $currentPage = 1 : $currentPage = (int) $this->request->getQuery('page');
+        $number_page    = 3;
+        $offset         = ($currentPage-1) * $number_page;
+        $total_row      = count(Orders::find());
+        $total_page     = ceil($total_row/$number_page);
 
-        $this->view->datas = $datas;
-        $this->view->pick('views/index');
-    }
-
-    public function detailItemAction()
-    {
-        $order_id   = $this->request->getPost('order_id');
-        if($order_id != null)
+        $sql            = Orders::find([
+                            'limit'     => $number_page,
+                            'offset'    => $offset,
+                        ]);
+        
+        /*
+        * Get all items for every orders
+        */
+        $detail_item    = array();
+        $i = 0;
+        foreach( $sql as $idx)
         {
-            $sql        = "SELECT l.item_type, l.item_details FROM  Item l JOIN OrderItem m
-                        WHERE l.item_id = m.item_id AND m.order_id = $order_id";
-
-            $detailItem = $this->modelManager->createQuery($sql)
-                                             ->execute();
-            
-            $this->view->detailItem = $detailItem;
-            $this->view->pick("detail_item/'$order_id'");
+            $query = $this
+                    ->modelsManager
+                    ->createQuery('SELECT item_type, item_details FROM ServiceLaundry\Order\Models\Web\Item AS Item , ServiceLaundry\Order\Models\Web\OrderItem AS OrderItem
+                                    WHERE Item.item_id = OrderItem.item_id 
+                                    AND OrderItem.order_id =' .$idx->getId());
+            $temp             = $query->execute();
+            $detail_item[$i]  = $temp->toArray();   
+            $i++;
         }
+
+        $this->view->page           = $sql;
+        $this->view->page_number    = $currentPage;
+        $this->view->page_last      = $total_page;
+        $this->view->offset         = $offset;
+        $this->view->detail_item    = $detail_item;
+        $this->view->pick('views/order/index');
     }
 }

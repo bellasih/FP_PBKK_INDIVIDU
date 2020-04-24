@@ -1,7 +1,6 @@
 <?php
 
 namespace ServiceLaundry\Order\Forms\Web;
-namespace ServiceLaundry\Common\Forms;
 
 use ServiceLaundry\Common\Forms\BaseForm;
 

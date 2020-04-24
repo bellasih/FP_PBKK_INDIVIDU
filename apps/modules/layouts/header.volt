@@ -5,6 +5,9 @@
 <link href="{{ url("css/bootstrap.min.css") }}" rel="stylesheet">
 <link id="css-main" href="{{ url("css/codebase.min.css") }}" rel="stylesheet">
 <link href="{{ url("css/fontawesome.min.css") }}" rel="stylesheet">
+<link href="{{ url("css/bootstrap-select.css") }}" rel="stylesheet">
+<link href="{{ url("css/tagsinput.css") }}" rel="stylesheet">
+<link href="{{ url("css/Chart.css") }}" rel="stylesheet">
 
 <script type="text/javascript" src="{{ url("js/jquery-3.3.1.min.js") }}"></script>
 <script type="text/javascript" src="{{ url("js/bootstrap.bundle.min.js") }}"></script>

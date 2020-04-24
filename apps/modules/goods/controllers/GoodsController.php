@@ -1,17 +1,22 @@
 <?php
 
-namespace ServiceLaundry\Goods\Controllers\Web;
+namespace goodLaundry\Goods\Controllers\Web;
 
-use ServiceLaundry\Common\Controllers\SecureController;
-use ServiceLaundry\Goods\Forms\Web\GoodsForm;
-use ServiceLaundry\Goods\Models\Web\Goods;
+use goodLaundry\Common\Controllers\SecureController;
+use goodLaundry\Goods\Forms\Web\GoodsForm;
+use goodLaundry\Goods\Models\Web\Goods;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
+use Phalcon\Flash\Session;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
-// class GoodsController extends SecureController
-class GoodsController extends Controller
+class GoodsController extends SecureController
 {
+    public function initialize()
+    {
+        $this->beforeExecutionRouter();
+    }
+
     public function indexAction()
     {
         /*
@@ -32,14 +37,9 @@ class GoodsController extends Controller
         $this->view->page_number    = $currentPage;
         $this->view->page_last      = $total_page;
         $this->view->offset         = $offset;
+        $this->view->flashSession   = $this->flashSession;
         $this->view->form           = new GoodsForm();
         $this->view->pick('views/index');
-    }
-
-    public function createGoodsAction()
-    {
-        $this->view->form = new GoodsForm();
-        $this->view->pick('goods/add');
     }
 
     public function storeGoodsAction()
@@ -54,11 +54,10 @@ class GoodsController extends Controller
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->message[$msg->getField()] = $msg;
+                $this->flashSession->error([$msg->getField()]);
             }
         }
-        // $admin_id         = $this->session->has('auth')['id'];
-        $admin_id         = 1;
+        $admin_id         = $this->session->has('auth')['id'];
         $goods_name       = $this->request->getPost('goods_name');
         $unit_price       = $this->request->getPost('unit_price');
         $good_stock       = $this->request->getPost('good_stock');
@@ -90,7 +89,7 @@ class GoodsController extends Controller
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->messages[$msg->getField()] = $msg;
+                $this->flashSession([$msg->getField()]);
             }
         }
 
@@ -98,8 +97,7 @@ class GoodsController extends Controller
         $good       = Goods::findFirst("goods_id='$goods_id'");
         if($good != null)
         {
-            // $admin_id       = $this->session->has('auth')['id'];
-            $admin_id       = 1;
+            $admin_id       = $this->session->has('auth')['id'];
             $goods_name     = $this->request->getPost('goods_name');
             $unit_price     = $this->request->getPost('unit_price');
             $good_stock     = $this->request->getPost('good_stock');
@@ -119,37 +117,39 @@ class GoodsController extends Controller
             $this->flashSession->error('Data yang dipilih tidak ada. Mohon coba ulang kemabali');
         }
         return $this->response->redirect('goods');
-
     }
 
     public function deleteGoodsAction()
     {
         if(!$this->request->isPost())
         {
-            return $this->response->redirect('goods');
+            return $this->response->redirect('good');
         }
 
-        $goods_id   = $this->request->getPost('goods_id');
+        $good_id_string     = $this->request->getPost('goods_id');
+        $good_id_array      = explode(",", $good_id_string);
 
-        if($goods_id != null)
-        {
-            $good     = Goods::findFirst("goods_id='$goods_id'");
-            if($good != null)
+        foreach($good_id_array as $good_id){
+            if($good_id != null)
             {
-                if($good->delete())
+                $good     = Goods::findFirst("goods_id='$good_id'");
+                if($good != null)
                 {
-                    $this->flashSession->success('Data Barang berhasil dihapus');
+                    if($good->delete())
+                    {
+                        $this->flashSession->success('Data Barang berhasil dihapus');
+                    }
+                    else
+                    {
+                        $this->flashSession->error('Data Barang tidak berhasil dihapus. Mohon coba ulang kembali');
+                    }
                 }
                 else
                 {
-                    $this->flashSession->error('Data Barang tidak berhasil dihapus. Mohon coba ulang kembali');
+                    $this->flashSession->error('Data Barang tidak dapat ditemukan. Mohon coba ulang kembali');
                 }
             }
-            else
-            {
-                $this->flashSession->error('Data Barang tidak dapat ditemukan. Mohon coba ulang kembali');
-            }
+            return $this->response->redirect('good');
         }
-        return $this->response->redirect('goods');
     }
 }

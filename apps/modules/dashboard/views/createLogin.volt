@@ -1,6 +1,6 @@
 {% extends "../layouts/base.volt" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Halaman Login{% endblock %}
 
 {% block content %}
 
@@ -14,7 +14,7 @@
 		<h1 class="text-center text-secondary">Log In <span class="text-info">Administrator</span></h1>
 		<div class="notif-block">
 			{% if flash != null  %}
-				<div class="alert alert-danger text-center">{{ flash.output() }}</div>
+				<div class="notif-blok text-center">{{flash.output()}}</div>
 			{% endif %}
 		</div>
 		<div class="col-md-6" style="margin-left:12vw;">

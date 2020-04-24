@@ -30,6 +30,11 @@ class Payment extends Model
         return $this->payment_id;
     }
 
+    public function getOrderId()
+    {
+        return $this->order_id;
+    }
+
     public function getPaymentStatus()
     {
         return $this->payment_status;

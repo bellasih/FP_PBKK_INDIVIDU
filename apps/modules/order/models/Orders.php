@@ -31,7 +31,7 @@ class Orders extends Model
 
     public function getId()
     {
-        return $this->service_id;
+        return $this->order_id;
     }
 
     public function getUserId()
@@ -41,7 +41,7 @@ class Orders extends Model
 
     public function getServiceId()
     {
-        return $this->user_id;
+        return $this->service_id;
     }
 
     public function getOrderDate()

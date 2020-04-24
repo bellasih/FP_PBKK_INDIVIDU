@@ -16,6 +16,7 @@ class Module implements ModuleDefinitionInterface
             'ServiceLaundry\PickupDelivery\Controllers\Web'     => __DIR__ . '/controllers',
             'ServiceLaundry\PickupDelivery\Models\Web'          => __DIR__ . '/models',
             'ServiceLaundry\PickupDelivery\Forms\Web'           => __DIR__ . '/form',
+            'ServiceLaundry\Common\Controllers'                 => APP_PATH . '/controllers'
         ]);
 
         $loader->register();

@@ -18,7 +18,8 @@ class Module implements ModuleDefinitionInterface
             'ServiceLaundry\Dashboard\Views\Web'            => __DIR__ . '/views',
             'ServiceLaundry\Dashboard\Forms\Web'            => __DIR__ . '/forms',
             'ServiceLaundry\Order\Models\Web'               => APP_PATH . '/modules/order/models',
-            'ServiceLaundry\Common\Forms'                   => APP_PATH . '/form'
+            'ServiceLaundry\Common\Forms'                   => APP_PATH . '/form',
+            'ServiceLaundry\Common\Controllers'             => APP_PATH . '/controllers'
         ]);
 
         $loader->register();

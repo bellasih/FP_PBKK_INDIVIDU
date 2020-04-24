@@ -10,8 +10,13 @@ use Phalcon\Http\Response;
 
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
-class ExpenseController extends Controller
-{
+class ExpenseController extends SecureController
+{   
+    public function initialize()
+    {
+        $this->beforeExecutionRouter();
+    }
+
     public function indexAction()
     {
         /*
@@ -32,6 +37,7 @@ class ExpenseController extends Controller
         $this->view->page_number    = $currentPage;
         $this->view->page_last      = $total_page;
         $this->view->offset         = $offset;
+        $this->view->flashSession   = $this->flashSession;
         $this->view->form = new ExpenseForm();
         $this->view->pick('views/index');
     }
@@ -54,14 +60,13 @@ class ExpenseController extends Controller
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->message[$msg->getField()] = $msg;
+                $this->flashSession->error([$msg->getField()]);
             }
         }
 
         if($this->request->hasFiles() == true)
         {
-            // $admin_id         = $this->session->has('auth')['id'];
-            $admin_id         = 1;
+            $admin_id         = $this->session->has('auth')['id'];
             $expense_note     = $this->request->getPost('expense_note');
             $expense_total    = $this->request->getPost('expense_total');
             $invoice          = "temp.jpg";
@@ -118,8 +123,7 @@ class ExpenseController extends Controller
             if($expense != null && $this->request->hasFiles() == true)
             {
                 $old_file       = BASE_PATH . '/public/' .$expense->getInvoice();
-                // $admin_id       = $this->session->has('auth')['id'];
-                $admin_id       = 1;
+                $admin_id       = $this->session->has('auth')['id'];
                 $expense_note   = $this->request->getPost('expense_note');
                 $expense_total  = $this->request->getPost('expense_total');
                 $invoice        = $expense->getInvoice();

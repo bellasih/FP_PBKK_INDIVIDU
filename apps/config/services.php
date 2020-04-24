@@ -14,6 +14,7 @@ use Phalcon\Http\Response\Cookies;
 use Phalcon\Flash\Direct as FlashDirect;
 use Phalcon\Flash\Session as FlashSession;
 use Phalcon\Escaper;
+use Phalcon\Mvc\Model\Manager as modelManager;
 
 $container['config'] = function() use ($config) {
 	return $config;
@@ -115,29 +116,20 @@ $container->set(
     }
 );
 
-$container->set(
-    'flashSession',
-    function () {
-        $escaper    = new Escaper();
-        $session    = new SessionManager();
-        $files      = new SessionStream([
-            'savePath'  => APP_PATH . '/tmp',
-        ]);
-        $session->setAdapter($files);
-
-        $flash = new FlashSession($escaper,$session);
-        $flash->setImplicitFlush(false);
-        $flash->setCssClasses([        
-                'error'   => 'alert alert-danger',
-                'success' => 'alert alert-success', 
-                'notice'  => 'alert alert-info',
-                'warning' => 'alert alert-warning'
-        ]);
-        $flash->setAutoescape(false);
+// $container->set(
+//     'flashSession',
+//     function () {
+//         $flash->setCssClasses([        
+//                 'error'   => 'alert alert-danger',
+//                 'success' => 'alert alert-success', 
+//                 'notice'  => 'alert alert-info',
+//                 'warning' => 'alert alert-warning'
+//         ]);
+//         $flash->setAutoescape(false);
         
-        return $flash;
-    }
-);
+//         return $flash;
+//     }
+// );
 
 $container['db'] = function () {
     $config = $this->getConfig();
@@ -155,9 +147,15 @@ $container['db'] = function () {
     return new $class($params);
 };
 
+$container->set('modelsManager',function(){
+    $modelsManager  = new ModelManager();
+    return $modelsManager;
+});
+
 /*
 * Event Manager for Dispatcher
 */
+
 
 $container['dispatcher'] = function() {
 
@@ -165,8 +163,7 @@ $container['dispatcher'] = function() {
 
     $eventsManager->attach(
         'dispatch:beforeException',
-        function (Event $event, $dispatcher, Exception $exception) {
-            // 404
+        function (Event $event, Dispatcher $dispatcher, Exception $exception) {
             if ($exception instanceof DispatchException) {
                 $dispatcher->forward(
                     [
@@ -174,7 +171,6 @@ $container['dispatcher'] = function() {
                         'action'     => 'fourOhFour',
                     ]
                 );
-
                 return false;
             }
         }
