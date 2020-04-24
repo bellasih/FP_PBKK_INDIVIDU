@@ -16,6 +16,7 @@ class PaymentController extends SecureController
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
 
     public function indexAction()
@@ -82,7 +83,7 @@ class PaymentController extends SecureController
     {
         if(!$this->request->isPost())
         {
-            $this->response->redirect('Payment');
+            $this->response->redirect('payment');
         }
 
         $form = new PaymentForm();
@@ -150,7 +151,7 @@ class PaymentController extends SecureController
                     $this->flashSession->error('Data Pembayaran tidak dapat ditemukan. Mohon coba ulang kembali');
                 }
             }
-            return $this->response->redirect('payment');
         }
+        return $this->response->redirect('payment');
     }
 }

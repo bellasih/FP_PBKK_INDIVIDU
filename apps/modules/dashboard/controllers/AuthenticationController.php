@@ -2,16 +2,22 @@
 
 namespace ServiceLaundry\Dashboard\Controllers\Web;
 
+use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Dashboard\Forms\Web\LoginForm;
 use ServiceLaundry\Dashboard\Models\Web\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 
 
-class AuthenticationController extends Controller
+class AuthenticationController extends SecureController
 {
     private $message = "";
 
+    public function initialize()
+    {
+        $this->setFlashSessionDesign();
+    }
+    
     public function createLoginAction()
     {
         $user_rem = null;

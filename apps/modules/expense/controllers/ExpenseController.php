@@ -6,20 +6,19 @@ use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Expense\Forms\Web\ExpenseForm;
 use ServiceLaundry\Expense\Models\Web\Expense;
 use Phalcon\Mvc\Controller;
-use Phalcon\Http\Response;
-
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
+use Phalcon\Http\Response; 
 
 class ExpenseController extends SecureController
 {   
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
 
     public function indexAction()
     {
-        /*
+        /*   
         * Manual pagination
         */ 
         $array_data     = array();
@@ -160,7 +159,7 @@ class ExpenseController extends SecureController
         $expense_array  = explode(",",$expense_ids);
 
         foreach($expense_array as $expense_id)
-        {
+        { 
             $expense = Expense::findFirst("expense_id='$expense_id'");
             if($expense != null)
             {
@@ -176,7 +175,6 @@ class ExpenseController extends SecureController
                 }
             }
         }
-
        return $this->response->redirect('expense');
     }
 }

@@ -16,6 +16,7 @@ class IndexController extends SecureController
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
 
     public function indexAction()

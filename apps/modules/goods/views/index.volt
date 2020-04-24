@@ -6,7 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-        <div class="card alert alert-danger">{{flashSession.output()}}</div>
+        <div class="card">{{flashSession.output()}}</div>
         <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
@@ -42,7 +42,7 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>{{i}}</td>
+                            <td>{{offset + i}}</td>
                             <td>{{t.getGoodsName()}}</td>
                             <td>{{t.getUnitPrice()}}</td>
                             <td>{{t.getGoodStock()}}</td>

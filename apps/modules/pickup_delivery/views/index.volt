@@ -6,6 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div class="card">{{flashSession.output()}}</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">

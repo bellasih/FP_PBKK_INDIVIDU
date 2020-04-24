@@ -6,6 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div class="card">{{flashSession.output()}}</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -41,10 +42,9 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>{{i}}</td>
+                            <td>{{offset + i}}</td>
                             <td>{{t.getOrderId()}}</td>
                             <td>{{t.getPaymentStatus()}}</td>
-                            <td>{{t.getPaymentTotal()}}</td>
                             <td>{{t.getPaymentTime()}}</td>
                             <td>
                                 <a href="#editPaymentModal{{t.getId()}}" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>

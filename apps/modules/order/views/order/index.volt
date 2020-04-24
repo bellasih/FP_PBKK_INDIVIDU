@@ -6,10 +6,11 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div class="card">{{flashSession.output()}}</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>Kelola <b>Order Laundry</b></h2></div>
+                    <div class="col-sm-8"><h2>Kelola <b>Pesanan Laundry</b></h2></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6"></div>
@@ -43,7 +44,7 @@
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
-                            <td>{{i}}</td>
+                            <td>{{offset + i}}</td>
                             <td>{{t.getUserId()}}</td>
                             <td>{{t.getServiceId()}}</td>
                             <td>{{t.getOrderTotal()}}</td>
@@ -105,15 +106,19 @@
         <div class="modal-content">
             <form action="update/order" method="POST">
                 <div class="modal-header">						
-                    <h4 class="modal-title">Edit Pengeluaran</h4>
+                    <h4 class="modal-title">Edit Pesanan</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="order_id" name="order_id" value="{{t.getId()}}">
                     <div class="form-group">
+                        <label><b>Tanggal Selesai Pesanan</b></label>
+                        <p><input type="date" class="form-control" name="finish_date" id="finish_date" value="{{t.getFinishDate()}}"></p>
+                    </div>
+                    <div class="form-group">
                         <label><b>Status Pesanan</b></label>
                         <p><input type="text" class="form-control" name="order_total" id="order_total" value="{{t.getOrderStatus()}}"></p>
-                    </div>					
+                    </div>							
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">

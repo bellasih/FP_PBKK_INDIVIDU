@@ -10,7 +10,7 @@
 
 <div class="row-centered">
 	<div class="card login-card">
-        <div class"alert alert-success">{{flashSession.output()}}</div>
+        <div class="notif-block">{{flashSession.output()}}</div>
         <img class="avatar" src={{data.getProfileImg()}}>
 		<h1 class="text-center text-secondary profil">Profil <span class="text-danger">Administrator</span></h1>
         <h1 class="text-center text-secondary profil"><span class="text-primary">.:{{data.getUsername()}}:.</span></h1>

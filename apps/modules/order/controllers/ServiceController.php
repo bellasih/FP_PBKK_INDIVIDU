@@ -5,17 +5,15 @@ namespace ServiceLaundry\Order\Controllers\Web;
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Order\Models\Web\Service;
 use ServiceLaundry\Order\Forms\Web\ServiceForm;
-use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Di;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Phalcon\Mvc\Model\Manager;
 
 class ServiceController extends SecureController
 {
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
     
     public function indexAction()
@@ -55,20 +53,18 @@ class ServiceController extends SecureController
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->flashSession->error([$msg->getField()]);
+                $this->flashSession->error($msg->getField());
             }
         }
 
         if($this->request->hasFiles() == true)
         {
-            $admin_id         = $this->session->has('auth')['id'];
             $service_name     = $this->request->getPost('service_name');
             $service_price    = $this->request->getPost('service_price');
-            $photo          = "temp.jpg";
+            $photo            = "temp.jpg";
 
             $service = new Service();
-            $service->construct($admin_id,$service_name,$service_price,$photo);
-
+            $service->construct($service_name,$photo,$service_price);
             if($service->save())
             {
                 foreach($this->request->getUploadedFiles() as $file)
@@ -76,7 +72,7 @@ class ServiceController extends SecureController
                     $filename_toDB  = "img_service/" . $service->getId() . '.' .$file->getExtension();
                     $save_file      = BASE_PATH . '/public/' . $filename_toDB;
                     $file->moveTo($save_file);
-                    $service->construct($admin_id,$service_name,$service_price,$filename_toDB);
+                    $service->construct($service_name,$filename_toDB,$service_price);
                     $service->update();
                 }
                 $this->flashSession->success('Data Service baru berhasil ditambahkan');
@@ -86,8 +82,8 @@ class ServiceController extends SecureController
             {
                 $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
             }
-            return $this->response->redirect('service');
         }
+        return $this->response->redirect('service');
     }
 
     public function updateServiceAction()
@@ -102,7 +98,7 @@ class ServiceController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->messages[$msg->getField()] = $msg;
+                $this->flashSession->error($msg->getField());
             }
         }
 
@@ -117,11 +113,10 @@ class ServiceController extends SecureController
 
             if($service != null && $this->request->hasFiles() == true)
             {
-                $old_file       = BASE_PATH . '/public/' .$service->getServicePhoto();
-                $admin_id       = $this->session->has('auth')['id'];
-                $service_name   = $this->request->getPost('service_name');
-                $service_price  = $this->request->getPost('service_price');
-                $service_photo  = $service->getServicePhoto();
+                $old_file         = BASE_PATH . '/public/' .$service->getServicePhoto();
+                $service_name     = $this->request->getPost('service_name');
+                $service_price    = $this->request->getPost('service_price');
+                $service_photo    = $service->getServicePhoto();
 
                 if(!unlink($old_file))
                 {
@@ -134,7 +129,7 @@ class ServiceController extends SecureController
                         $filename_toDB  = 'img_service/' .$service_id. '.' .$file->getExtension();
                         $save_file      = BASE_PATH . '/public/' .$filename_toDB;
                         $file->moveTo($save_file);
-                        $service->construct($admin_id,$service_name,$service_price,$filename_toDB);
+                        $service->construct($service_name,$filename_toDB,$service_price);
                         $service->update();
                     }
                     $this->flashSession->success('Data Service berhasil diperbarui');
@@ -160,8 +155,10 @@ class ServiceController extends SecureController
                 $service     = Service::findFirst("service_id='$service_id'");
                 if($service != null)
                 {
+                    $old_file = BASE_PATH . '/public/' .$service->getServicePhoto();
                     if($service->delete())
                     {
+                        unlink($old_file);
                         $this->flashSession->success('Data Service berhasil dihapus');
                     }
                     else
@@ -174,7 +171,7 @@ class ServiceController extends SecureController
                     $this->flashSession->error('Data Service tidak dapat ditemukan. Mohon coba ulang kembali');
                 }
             }
-            return $this->response->redirect('service');
         }
+        return $this->response->redirect('service');
     }
 }

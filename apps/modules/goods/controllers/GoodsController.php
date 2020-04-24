@@ -1,20 +1,20 @@
 <?php
 
-namespace goodLaundry\Goods\Controllers\Web;
+namespace ServiceLaundry\Goods\Controllers\Web;
 
-use goodLaundry\Common\Controllers\SecureController;
-use goodLaundry\Goods\Forms\Web\GoodsForm;
-use goodLaundry\Goods\Models\Web\Goods;
+use ServiceLaundry\Common\Controllers\SecureController;
+use ServiceLaundry\Goods\Forms\Web\GoodsForm;
+use ServiceLaundry\Goods\Models\Web\Goods;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Flash\Session;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class GoodsController extends SecureController
 {
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
 
     public function indexAction()
@@ -149,7 +149,7 @@ class GoodsController extends SecureController
                     $this->flashSession->error('Data Barang tidak dapat ditemukan. Mohon coba ulang kembali');
                 }
             }
-            return $this->response->redirect('good');
         }
+        return $this->response->redirect('good');
     }
 }

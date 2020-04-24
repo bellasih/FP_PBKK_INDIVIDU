@@ -53,6 +53,7 @@
                         <div class="table-title">
                             <div class="row">
                                 <div class="col-sm-8"><h2>Daftar <b>Service Laundry</b></h2></div>
+                                <div class="col-sm"><a href="{{url('service')}}"  class="btn btn-info"><span>Lihat Daftar</span></a></div>
                             </div>
                         </div>
                         {% if datas != null %}

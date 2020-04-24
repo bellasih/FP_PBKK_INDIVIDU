@@ -13,6 +13,18 @@ class SecureController extends Controller
             return $this->response->redirect("login");
         }
     }
+    /*
+    * Styling for flasSession
+    */
+    public function setFlashSessionDesign()
+    {
+        $this->flashSession->setCssClasses([        
+            'error'   => 'alert alert-danger',
+            'success' => 'alert alert-success', 
+            'notice'  => 'alert alert-info',
+            'warning' => 'alert alert-warning'
+        ]);
+    }
 
     protected function back()
     {

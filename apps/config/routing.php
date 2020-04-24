@@ -172,6 +172,16 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'index'
 	]);
 
+	$router->addPost('update/order',[
+		'namespace' 	=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Order',
+		'action'		=> 'updateOrder'
+	]);
+
+	/*
+	* Cek routing module order : payment
+	*/
 	$router->addGet('/payment',[
 		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
 		'module'		=> 'order',
@@ -179,11 +189,56 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'index'
 	]);
 
+	$router->addPost('/add/payment',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Payment',
+		'action'		=> 'storePayment'
+	]);
+
+	$router->addPost('/payment',[
+		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Payment',
+		'action'		=> 'deletePayment'
+	]);
+
+	$router->addPost('/update/payment',[
+		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Payment',
+		'action'		=> 'updatePayment'
+	]);
+
+	/*
+	* Cek routing module order : service
+	*/
 	$router->addGet('/service',[
 		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
 		'module'		=> 'order',
 		'controller'	=> 'Service',
 		'action'		=> 'index'
+	]);
+
+	$router->addPost('/add/service',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Service',
+		'action'		=> 'storeService'
+	]);
+
+	$router->addPost('/service',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'Service',
+		'action'		=> 'deleteService'
+	]);
+
+	$router->addPost('/update/service',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'service',
+		'controller'	=> 'Service',
+		'action'		=> 'updateService'
 	]);
 
 	/*

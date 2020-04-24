@@ -7,14 +7,13 @@ use ServiceLaundry\PickupDelivery\Forms\Web\PickupDeliveryForm;
 use ServiceLaundry\PickupDelivery\Models\Web\PickupDelivery;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
-use Phalcon\Paginator\Adapter\NativeArray;
-
 
 class PickupDeliveryController extends SecureController
 {
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
     
     public function indexAction()
@@ -163,7 +162,7 @@ class PickupDeliveryController extends SecureController
                     $this->flashSession->error('Data Pickup Delivery tidak dapat ditemukan. Mohon coba ulang kembali');
                 }
             }
-            return $this->response->redirect('pickup_delivery');
         }
+        return $this->response->redirect('pickup_delivery');
     }
 }

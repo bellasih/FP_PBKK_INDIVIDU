@@ -17,6 +17,7 @@ class OrderController extends SecureController
     public function initialize()
     {
         $this->beforeExecutionRouter();
+        $this->setFlashSessionDesign();
     }
     
     public function indexAction()
@@ -59,5 +60,49 @@ class OrderController extends SecureController
         $this->view->offset         = $offset;
         $this->view->detail_item    = $detail_item;
         $this->view->pick('views/order/index');
+    }
+
+    public function updateOrderAction()
+    {
+        if(!$this->request->isPost())
+        {
+            $this->response->redirect('order');
+        }
+
+        $form = new OrderForm();
+        if(!$form->isValid($this->request->getPost()))
+        {
+            foreach ($form->getMessages() as $msg)
+            {
+                $this->flashSession([$msg->getField()]);
+            }
+        }
+
+        $order_id   = $this->request->getPost('order_id');
+        $order      = Orders::findFirst("order_id='$order_id'");
+        if($order != null)
+        {
+            $service_id         = $order->getServiceId();
+            $user_id            = $order->getUserId();
+            $order_total        = $order->getOrderTotal();
+            $order_status       = $this->request->getPost('order_status');
+            $order_date         = $order->getOrderDate();
+            $finish_date        = $order->getFinishDate();
+
+            $order->construct($service_id,$user_id,$order_total,$order_date,$finish_date,$order_status);
+            if($order->update())
+            {
+                $this->flashSession->success('Data Pesanan berhasil diubah');
+            }
+            else
+            {
+                $this->flashSession->error('Data Pesanan tidak berhasil diubah. Mohon coba ulang kembali');
+            }
+        }
+        else
+        {
+            $this->flashSession->error('Data yang dipilih tidak ada. Mohon coba ulang kemabali');
+        }
+        return $this->response->redirect('order');
     }
 }

@@ -6,6 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div class="card">{{flashSession.output()}}</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -72,7 +73,7 @@
 <div id="tambahServiceModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="payment" action="add/payment" method="POST">
+            <form action="add/service" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">						
                     <h4 class="modal-title">Tambah Service</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -103,7 +104,7 @@
 <div id="deleteServiceModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="service" action="service" method="POST">
+            <form  action="service" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Hapus Service</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
