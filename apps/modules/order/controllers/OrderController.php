@@ -3,6 +3,7 @@
 namespace ServiceLaundry\Order\Controllers\Web;
 
 use ServiceLaundry\Common\Controllers\SecureController;
+use ServiceLaundry\Order\Forms\Web\OrderForm;
 use ServiceLaundry\Order\Models\Web\Orders;
 use ServiceLaundry\Order\Models\Web\Item;
 use ServiceLaundry\Order\Models\Web\OrderItem;
@@ -74,7 +75,7 @@ class OrderController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession([$msg->getField()]);
+                $this->flashSession->error($msg->getMessage());
             }
         }
 
@@ -87,7 +88,7 @@ class OrderController extends SecureController
             $order_total        = $order->getOrderTotal();
             $order_status       = $this->request->getPost('order_status');
             $order_date         = $order->getOrderDate();
-            $finish_date        = $order->getFinishDate();
+            $finish_date        = $this->request->getPost('finish_date');
 
             $order->construct($service_id,$user_id,$order_total,$order_date,$finish_date,$order_status);
             if($order->update())

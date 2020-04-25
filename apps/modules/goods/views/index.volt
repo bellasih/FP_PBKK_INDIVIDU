@@ -64,7 +64,7 @@
                 <a href='/goods?page={{page_number + 1 }}'>Next</a>
                 {% endif %}
                 <a href='/goods?page={{page_last}}'>Last</a>
-                <p class="text-success">Anda berada di halaman {{page_number}} dari {{page_last}}</p>
+                <p class="text-success"><b>Anda berada di halaman {{page_number}} dari {{page_last}}</b></p>
             </div>
             {% else %}
                 <h2 class="text-danger text-center">Tidak ada data yang dapat ditampilkan</h2>

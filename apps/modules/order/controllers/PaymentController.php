@@ -8,8 +8,6 @@ use ServiceLaundry\Order\Forms\Web\PaymentForm;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Di;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Phalcon\Mvc\Model\Manager;
 
 class PaymentController extends SecureController
 {
@@ -56,7 +54,7 @@ class PaymentController extends SecureController
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->flashSession->error([$msg->getField()]);
+                $this->flashSession->error($msg->getMessage());
             }
         }
         $admin_id       = $this->session->has('auth')['id'];
@@ -91,7 +89,7 @@ class PaymentController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession([$msg->getField()]);
+                $this->flashSession->error($msg->getMessage());
             }
         }
 
@@ -99,12 +97,12 @@ class PaymentController extends SecureController
         $payment      = Payment::findFirst("payment_id='$payment_id'");
         if($payment != null)
         {
-            $admin_id           = $this->session->has('auth')['id'];
-            $order_id           = $this->request->getPost('order_id');
+            $admin_id           = $this->session->get('auth')['id'];
+            $order_id           = 3;
             $payment_status     = $this->request->getPost('payment_status');
-            $payment_time       = date();
+            $payment_time       = date('Y-m-d');
 
-            $payment->construct($admin_id,$order_id,$payment_status,$payment_time);
+            $payment->construct($order_id,$admin_id,$payment_status,$payment_time);
             if($payment->update())
             {
                 $this->flashSession->success('Data Pembayaran berhasil diubah');

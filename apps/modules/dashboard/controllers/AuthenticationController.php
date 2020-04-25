@@ -102,10 +102,7 @@ class AuthenticationController extends SecureController
 
     public function showAccountAction()
     {
-        if(!$this->session->has('auth'))
-        {
-            return $this->response->redirect("login");
-        }
+        $this->beforeExecutionRouter();
 
         $admin_id       = $this->request->getQuery('id');
         $data           = Users::findFirst("user_id='$admin_id'");

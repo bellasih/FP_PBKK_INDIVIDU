@@ -18,7 +18,14 @@ class PaymentForm extends BaseForm
 {
     public function initialize()
     {
-        $payment_status = new Text('payment_status', [
+        $order_id           = new Text('order_id', [
+            'placeholder'   => 'Masukkan Order Id',
+            'class'         => 'form-control'
+        ]);
+        $order_id->setLabel('Order Id');
+        $order_id->addValidator(new PresenceOf(['message'=>'Order Id belum diisi']));
+
+        $payment_status     = new Text('payment_status', [
             'placeholder'   => 'Masukkan Status Pembayaran',
             'class'         => 'form-control'
         ]);
@@ -31,6 +38,7 @@ class PaymentForm extends BaseForm
             "class" => "btn btn-success"
         ]);
 
+        $this->add($order_id);
         $this->add($payment_status);
         $this->add($submit);
     }

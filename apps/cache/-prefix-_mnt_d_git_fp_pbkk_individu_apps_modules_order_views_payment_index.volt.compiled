@@ -144,13 +144,19 @@
                     <h4 class="modal-title">Tambah Pembayaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <div class="modal-body">				
-                    <label><b><?= $form->getLabel('payment_status') ?></b></label>
-                    <?= $form->render('payment_status') ?>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label><b><?= $form->getLabel('order_id') ?></b></label>
+                        <?= $form->render('order_id') ?>		
+                    </div>
+                    <div class="form-group">		
+                        <label><b><?= $form->getLabel('payment_status') ?></b></label>
+                        <?= $form->render('payment_status') ?>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
-                    <input type="submit" class="btn btn-danger" value="Hapus">
+                    <?= $form->render('Simpan') ?>
                 </div>
             </form>
         </div>
@@ -192,7 +198,7 @@
                     <input type="hidden" id="payment_id" name="payment_id" value="<?= $t->getId() ?>">
                     <div class="form-group">
                         <label><b>Status Pesanan</b></label>
-                        <p><input type="text" class="form-control" name="payment_total" id="payment_total" value="<?= $t->getpaymentStatus() ?>"></p>
+                        <p><input type="text" class="form-control" name="payment_status" id="payment_status" value="<?= $t->getpaymentStatus() ?>"></p>
                     </div>					
                 </div>
                 <div class="modal-footer">
@@ -208,13 +214,19 @@
 
 
 	<div class="clearfix bottom-content">
-		<div class="row" style="position: absolute; bottom: 8px; width: 100%; color: white"> 
+		<div class="row" style="position: absolute; bottom:5px; width: 100%; color: white"> 
 			<div class="col-md-8">
-				<p style="padding-left: 2vw;">© Copy Right by Me. Created with Love</p>
+				<p style="padding-left: 2vw;">© Copy Right by Bella Septina. Created with<span>❤</span></p>
 			</div>
 			<div class="col-md-4">
-                <a type="button" class="text-white" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com </a><br>
-                <a type="button" class="text-white" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
+				<div class="row">
+				<div class="col-sm">
+                	<a type="button" class="text-white" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com </a><br>
+                </div>
+				<div class="col-sm">
+					<a type="button" class="text-white" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
+				</div>
+				</div>
 			</div>
 		</div> 
 	</div>

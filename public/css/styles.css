@@ -7,6 +7,29 @@
     border-color: #2c2c2c;
 }
 
+body {
+    background-image: url('../assets/background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.card.chart {
+    padding: 20px 25px;
+    margin: 30px 0;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.floats {
+    position: absolute;
+    right: 10vw;
+    top: 70px;
+    z-index: 999;
+}
+
 /* .intro {
 	background-image: url('../assets/home.png');
     width: 100%;
@@ -29,11 +52,12 @@
 .card.login-card {
     height:27vw;
     margin-top: 12vw;
-    margin-left:25vw;
+    margin-left:20vw;
     width:50%;
     font-size: 1vw;
     box-shadow: black;
     background-color: #eafdff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .btn.btn-primary.btn-circle.add-admin-btn{
@@ -94,21 +118,12 @@ span.tag.badge.badge-info:hover{
     display: inline-block;
 }
 
-/* .form-group {
-    font-size: 1vw;
-}
-
-.form-control {
-    height:5vw;
-    width:30vw;
-} */
-
 .table-wrapper {
     background: #fff;
     padding: 20px 25px;
     margin: 30px 0;
     border-radius: 3px;
-    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .table-title {        
     padding-bottom: 15px;

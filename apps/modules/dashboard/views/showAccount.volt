@@ -9,7 +9,7 @@
 {% endif %}
 
 <div class="row-centered">
-	<div class="card login-card">
+	<div class="card login-card" style="margin-left:25vw;">
         <div class="notif-block">{{flashSession.output()}}</div>
         <img class="avatar" src={{data.getProfileImg()}}>
 		<h1 class="text-center text-secondary profil">Profil <span class="text-danger">Administrator</span></h1>

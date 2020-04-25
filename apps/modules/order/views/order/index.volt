@@ -10,20 +10,14 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>Kelola <b>Pesanan Laundry</b></h2></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-6"></div>
-                    <div class="col-sm-6">
-                        <a id="multi-uwus" href="#deleteOrderModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
-                    </div>
-                </div>
+                <div class="col-sm-8"><h2>Kelola <b>Barang Laundry</b></h2></div>
+            </div>
+            <div class="row" style="height:2vw"></div>
             </div>
            {% if page != null %}
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th></th>
                         <th>No.</th>
                         <th>Kepemilikan Pesanan</th>
                         <th>Nama Service</th>
@@ -38,12 +32,6 @@
                     {% set i = 1 %}
                     {% for t in page %}
                         <tr>
-                            <td>
-                                <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options" value="{{t.getId()}}">
-                                    <label for="checkbox1"></label>
-                                </span>
-                            </td>
                             <td>{{offset + i}}</td>
                             <td>{{t.getUserId()}}</td>
                             <td>{{t.getServiceId()}}</td>
@@ -78,27 +66,6 @@
     <main>
 </div>
 
-<div id="hapusPengeluaranModal" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="order" action="delete/order" method="POST">
-                <div class="modal-header">						
-                    <h4 class="modal-title">Hapus Pengeluaran</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">				
-                    <input type='hidden' value='' name='order_id' id='order_id'>
-                    <p>Apakah Anda yakin untuk menghapus data yang telah dipilih ?</p>
-                </div>
-                <div class="modal-footer">
-                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
-                    <input type="submit" class="btn btn-danger" value="Hapus">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 {% set j = 0 %}
 {% for t in page %}
 <div id="editOrderModal{{t.getId()}}" class="modal fade">
@@ -114,10 +81,10 @@
                     <div class="form-group">
                         <label><b>Tanggal Selesai Pesanan</b></label>
                         <p><input type="date" class="form-control" name="finish_date" id="finish_date" value="{{t.getFinishDate()}}"></p>
-                    </div>
+                    </div>	
                     <div class="form-group">
                         <label><b>Status Pesanan</b></label>
-                        <p><input type="text" class="form-control" name="order_total" id="order_total" value="{{t.getOrderStatus()}}"></p>
+                        <p><input type="text" class="form-control" name="order_status" id="order_status" value="{{t.getOrderStatus()}}"></p>
                     </div>							
                 </div>
                 <div class="modal-footer">

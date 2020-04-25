@@ -54,7 +54,7 @@ class GoodsController extends SecureController
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->flashSession->error([$msg->getField()]);
+                $this->flashSession->error($msg->getMessage());
             }
         }
         $admin_id         = $this->session->has('auth')['id'];
@@ -89,7 +89,7 @@ class GoodsController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession([$msg->getField()]);
+                $this->flashSession->error($msg->getMessage());
             }
         }
 

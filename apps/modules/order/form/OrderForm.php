@@ -1,7 +1,6 @@
 <?php
 
 namespace ServiceLaundry\Order\Forms\Web;
-namespace ServiceLaundry\Common\Forms;
 
 use ServiceLaundry\Common\Forms\BaseForm;
 
@@ -9,6 +8,7 @@ use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
 use Phalcon\Forms\Element\Submit;
+use Phalcon\Forms\Element\Date;
 
 use Phalcon\Tag;
 

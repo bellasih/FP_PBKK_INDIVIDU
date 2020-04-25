@@ -6,47 +6,48 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-            <h1 class="text-center text-secondary"><span class="text-danger">Selamat Datang</span> 
+            <input type="hidden" class="dates" value="{% for a in chart %}{{a['dates']}}{% endfor %}">
+            <input type="hidden" class="totals" value="{% for b in chart %}{{a['total']}}{% endfor %}">
+            <h1 class="text-center text-secondary text-light"><span class="text-danger">Selamat Datang</span> 
             <br>di Halaman Dashboard</h1>
             <hr id="line">
             <div class="row">
                 <div class="col-sm">
-                    <div class="card" style="height:12vw; background-color:#7ffadc">
+                    <div class="card shadow" style="height:10vw; background-color:#7ffadc">
                         <p class="text-center"><b>Pendapatan Hari Ini</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center">{{completed_order}}</h2></div>
-                            <div class="col-sm"><img src={{url('assets/money.png')}} alt="money" style="height:15vh; float:right"></div>
+                            <div class="col-sm"><h2 class="text-center">{{income}}</h2></div>
+                            <div class="col-sm"><img src={{url('assets/money.png')}} alt="money" style="height:12vh; float:left"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="card" style="height:12vw; background-color:#facf7f">
+                    <div class="card shadow" style="height:10vw; background-color:#facf7f">
                         <p class="text-center"><b>Pesanan Masuk</b></p>
                         <div class="row">
                             <div class="col-sm"><h2 class="text-center">{{unprocessed_order}}</h2></div>
-                            <div class="col-sm"><img src={{url('assets/trolli.png')}} alt="trolli" style="height:15vh; float:right"></div>
+                            <div class="col-sm"><img src={{url('assets/trolli.png')}} alt="trolli" style="height:12vh; float:left"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                   <div class="card" style="height:12vw; background-color:#ccfa7f">
+                   <div class="card shadow" style="height:10vw; background-color:#ccfa7f">
                         <p class="text-center"><b>Pesanan Selesai</b></p>
                         <div class="row">
                             <div class="col-sm"><h2 class="text-center">{{completed_order}}</h2></div>
-                            <div class="col-sm"><img src={{url('assets/finish.png')}} alt="finish" style="height:15vh; float:right"></div>
+                            <div class="col-sm"><img src={{url('assets/finish.png')}} alt="finish" style="height:12vh; float:left"></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                {% for a in chart %}
-                    <p>{{a['dates']}}</p>
-                    <p>{{a['total']}}</p>
-                {% endfor %}
+               
                 <div class="col-sm">
+                <div class="card chart">
                     <div width=100 height=100>
                         <canvas id="myChart"></canvas>
                     </div>
+                </div>
                 </div>
                 <div class="col-sm">
                     <div class="table-wrapper">

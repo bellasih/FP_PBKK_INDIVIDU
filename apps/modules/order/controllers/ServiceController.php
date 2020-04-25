@@ -98,7 +98,7 @@ class ServiceController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getField());
+                $this->flashSession->error($msg->getMessage());
             }
         }
 

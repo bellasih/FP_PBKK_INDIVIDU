@@ -22,14 +22,16 @@ $(document).ready(function(){
     });
 
     //chart
-    var ctx = document.getElementById('myChart').getContext('2d');
+    var dates   = document.getElementsByClassName('dates')[0].value;
+    var value   = parseFloat(document.getElementsByClassName('totals')[0].value/1000);
+    var ctx     = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Senin','Selasa','Rabu','Kamis','Jumat'],
+            labels: [dates.toString()],
             datasets: [{
                 label: '# Jumlah Order',
-                data: [50,10,20,80,30],
+                data: [value.toString()],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -57,7 +59,7 @@ $(document).ready(function(){
             },
             title: {
                 display: true,
-                text: 'Jumlah Order 7 Tanggal/Waktu Terakhir',
+                text: 'Jumlah Order 7 Tanggal/Waktu Terakhir (dalam Ribu)',
                 fontSize: 20
             }
         }

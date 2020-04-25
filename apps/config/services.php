@@ -1,6 +1,5 @@
 <?php
 
-// use Phalcon\Session\Adapter\Files as Session;
 use Phalcon\Session\Adapter\Stream as SessionStream;
 use Phalcon\Session\Manager as SessionManager;
 use Phalcon\Security;
@@ -115,21 +114,6 @@ $container->set(
         return $flash;
     }
 );
-
-// $container->set(
-//     'flashSession',
-//     function () {
-//         $flash->setCssClasses([        
-//                 'error'   => 'alert alert-danger',
-//                 'success' => 'alert alert-success', 
-//                 'notice'  => 'alert alert-info',
-//                 'warning' => 'alert alert-warning'
-//         ]);
-//         $flash->setAutoescape(false);
-        
-//         return $flash;
-//     }
-// );
 
 $container['db'] = function () {
     $config = $this->getConfig();

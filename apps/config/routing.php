@@ -172,8 +172,8 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'action'		=> 'index'
 	]);
 
-	$router->addPost('update/order',[
-		'namespace' 	=> 'ServiceLaundry\Order\Controllers\Web',
+	$router->addPost('/update/order',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
 		'module'		=> 'order',
 		'controller'	=> 'Order',
 		'action'		=> 'updateOrder'
@@ -197,14 +197,14 @@ $container['router'] = function() use ($defaultModule, $modules) {
 	]);
 
 	$router->addPost('/payment',[
-		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
 		'module'		=> 'order',
 		'controller'	=> 'Payment',
 		'action'		=> 'deletePayment'
 	]);
 
 	$router->addPost('/update/payment',[
-		'namespace'		=> 'ServiceLaundry\Goods\Controllers\Web',
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
 		'module'		=> 'order',
 		'controller'	=> 'Payment',
 		'action'		=> 'updatePayment'
@@ -236,7 +236,7 @@ $container['router'] = function() use ($defaultModule, $modules) {
 
 	$router->addPost('/update/service',[
 		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
-		'module'		=> 'service',
+		'module'		=> 'order',
 		'controller'	=> 'Service',
 		'action'		=> 'updateService'
 	]);

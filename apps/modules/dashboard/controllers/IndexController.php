@@ -27,6 +27,8 @@ class IndexController extends SecureController
         /*
         *   Data for Chart
         */
+        $label = "";
+        $value = "";
         $query = $this
         ->modelsManager
         ->createQuery("SELECT Payment.payment_time AS dates , SUM(order_total) AS total FROM ServiceLaundry\Order\Models\Web\Orders AS Orders , ServiceLaundry\Order\Models\Web\Payment AS Payment 
@@ -36,12 +38,23 @@ class IndexController extends SecureController
                         LIMIT 5");
                         
         $temp   = $query->execute();
-        $chart  = $temp->toArray();   
+        $chart  = $temp->toArray();    
+        /*
+        * Income Today
+        */
+        $sql = $this
+        ->modelsManager
+        ->createQuery("SELECT SUM(order_total) AS total FROM ServiceLaundry\Order\Models\Web\Orders AS Orders , ServiceLaundry\Order\Models\Web\Payment AS Payment 
+                        WHERE Orders.order_id = Payment.order_id AND  Payment.payment_status='Lunas' AND Payment.payment_time=CAST(GETDATE() AS DATE)");
+        
+        $temps  = $sql->execute();
+        $income = $temps->toArray();
 
         $this->view->completed_order    = $completed_order;
         $this->view->unprocessed_order  = $unprocessed_order;
         $this->view->datas              = $datas;
         $this->view->chart              = $chart;
+        $this->view->income             = $income['total'] == null? 0 : $income['total'];
         $this->view->form               = new UserForm();
         $this->view->pick('views/index');
     }
@@ -70,7 +83,7 @@ class IndexController extends SecureController
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->message[$msg->getField()] = $msg;
+                $this->flashSession->error($msg->getMessage());
             }
         }
 

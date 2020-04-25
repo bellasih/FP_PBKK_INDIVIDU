@@ -80,13 +80,19 @@
                     <h4 class="modal-title">Tambah Pembayaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <div class="modal-body">				
-                    <label><b>{{form.getLabel('payment_status')}}</b></label>
-                    {{form.render('payment_status')}}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label><b>{{form.getLabel('order_id')}}</b></label>
+                        {{form.render('order_id')}}		
+                    </div>
+                    <div class="form-group">		
+                        <label><b>{{form.getLabel('payment_status')}}</b></label>
+                        {{form.render('payment_status')}}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <input type="button" class="btn btn-default" data-dismiss="modal" value="Batal">
-                    <input type="submit" class="btn btn-danger" value="Hapus">
+                    {{form.render('Simpan')}}
                 </div>
             </form>
         </div>
@@ -128,7 +134,7 @@
                     <input type="hidden" id="payment_id" name="payment_id" value="{{t.getId()}}">
                     <div class="form-group">
                         <label><b>Status Pesanan</b></label>
-                        <p><input type="text" class="form-control" name="payment_total" id="payment_total" value="{{t.getpaymentStatus()}}"></p>
+                        <p><input type="text" class="form-control" name="payment_status" id="payment_status" value="{{t.getpaymentStatus()}}"></p>
                     </div>					
                 </div>
                 <div class="modal-footer">

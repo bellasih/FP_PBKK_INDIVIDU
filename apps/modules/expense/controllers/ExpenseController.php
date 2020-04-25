@@ -59,7 +59,7 @@ class ExpenseController extends SecureController
         {
             foreach($form->getMessages() as $msg)
             {
-                $this->flashSession->error([$msg->getField()]);
+                $this->flashSession->error($msg->getMessage());
             }
         }
 
@@ -106,7 +106,7 @@ class ExpenseController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->messages[$msg->getField()] = $msg;
+                $this->flashSession->error($msg->getMessage());
             }
         }
 
