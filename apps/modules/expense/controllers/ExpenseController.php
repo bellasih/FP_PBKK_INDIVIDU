@@ -41,12 +41,6 @@ class ExpenseController extends SecureController
         $this->view->pick('views/index');
     }
 
-    public function createExpenseAction()
-    {
-        $this->view->form   = new ExpenseForm();
-        $this->view->pick('expense/add');
-    }
-
     public function storeExpenseAction()
     {
         if(!$this->request->isPost())
@@ -55,15 +49,20 @@ class ExpenseController extends SecureController
         }
 
         $form = new ExpenseForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
-            foreach($form->getMessages() as $msg)
+            foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null && $msg->getField()!='invoice')
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
-        if($this->request->hasFiles() == true)
+        if($this->request->hasFiles() == true && !$flag)
         {
             $admin_id         = $this->session->has('auth')['id'];
             $expense_note     = $this->request->getPost('expense_note');
@@ -106,11 +105,15 @@ class ExpenseController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null && $msg->getField()!='invoice')
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
-        if($this->request->hasFiles() == true)
+        if($this->request->hasFiles() == true && !$flag)
         {
             $expense_id = $this->request->getPost('expense_id');
             $expense    = Expense::findFirst("expense_id='$expense_id'");
@@ -157,6 +160,9 @@ class ExpenseController extends SecureController
 
         $expense_ids     = $this->request->getPost('expense_id');
         $expense_array  = explode(",",$expense_ids);
+        var_dump($expense_ids);
+        die();
+
 
         foreach($expense_array as $expense_id)
         { 

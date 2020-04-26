@@ -7,12 +7,18 @@
 {% if cookies.has('username') %}
 	
 {% endif %}
-
+<div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
+<main id="main-container">
+<div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;">{{flashSession.output()}}</div>
 <div class="row-centered">
-	<div class="card login-card" style="margin-left:25vw;">
-        <div class="notif-block">{{flashSession.output()}}</div>
+	<div class="card login-card" style="margin-left:25vw; margin-top:15vh">
         <img class="avatar" src={{data.getProfileImg()}}>
-		<h1 class="text-center text-secondary profil">Profil <span class="text-danger">Administrator</span></h1>
+		<h1 class="text-center text-secondary profil">Profil
+            {% if session.get('auth')['role'] == 1 %} 
+                <span class="text-danger">Administrator</span></h1>
+            {% else %}
+                <span class="text-danger">Member</span></h1>
+            {% endif %}
         <h1 class="text-center text-secondary profil"><span class="text-primary">.:{{data.getUsername()}}:.</span></h1>
         <div class="row" style="margin-left:10vw;">
             <div class="col-md-6">
@@ -40,6 +46,8 @@
             </div>
         </div>
 	</div>
+</div>
+</main>
 </div>
 
 <div id="editProfilModal" class="modal fade">

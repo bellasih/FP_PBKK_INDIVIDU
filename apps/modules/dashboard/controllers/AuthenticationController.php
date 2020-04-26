@@ -17,28 +17,15 @@ class AuthenticationController extends SecureController
     {
         $this->setFlashSessionDesign();
     }
+
+    public function homeAction()
+    {
+        $this->view->pick('views/home');
+    }
     
     public function createLoginAction()
     {
-        $user_rem = null;
-        $remCookies = $this->cookies->get('remember');
-        $remCookies = $remCookies->getValue();
-
-        if($remCookies){
-            $user_rem = [
-                'username' => $remCookies['username'],
-                'password' => $remCookies['password']
-            ];
-        }
-        
-        if(isset($_COOKIE['remember'])){
-            $user_rem = [
-                'username' => $_COOKIE['remember']['username'],
-                'password' => $_COOKIE['remember']['password']
-            ];
-        }
-
-        $this->view->form       = new LoginForm($user_rem);
+        $this->view->form       = new LoginForm();
         $this->view->flash      = $this->flash; 
         $this->view->pick('views/createLogin');
     }
@@ -58,22 +45,19 @@ class AuthenticationController extends SecureController
         			[
                         'username'  => $username,
                         'id'        => $user->getId(),
-                        'remember'  => $remember
+                        'remember'  => $remember,
+                        'role'      => $user->getRole()
         			]
                 );
+
+                $remCookies = $username."+".$password;
                 
                 if($remember==1){
-                    $this->cookies->set("remember",
-                        [
-                            'username' => $username,
-                            'password' => $password,
-                        ],
-                        time() + 15 * 86400
-                    );
+                    $this->cookies->set("remember",$remCookies, time() + 15 * 86400);
                     $this->cookies->send();
-                    setcookie("remember", ['username'=> $username, 'password'=>$password], (86400 * 15), '/');
+                    setcookie("remember", $remCookies, (86400 * 15), '/');
                 }
-        		(new Response())->redirect()->send();
+                $user->getRole()==1 ? (new Response())->redirect()->send() :  (new Response())->redirect("order/users")->send();
             }
             else{
                 $this->security->hash(rand());

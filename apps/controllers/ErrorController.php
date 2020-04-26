@@ -6,18 +6,11 @@ use Phalcon\Mvc\Controller;
 
 class ErrorController extends Controller
 {
-    public function route404Action()
+    public function error404Action()
     {
-       
-    }
-
-    public function route403Action()
-    {
-        
-    }
-
-    public function routeErrorCommon()
-    {
-        
+       $this->view->setViewsDir(APP_PATH . '/views/');
+       $this->view->setMainView('error404');
+       $this->view->setLayout('error404');
+       $this->assets->addCss('public/css/styles.css');
     }
 }

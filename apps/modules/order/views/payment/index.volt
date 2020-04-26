@@ -6,7 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-        <div class="card">{{flashSession.output()}}</div>
+        <div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;">{{flashSession.output()}}</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -38,16 +38,16 @@
                         <tr>
                             <td>
                                 <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options" value="{{t.getId()}}">
+                                    <input type="checkbox" id="checkbox1" name="options" value="{{t['Payment_payment_id']}}">
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
                             <td>{{offset + i}}</td>
-                            <td>{{t.getOrderId()}}</td>
-                            <td>{{t.getPaymentStatus()}}</td>
-                            <td>{{t.getPaymentTime()}}</td>
+                            <td>{{t['name']}}</td>
+                            <td>{{t['Payment_payment_status']}}</td>
+                            <td>{{t['Payment_payment_time']}}</td>
                             <td>
-                                <a href="#editPaymentModal{{t.getId()}}" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
+                                <a href="#editPaymentModal{{t['Payment_payment_id']}}" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t['Payment_payment_id']}}"></i></a>
                             </td>
                         </tr>
                     {% set i = i + 1 %}
@@ -75,7 +75,7 @@
 <div id="tambahPaymentModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="payment" action="add/payment" method="POST">
+            <form class="PaymentForm" action="add/payment" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Tambah Pembayaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -102,7 +102,7 @@
 <div id="deletePaymentModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="payment" action="delete/payment" method="POST">
+            <form action="payment" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Hapus Pembayaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -122,7 +122,7 @@
 
 {% set j = 0 %}
 {% for t in page %}
-<div id="editPaymentModal{{t.getId()}}" class="modal fade">
+<div id="editPaymentModal{{t['Payment_payment_id']}}" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="update/payment" method="POST">
@@ -131,10 +131,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="payment_id" name="payment_id" value="{{t.getId()}}">
+                    <input type="hidden" id="payment_id" name="payment_id" value="{{t['Payment_payment_id']}}">
                     <div class="form-group">
                         <label><b>Status Pesanan</b></label>
-                        <p><input type="text" class="form-control" name="payment_status" id="payment_status" value="{{t.getpaymentStatus()}}"></p>
+                        <p><input type="text" class="form-control" name="payment_status" id="payment_status" value="{{t['Payment_payment_status']}}"></p>
                     </div>					
                 </div>
                 <div class="modal-footer">

@@ -16,10 +16,12 @@ use Phalcon\Validation\Validator\Alnum;
 
 class LoginForm extends BaseForm {
     public function initialize(){
+        isset($_COOKIE['remember'])? $array = explode("+",$_COOKIE['remember']) : $array=["",""];
         $username = new Text ('username',
         [
             "placeholder" => "Username",
-            "class" => "form-control"
+            "class" => "form-control",
+            "value" => $array[0]
         ]);
         $username->addValidator(new PresenceOf(['message'=>'Username belum diisi']));
         $username->addValidator(new Alnum(['message' => 'Username hanya terdiri dari huruf dan angka']));
@@ -27,8 +29,8 @@ class LoginForm extends BaseForm {
         $password = new Password ('password',
         [
             "placeholder" => "Password",
-            "class" => "form-control"
-
+            "class" => "form-control",
+            "value" => $array[1]
         ]);
         $username->addValidator(new PresenceOf(['message'=>'Password belum diisi']));
         $username->addValidator(new Alnum(['message' => 'Username hanya terdiri dari huruf dan angka']));

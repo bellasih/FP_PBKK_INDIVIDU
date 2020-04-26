@@ -26,14 +26,17 @@
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
              <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')['role'] == 1) { ?>
                 <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
+                <?php } ?>
             <?php } ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')) { ?>
+                    <?php if ($this->session->get('auth')['role'] == 1) { ?>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('expense') ?>">Pengeluaran</a>
                         </li>
@@ -52,7 +55,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('payment') ?>">Pembayaran</a>
                         </li>
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="<?= $this->url->get('order/users') ?>">Pesanan</a>
+                        </li>
                     <?php } ?>
+                <?php } ?>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <?php if ($this->session->get('auth')) { ?>
@@ -71,12 +79,18 @@
 <?php if ($this->cookies->has('username')) { ?>
 	
 <?php } ?>
-
+<div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
+<main id="main-container">
+<div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;"><?= $this->flashSession->output() ?></div>
 <div class="row-centered">
-	<div class="card login-card" style="margin-left:25vw;">
-        <div class="notif-block"><?= $this->flashSession->output() ?></div>
+	<div class="card login-card" style="margin-left:25vw; margin-top:15vh">
         <img class="avatar" src=<?= $data->getProfileImg() ?>>
-		<h1 class="text-center text-secondary profil">Profil <span class="text-danger">Administrator</span></h1>
+		<h1 class="text-center text-secondary profil">Profil
+            <?php if ($this->session->get('auth')['role'] == 1) { ?> 
+                <span class="text-danger">Administrator</span></h1>
+            <?php } else { ?>
+                <span class="text-danger">Member</span></h1>
+            <?php } ?>
         <h1 class="text-center text-secondary profil"><span class="text-primary">.:<?= $data->getUsername() ?>:.</span></h1>
         <div class="row" style="margin-left:10vw;">
             <div class="col-md-6">
@@ -104,6 +118,8 @@
             </div>
         </div>
 	</div>
+</div>
+</main>
 </div>
 
 <div id="editProfilModal" class="modal fade">

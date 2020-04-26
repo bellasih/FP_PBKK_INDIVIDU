@@ -9,15 +9,13 @@
 {% endif %}
 
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
+{% if flash != null  %}
+<div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;">{{flash.output()}}</div>
+{% endif %}
 	<div class="row-centered">
 		<div class="card login-card">
 			<img class="avatar" src="{{url('assets/logo.png')}}">
-			<h1 class="text-center text-secondary">Log In <span class="text-info">Administrator</span></h1>
-			<div class="notif-block">
-				{% if flash != null  %}
-					<div class="notif-blok text-center">{{flash.output()}}</div>
-				{% endif %}
-			</div>
+			<h1 class="text-center text-secondary">Log In <span class="text-info">Akun</span></h1>
 			<div class="col-md-6" style="margin-left:12vw;">
 				{{ form.startForm()}}
 					<div class="form-group">

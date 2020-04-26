@@ -1,15 +1,18 @@
 <!-- Header Content -->
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
-             {% if session.get('auth') %}
+             {% if session.get('auth') and session.get('auth')['role'] == 1  %}
                 <a class="nav-link text-light" href="{{url()}}">Home</a>
+            {% else %}
+                 <a class="nav-link text-light" href="{{url('home')}}">Home</a>
             {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    {% if session.get('auth') %}
+                {% if session.get('auth') %}
+                    {% if session.get('auth')['role'] == 1 %}
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{{url('expense')}}">Pengeluaran</a>
                         </li>
@@ -28,7 +31,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="{{url('payment')}}">Pembayaran</a>
                         </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{{url('order/users')}}">Pesanan</a>
+                        </li>
                     {% endif %}
+                {% endif %}
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     {% if session.get('auth') %}

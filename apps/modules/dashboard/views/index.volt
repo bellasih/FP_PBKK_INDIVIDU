@@ -6,36 +6,37 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div id="hides" class="notif-block" style="height:4vh;  overflow-y: auto;">{{flashSession.output()}}</div>
             <input type="hidden" class="dates" value="{% for a in chart %}{{a['dates']}}{% endfor %}">
             <input type="hidden" class="totals" value="{% for b in chart %}{{a['total']}}{% endfor %}">
-            <h1 class="text-center text-secondary text-light"><span class="text-danger">Selamat Datang</span> 
-            <br>di Halaman Dashboard</h1>
+            <h2 class="text-center text-secondary"><span class="text-danger">Selamat Datang</span> 
+            <br>di Halaman Dashboard</h2>
             <hr id="line">
             <div class="row">
                 <div class="col-sm">
-                    <div class="card shadow" style="height:10vw; background-color:#7ffadc">
+                    <div class="card shadow" style="height:18vh; background-color:#7ffadc">
                         <p class="text-center"><b>Pendapatan Hari Ini</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center">{{income}}</h2></div>
-                            <div class="col-sm"><img src={{url('assets/money.png')}} alt="money" style="height:12vh; float:left"></div>
+                            <div class="col-sm-8"><h2 class="text-right">{{income}}</h2></div>
+                            <div class="col-sm text-left"><img src={{url('assets/money.png')}} alt="money" style="height:10vh;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="card shadow" style="height:10vw; background-color:#facf7f">
+                    <div class="card shadow" style="height:18vh; background-color:#facf7f">
                         <p class="text-center"><b>Pesanan Masuk</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center">{{unprocessed_order}}</h2></div>
-                            <div class="col-sm"><img src={{url('assets/trolli.png')}} alt="trolli" style="height:12vh; float:left"></div>
+                            <div class="col-sm-8"><h2 class="text-center">{{unprocessed_order}}</h2></div>
+                            <div class="col-sm text-left"><img src={{url('assets/trolli.png')}} alt="trolli" style="height:10vh;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                   <div class="card shadow" style="height:10vw; background-color:#ccfa7f">
+                   <div class="card shadow" style="height:18vh; background-color:#ccfa7f">
                         <p class="text-center"><b>Pesanan Selesai</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center">{{completed_order}}</h2></div>
-                            <div class="col-sm"><img src={{url('assets/finish.png')}} alt="finish" style="height:12vh; float:left"></div>
+                            <div class="col-sm-8"><h2 class="text-center">{{completed_order}}</h2></div>
+                            <div class="col-sm text-left"><img src={{url('assets/finish.png')}} alt="finish" style="height:10vh;"></div>
                         </div>
                     </div>
                 </div>
@@ -44,7 +45,7 @@
                
                 <div class="col-sm">
                 <div class="card chart">
-                    <div width=100 height=100>
+                    <div width=100 style="height:36vh">
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>

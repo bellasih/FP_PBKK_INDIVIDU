@@ -50,13 +50,19 @@ class GoodsController extends SecureController
         }
 
         $form = new GoodsForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
-            foreach($form->getMessages() as $msg)
+            foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null)
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
+
         $admin_id         = $this->session->has('auth')['id'];
         $goods_name       = $this->request->getPost('goods_name');
         $unit_price       = $this->request->getPost('unit_price');
@@ -65,14 +71,17 @@ class GoodsController extends SecureController
         $goods = new Goods();
         $goods->construct($admin_id,$goods_name,$unit_price,$good_stock);
 
-        if($goods->save())
+        if(!$flag)
         {
-            $this->flashSession->success('Data Barang berhasil ditambahkan');
-            $this->view->form = new GoodsForm();
-        }
-        else
-        {
-            $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
+            if($goods->save())
+            {
+                $this->flashSession->success('Data Barang berhasil ditambahkan');
+                $this->view->form = new GoodsForm();
+            }
+            else
+            {
+                $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
+            }
         }
         return $this->response->redirect('goods');
     }
@@ -85,17 +94,22 @@ class GoodsController extends SecureController
         }
 
         $form = new GoodsForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null)
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
         $goods_id   = $this->request->getPost('goods_id');
         $good       = Goods::findFirst("goods_id='$goods_id'");
-        if($good != null)
+        if($good != null && !$flag)
         {
             $admin_id       = $this->session->has('auth')['id'];
             $goods_name     = $this->request->getPost('goods_name');
@@ -123,7 +137,7 @@ class GoodsController extends SecureController
     {
         if(!$this->request->isPost())
         {
-            return $this->response->redirect('good');
+            return $this->response->redirect('goods');
         }
 
         $good_id_string     = $this->request->getPost('goods_id');
@@ -150,6 +164,6 @@ class GoodsController extends SecureController
                 }
             }
         }
-        return $this->response->redirect('good');
+        return $this->response->redirect('goods');
     }
 }

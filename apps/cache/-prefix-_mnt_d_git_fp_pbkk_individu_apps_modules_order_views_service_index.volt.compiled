@@ -26,14 +26,17 @@
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
              <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')['role'] == 1) { ?>
                 <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
+                <?php } ?>
             <?php } ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')) { ?>
+                    <?php if ($this->session->get('auth')['role'] == 1) { ?>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('expense') ?>">Pengeluaran</a>
                         </li>
@@ -53,6 +56,7 @@
                             <a class="nav-link text-light" href="<?= $this->url->get('payment') ?>">Pembayaran</a>
                         </li>
                     <?php } ?>
+                <?php } ?>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <?php if ($this->session->get('auth')) { ?>
@@ -70,7 +74,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-        <div class="card"><?= $this->flashSession->output() ?></div>
+        <div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;"><?= $this->flashSession->output() ?></div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">

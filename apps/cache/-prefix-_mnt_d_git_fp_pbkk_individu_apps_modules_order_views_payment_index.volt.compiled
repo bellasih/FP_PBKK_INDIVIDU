@@ -26,14 +26,17 @@
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
              <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')['role'] == 1) { ?>
                 <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
+                <?php } ?>
             <?php } ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')) { ?>
+                    <?php if ($this->session->get('auth')['role'] == 1) { ?>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('expense') ?>">Pengeluaran</a>
                         </li>
@@ -53,6 +56,7 @@
                             <a class="nav-link text-light" href="<?= $this->url->get('payment') ?>">Pembayaran</a>
                         </li>
                     <?php } ?>
+                <?php } ?>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <?php if ($this->session->get('auth')) { ?>
@@ -70,7 +74,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-        <div class="card"><?= $this->flashSession->output() ?></div>
+        <div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;"><?= $this->flashSession->output() ?></div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -102,16 +106,16 @@
                         <tr>
                             <td>
                                 <span class="custom-checkbox">
-                                    <input type="checkbox" id="checkbox1" name="options" value="<?= $t->getId() ?>">
+                                    <input type="checkbox" id="checkbox1" name="options" value="<?= $t['Payment_payment_id'] ?>">
                                     <label for="checkbox1"></label>
                                 </span>
                             </td>
                             <td><?= $offset + $i ?></td>
-                            <td><?= $t->getOrderId() ?></td>
-                            <td><?= $t->getPaymentStatus() ?></td>
-                            <td><?= $t->getPaymentTime() ?></td>
+                            <td><?= $t['name'] ?></td>
+                            <td><?= $t['Payment_payment_status'] ?></td>
+                            <td><?= $t['Payment_payment_time'] ?></td>
                             <td>
-                                <a href="#editPaymentModal<?= $t->getId() ?>" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="<?= $t->getId() ?>"></i></a>
+                                <a href="#editPaymentModal<?= $t['Payment_payment_id'] ?>" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="<?= $t['Payment_payment_id'] ?>"></i></a>
                             </td>
                         </tr>
                     <?php $i = $i + 1; ?>
@@ -139,7 +143,7 @@
 <div id="tambahPaymentModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="payment" action="add/payment" method="POST">
+            <form class="PaymentForm" action="add/payment" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Tambah Pembayaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -166,7 +170,7 @@
 <div id="deletePaymentModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="payment" action="delete/payment" method="POST">
+            <form action="payment" method="POST">
                 <div class="modal-header">						
                     <h4 class="modal-title">Hapus Pembayaran</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -186,7 +190,7 @@
 
 <?php $j = 0; ?>
 <?php foreach ($page as $t) { ?>
-<div id="editPaymentModal<?= $t->getId() ?>" class="modal fade">
+<div id="editPaymentModal<?= $t['Payment_payment_id'] ?>" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="update/payment" method="POST">
@@ -195,10 +199,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="payment_id" name="payment_id" value="<?= $t->getId() ?>">
+                    <input type="hidden" id="payment_id" name="payment_id" value="<?= $t['Payment_payment_id'] ?>">
                     <div class="form-group">
                         <label><b>Status Pesanan</b></label>
-                        <p><input type="text" class="form-control" name="payment_status" id="payment_status" value="<?= $t->getpaymentStatus() ?>"></p>
+                        <p><input type="text" class="form-control" name="payment_status" id="payment_status" value="<?= $t['Payment_payment_status'] ?>"></p>
                     </div>					
                 </div>
                 <div class="modal-footer">

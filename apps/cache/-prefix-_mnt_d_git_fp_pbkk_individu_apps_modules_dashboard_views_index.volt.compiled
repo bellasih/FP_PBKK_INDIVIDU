@@ -26,14 +26,17 @@
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
              <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')['role'] == 1) { ?>
                 <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
+                <?php } ?>
             <?php } ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
-                    <?php if ($this->session->get('auth')) { ?>
+                <?php if ($this->session->get('auth')) { ?>
+                    <?php if ($this->session->get('auth')['role'] == 1) { ?>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('expense') ?>">Pengeluaran</a>
                         </li>
@@ -52,7 +55,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('payment') ?>">Pembayaran</a>
                         </li>
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="<?= $this->url->get('order/users') ?>">Pesanan</a>
+                        </li>
                     <?php } ?>
+                <?php } ?>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <?php if ($this->session->get('auth')) { ?>
@@ -70,36 +78,37 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
+        <div id="hides" class="notif-block" style="height:4vh;  overflow-y: auto;"><?= $this->flashSession->output() ?></div>
             <input type="hidden" class="dates" value="<?php foreach ($chart as $a) { ?><?= $a['dates'] ?><?php } ?>">
             <input type="hidden" class="totals" value="<?php foreach ($chart as $b) { ?><?= $a['total'] ?><?php } ?>">
-            <h1 class="text-center text-secondary text-light"><span class="text-danger">Selamat Datang</span> 
-            <br>di Halaman Dashboard</h1>
+            <h2 class="text-center text-secondary"><span class="text-danger">Selamat Datang</span> 
+            <br>di Halaman Dashboard</h2>
             <hr id="line">
             <div class="row">
                 <div class="col-sm">
-                    <div class="card shadow" style="height:10vw; background-color:#7ffadc">
+                    <div class="card shadow" style="height:18vh; background-color:#7ffadc">
                         <p class="text-center"><b>Pendapatan Hari Ini</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center"><?= $income ?></h2></div>
-                            <div class="col-sm"><img src=<?= $this->url->get('assets/money.png') ?> alt="money" style="height:12vh; float:left"></div>
+                            <div class="col-sm-8"><h2 class="text-right"><?= $income ?></h2></div>
+                            <div class="col-sm text-left"><img src=<?= $this->url->get('assets/money.png') ?> alt="money" style="height:10vh;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                    <div class="card shadow" style="height:10vw; background-color:#facf7f">
+                    <div class="card shadow" style="height:18vh; background-color:#facf7f">
                         <p class="text-center"><b>Pesanan Masuk</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center"><?= $unprocessed_order ?></h2></div>
-                            <div class="col-sm"><img src=<?= $this->url->get('assets/trolli.png') ?> alt="trolli" style="height:12vh; float:left"></div>
+                            <div class="col-sm-8"><h2 class="text-center"><?= $unprocessed_order ?></h2></div>
+                            <div class="col-sm text-left"><img src=<?= $this->url->get('assets/trolli.png') ?> alt="trolli" style="height:10vh;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm">
-                   <div class="card shadow" style="height:10vw; background-color:#ccfa7f">
+                   <div class="card shadow" style="height:18vh; background-color:#ccfa7f">
                         <p class="text-center"><b>Pesanan Selesai</b></p>
                         <div class="row">
-                            <div class="col-sm"><h2 class="text-center"><?= $completed_order ?></h2></div>
-                            <div class="col-sm"><img src=<?= $this->url->get('assets/finish.png') ?> alt="finish" style="height:12vh; float:left"></div>
+                            <div class="col-sm-8"><h2 class="text-center"><?= $completed_order ?></h2></div>
+                            <div class="col-sm text-left"><img src=<?= $this->url->get('assets/finish.png') ?> alt="finish" style="height:10vh;"></div>
                         </div>
                     </div>
                 </div>
@@ -108,7 +117,7 @@
                
                 <div class="col-sm">
                 <div class="card chart">
-                    <div width=100 height=100>
+                    <div width=100 style="height:36vh">
                         <canvas id="myChart"></canvas>
                     </div>
                 </div>

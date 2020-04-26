@@ -7,19 +7,57 @@ $(document).ready(function(){
         $.each($("input[name='options']:checked"), function() {
             values.push($(this).val());
         });
-        if(params == '#deleteBarangModal'){
+        if(params == '#hapusBarangModal'){
             $('#goods_id').val(values.toString());
         }
-        else if(params == '#deleteDeliveryModal'){
+        if(params == '#deleteServiceModal'){
+            $('#service_id').val(values.toString());
+        }
+        if(params == '#deleteDeliveryModal'){
             $('#pd_id').val(values.toString());
         }
-        else if(params == '#hapusPengeluaranModal'){
+        if(params == '#hapusPengeluaranModal'){
             $('#expense_id').val(values.toString());
         }
-        else if(params == '#deleteOrderModal'){
+        if(params == '#deleteOrderModal'){
             $('#order_id').val(values.toString());
         }
     });
+
+    //multi-items
+    $("#multi-items").click(function() {
+        var wrapper = $('.item-fields');
+        var wrapper1 = $('.type-fields');
+        $(wrapper).append("<div class='form-group'><input type='text' class='form-control' name='item_notes'></div>");
+        $(wrapper1).append("<div class='form-group'><input type='text' class='form-control' name='item_types'></div>");
+    });
+
+    //get val multi-tems
+    $("#changes").click(function() {
+        let values = [];
+        let value = [];
+        $.each($("input[name='item_notes']"), function() {
+            values.push($(this).val());
+        });
+        $.each($("input[name='item_types']"), function() {
+            value.push($(this).val());
+        });
+
+        console.log(values.toString());
+        console.log(value.toString());
+
+        $('#items_notes').val(values.toString());
+        $('#items_types').val(value.toString());
+
+        $('#Simpan').prop('disabled',false);
+    });
+
+    //hide
+    setTimeout(function(){
+        $(document).on('click','#hides',function(){
+            $('#hides').hide();
+        });
+     },1000);
 
     //chart
     var dates   = document.getElementsByClassName('dates')[0].value;

@@ -6,7 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-        <div class="card">{{flashSession.output()}}</div>
+        <div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;">{{flashSession.output()}}</div>
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -33,15 +33,15 @@
                     {% for t in page %}
                         <tr>
                             <td>{{offset + i}}</td>
-                            <td>{{t.getUserId()}}</td>
-                            <td>{{t.getServiceId()}}</td>
-                            <td>{{t.getOrderTotal()}}</td>
-                            <td>{{t.getOrderDate()}}</td>
-                            <td>{{t.getFinishDate()}}</td>
-                            <td>{{t.getOrderStatus()}}</td>
+                            <td>{{t['name']}}</td>
+                            <td>{{t['service_name']}}</td>
+                            <td>{{t['Orders_order_total']}}</td>
+                            <td>{{t['Orders_order_date']}}</td>
+                            <td>{{t['Orders_finish_date']}}</td>
+                            <td>{{t['Orders_order_status']}}</td>
                             <td>
-                                <a href="#lihatItemModal{{t.getId()}}" class="view" data-toggle="modal" ><i class="fa fa-eye" data-toggle="tooltip" title="Lihat" value="{{t.getId()}}"></i></a>
-                                <a href="#editOrderModal{{t.getId()}}" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t.getId()}}"></i></a>
+                                <a href="#lihatItemModal{{t['Orders_order_id']}}" class="view" data-toggle="modal" ><i class="fa fa-eye" data-toggle="tooltip" title="Lihat" value="{{t['Orders_order_id']}}"></i></a>
+                                <a href="#editOrderModal{{t['Orders_order_id']}}" class="edit" data-toggle="modal" ><i class="fa fa-pencil" data-toggle="tooltip" title="Ubah" value="{{t['Orders_order_id']}}"></i></a>
                             </td>
                         </tr>
                     {% set i = i + 1 %}
@@ -68,7 +68,7 @@
 
 {% set j = 0 %}
 {% for t in page %}
-<div id="editOrderModal{{t.getId()}}" class="modal fade">
+<div id="editOrderModal{{t['Orders_order_id']}}" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="update/order" method="POST">
@@ -77,14 +77,14 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="order_id" name="order_id" value="{{t.getId()}}">
+                    <input type="hidden" id="order_id" name="order_id" value="{{t['Orders_order_id']}}">
                     <div class="form-group">
                         <label><b>Tanggal Selesai Pesanan</b></label>
-                        <p><input type="date" class="form-control" name="finish_date" id="finish_date" value="{{t.getFinishDate()}}"></p>
+                        <p><input type="date" class="form-control" name="finish_date" id="finish_date" value="{{t['Orders_finish_date']}}"></p>
                     </div>	
                     <div class="form-group">
                         <label><b>Status Pesanan</b></label>
-                        <p><input type="text" class="form-control" name="order_status" id="order_status" value="{{t.getOrderStatus()}}"></p>
+                        <p><input type="text" class="form-control" name="order_status" id="order_status" value="{{t['Orders_order_status']}}"></p>
                     </div>							
                 </div>
                 <div class="modal-footer">
@@ -96,7 +96,7 @@
     </div>
 </div>
 
-<div id="lihatItemModal{{t.getId()}}" class="modal fade">
+<div id="lihatItemModal{{t['Orders_order_id']}}" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
                 <div class="modal-header">						

@@ -6,7 +6,7 @@
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
-        <div class="card">{{flashSession.output()}}</div>
+        <div id="hides" class="notif-block" style="height:5vh;  overflow-y: auto;">{{flashSession.output()}}</div>
         <div class="table-wrapper">
         <div class="table-title">
             <div class="row">
@@ -113,7 +113,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">				
-                    <input type='hidden' value='{{t.getId()}}' name='goods_id' id='goods_id'>
+                    <input type='hidden' value='' name='goods_id' id='goods_id'>
                     <p>Apakah Anda yakin untuk menghapus data yang telah dipilih ?</p>
                 </div>
                 <div class="modal-footer">

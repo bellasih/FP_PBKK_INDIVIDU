@@ -22,28 +22,20 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		[
 			'namespace' 	=> 'ServiceLaundry\Common\Controllers',
 			'controller' 	=> 'Error',
-			'action'     	=> 'route404',
+			'action'     	=> 'error404',
 		]
 	);
-
-	/**
-	 * Error Routing
-	 */
-	$router->addGet('/forbidden', [
-		'namespace' 	=> 'ServiceLaundry\Common\Controllers',
-		'controller' 	=> "Error",
-		'action' 		=> "route403"
-	]);
-	
-	$router->addGet('/error', [
-		'namespace' 	=> 'ServiceLaundry\Common\Controllers',
-		'controller' 	=> "Error",
-		'action' 		=> "routeErrorCommon"
-	]);
 
 	/*
 	* Cek routing module dashboard
 	*/
+	$router->addGet('/home', [
+		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
+		'module'		=> 'dashboard',
+		'controller' 	=> 'Authentication',
+		'action' 		=> 'home'
+	]);
+
 	$router->addGet('/login', [
 		'namespace' 	=> 'ServiceLaundry\Dashboard\Controllers\Web',
 		'module'		=> 'dashboard',
@@ -177,6 +169,20 @@ $container['router'] = function() use ($defaultModule, $modules) {
 		'module'		=> 'order',
 		'controller'	=> 'Order',
 		'action'		=> 'updateOrder'
+	]);
+
+	$router->addGet('/order/users',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'UserOrder',
+		'action'		=> 'createOrder'
+	]);
+
+	$router->addPost('/order/users',[
+		'namespace'		=> 'ServiceLaundry\Order\Controllers\Web',
+		'module'		=> 'order',
+		'controller'	=> 'UserOrder',
+		'action'		=> 'storeOrder'
 	]);
 
 	/*

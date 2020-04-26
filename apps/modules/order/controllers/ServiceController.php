@@ -49,15 +49,20 @@ class ServiceController extends SecureController
         }
 
         $form = new ServiceForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
-            foreach($form->getMessages() as $msg)
+            foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getField());
+                if($msg->getMessage()!=null && $msg->getField()!='service_photo')
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
-        if($this->request->hasFiles() == true)
+        if($this->request->hasFiles() == true && !$flag)
         {
             $service_name     = $this->request->getPost('service_name');
             $service_price    = $this->request->getPost('service_price');
@@ -94,15 +99,20 @@ class ServiceController extends SecureController
         }
 
         $form = new ServiceForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null && $msg->getField()!='service_photo')
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
-        if($this->request->hasFiles() == true)
+        if($this->request->hasFiles() == true && !$flag)
         {
             $service_id = $this->request->getPost('service_id');
             $service    = Service::findFirst("service_id='$service_id'");
@@ -145,7 +155,6 @@ class ServiceController extends SecureController
         {
             return $this->response->redirect('service');
         }
-
         $service_id_string     = $this->request->getPost('service_id');
         $service_id_array      = explode(",", $service_id_string);
 

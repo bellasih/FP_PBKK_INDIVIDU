@@ -5,6 +5,7 @@ namespace ServiceLaundry\Order\Controllers\Web;
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Order\Models\Web\Payment;
 use ServiceLaundry\Order\Forms\Web\PaymentForm;
+use ServiceLaundry\Order\Models\Web\Orders;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 use Phalcon\Di;
@@ -29,11 +30,16 @@ class PaymentController extends SecureController
         $total_row      = count(Payment::find());
         $total_page     = ceil($total_row/$number_page);
 
-        $sql            = Payment::find([
-                            'limit'     => $number_page,
-                            'offset'    => $offset,
-                        ]);
-        
+        $queries = $this
+        ->modelsManager
+        ->createQuery("SELECT name, Payment.payment_id, Payment.order_id, Payment.admin_id, Payment.payment_status, Payment.payment_time
+                        FROM ServiceLaundry\Order\Models\Web\Payment AS Payment, ServiceLaundry\Order\Models\Web\Orders AS Orders, ServiceLaundry\Dashboard\Models\Web\Users AS Users
+                        WHERE Orders.order_id = Payment.order_id AND Users.user_id = Orders.user_id
+                        LIMIT ".$offset.",".$number_page);
+                        
+        $temps      = $queries->execute();
+        $sql        = $temps->toArray();
+
         $this->view->page           = $sql;
         $this->view->page_number    = $currentPage;
         $this->view->page_last      = $total_page;
@@ -50,29 +56,43 @@ class PaymentController extends SecureController
         }
 
         $form = new PaymentForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
-            foreach($form->getMessages() as $msg)
+            foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null)
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
-        $admin_id       = $this->session->has('auth')['id'];
+
+        $admin_id       = $this->session->get('auth')['id'];
         $order_id       = $this->request->getPost('order_id');
         $payment_status = $this->request->getPost('payment_status');
-        $payment_time   = date();
+        $payment_time   = date('Y-m-d');
 
         $payment = new Payment();
-        $payment->construct($admin_id,$Payment_status,$unit_price,$payment_stock);
+        $payment->construct($order_id,$admin_id,$payment_status,$payment_time);
 
-        if($payment->save())
+        if(!$flag)
         {
-            $this->flashSession->success('Data Pembayaran berhasil ditambahkan');
-            $this->view->form = new PaymentForm();
-        }
-        else
-        {
-            $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
+            if($payment->save())
+            {
+                $this->flashSession->success('Data Pembayaran berhasil ditambahkan');
+                if($payment_status == 'Lunas')
+                {
+                    $order = Orders::findFirst(['conditions'=>'order_id='.$order_id]);
+                    $order->construct($order->getServiceId(),$order->getUserId(),$order->getOrderTotal(),$order->getOrderDate(),$order->getFinishDate(),'Finished');
+                    $order->update();
+                }
+            }
+            else
+            {
+                $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
+            }
         }
         return $this->response->redirect('payment');
     }
@@ -85,20 +105,26 @@ class PaymentController extends SecureController
         }
 
         $form = new PaymentForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null && $msg->getField()!='order_id')
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
         $payment_id   = $this->request->getPost('payment_id');
         $payment      = Payment::findFirst("payment_id='$payment_id'");
-        if($payment != null)
+
+        if($payment != null && !$flag)
         {
             $admin_id           = $this->session->get('auth')['id'];
-            $order_id           = 3;
+            $order_id           = $payment->getOrderId();
             $payment_status     = $this->request->getPost('payment_status');
             $payment_time       = date('Y-m-d');
 
@@ -106,6 +132,10 @@ class PaymentController extends SecureController
             if($payment->update())
             {
                 $this->flashSession->success('Data Pembayaran berhasil diubah');
+                $payment_status == 'Lunas' ? $status = 'Finished' : $status = 'Unfinished';
+                $order = Orders::findFirst(['conditions'=>'order_id='.$order_id]);
+                $order->construct($order->getServiceId(),$order->getUserId(),$order->getOrderTotal(),$order->getOrderDate(),$order->getFinishDate(),$status);
+                $order->update();
             }
             else
             {
@@ -135,6 +165,8 @@ class PaymentController extends SecureController
                 $payment     = Payment::findFirst("payment_id='$payment_id'");
                 if($payment != null)
                 {
+                    $order = Orders::findFirst(['conditions'=>'order_id='.$payment->getOrderId()]);
+                    $order->construct($order->getServiceId(),$order->getUserId(),$order->getOrderTotal(),$order->getOrderDate(),$order->getFinishDate(),'Unfinished');
                     if($payment->delete())
                     {
                         $this->flashSession->success('Data Pembayaran berhasil dihapus');

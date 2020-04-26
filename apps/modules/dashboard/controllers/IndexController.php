@@ -9,7 +9,6 @@ use ServiceLaundry\Order\Models\Web\Service;
 use ServiceLaundry\Dashboard\Models\Web\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
-use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class IndexController extends SecureController
 {
@@ -27,8 +26,6 @@ class IndexController extends SecureController
         /*
         *   Data for Chart
         */
-        $label = "";
-        $value = "";
         $query = $this
         ->modelsManager
         ->createQuery("SELECT Payment.payment_time AS dates , SUM(order_total) AS total FROM ServiceLaundry\Order\Models\Web\Orders AS Orders , ServiceLaundry\Order\Models\Web\Payment AS Payment 
@@ -54,7 +51,7 @@ class IndexController extends SecureController
         $this->view->unprocessed_order  = $unprocessed_order;
         $this->view->datas              = $datas;
         $this->view->chart              = $chart;
-        $this->view->income             = $income['total'] == null? 0 : $income['total'];
+        $this->view->income             = $income[0]['total'] == null? 0 : $income[0]['total'];
         $this->view->form               = new UserForm();
         $this->view->pick('views/index');
     }
@@ -70,6 +67,7 @@ class IndexController extends SecureController
         if($this->request->getPost('gender') == null)
         {
             $this->flashSession->error('Anda harus mengisi jenis kelamin');
+            $this->response->redirect();
         }
 
         $username = $this->request->getPost('username');
@@ -79,15 +77,20 @@ class IndexController extends SecureController
             $this->response->redirect();
         }
 
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
-            foreach($form->getMessages() as $msg)
+            foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null && $msg->getField()!='profile_img')
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
-        if($this->request->hasFiles() == true)
+        if($this->request->hasFiles() == true && !$flag)
         {
             $username       = $this->request->getPost('username');
             $password       = $this->security->hash($this->request->getPost('password'));

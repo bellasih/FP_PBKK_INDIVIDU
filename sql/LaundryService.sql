@@ -5,14 +5,12 @@ CREATE TABLE Users (
 	name varchar(50) not null,
 	gender char(1) not null,
 	address varchar(100) not null,
-	register_date datetime not null,
+	register_date date not null,
 	role int not null,
 	phone varchar(15) not null,
 	email varchar(30) not null,
 	profile_img varchar(50)
 );
-
-
 
 CREATE TABLE Service(
 	service_id int not null identity(1,1) PRIMARY KEY,
@@ -36,16 +34,16 @@ CREATE TABLE Pickup_Delivery(
 	order_id int FOREIGN KEY REFERENCES Orders(order_id) ON DELETE CASCADE,
 	pd_status varchar(20) not null,
 	pd_driver varchar(100),
-	pd_type int not null,
-	pd_time_est datetime not null
+	pd_type varchar(50) not null,
+	pd_time_est date not null
 );
 
 CREATE TABLE Payment(
 	payment_id int not null identity(1,1) PRIMARY KEY,
 	order_id int FOREIGN KEY REFERENCES Orders(order_id) ON DELETE CASCADE,
 	admin_id int FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
-	payment_status varchar(15) not null,
-	payment_time datetime not null
+	payment_status varchar(30) not null,
+	payment_time date not null
 );
 
 CREATE TABLE Goods(
@@ -81,5 +79,5 @@ CREATE TABLE Comment(
 	user_id int FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
 	comment_content text not null,
 	comment_status varchar(50) not null,
-	comment_date datetime not null
+	comment_date date not null
 );

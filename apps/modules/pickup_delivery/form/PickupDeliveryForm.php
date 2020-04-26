@@ -19,6 +19,13 @@ class PickupDeliveryForm extends BaseForm
 {
     public function initialize()
     {
+        $order_id = new Text('order_id', [
+            'placeholder'   => 'Masukkan Order Id',
+            'class'         => 'form-control'
+        ]);
+        $order_id->setLabel('Order Id');
+        $order_id->addValidator(new PresenceOf(['message'=>'Order Id belum diisi']));
+
         $pd_status = new Text('pd_status', [
             'placeholder'   => 'Masukkan Status Pickup Delivery',
             'class'         => 'form-control'
@@ -55,6 +62,7 @@ class PickupDeliveryForm extends BaseForm
             "class" => "btn btn-success"
         ]);
         
+        $this->add($order_id);
         $this->add($pd_status);
         $this->add($pd_driver);
         $this->add($pd_type);

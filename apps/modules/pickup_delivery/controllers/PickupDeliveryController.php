@@ -5,8 +5,12 @@ namespace ServiceLaundry\PickupDelivery\Controllers\Web;
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\PickupDelivery\Forms\Web\PickupDeliveryForm;
 use ServiceLaundry\PickupDelivery\Models\Web\PickupDelivery;
+use ServiceLaundry\Order\Models\Web\Orders;
+use ServiceLaundry\Dashboard\Models\Web\Users;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
+use Phalcon\Di;
+use Phalcon\Mvc\Model\Manager;
 
 class PickupDeliveryController extends SecureController
 {
@@ -28,26 +32,22 @@ class PickupDeliveryController extends SecureController
         $total_row      = count(PickupDelivery::find());
         $total_page     = ceil($total_row/$number_page);
 
-        $sql            = PickupDelivery::find([
-                            'limit'     => $number_page,
-                            'offset'    => $offset,
-                        ]);
+        $queries = $this
+        ->modelsManager
+        ->createQuery("SELECT name, Pickup.pd_id AS ids, Pickup.pd_status, Pickup.pd_driver, Pickup.pd_type, Pickup.pd_time_est
+                        FROM ServiceLaundry\Order\Models\Web\Orders AS Orders, ServiceLaundry\PickupDelivery\Models\Web\PickupDelivery AS Pickup, ServiceLaundry\Dashboard\Models\Web\Users AS Users 
+                        WHERE Orders.order_id = Pickup.order_id AND Users.user_id = Orders.user_id
+                        LIMIT ".$offset.",".$number_page);
+
+        $temps      = $queries->execute();
+        $sql        = $temps->toArray();
+
         $this->view->page           = $sql;
         $this->view->page_number    = $currentPage;
         $this->view->page_last      = $total_page;
         $this->view->offset         = $offset;
         $this->view->flashSession   = $this->flashSession;
         $this->view->form           = new PickupDeliveryForm();
-        $this->view->pick('views/index');
-    }
-
-    public function editPickupDeliveryAction()
-    {
-        $pd_id  = $this->request->getQuery('pd_id');
-        $datas  = PickupDelivery::findFirst("pd_id='$pd_id'");
-
-        $this->view->forms = new PickupDeliveryForm($datas);
-        $this->view->pd_id  = $pd_id;
         $this->view->pick('views/index');
     }
 
@@ -59,13 +59,19 @@ class PickupDeliveryController extends SecureController
         }
 
         $form = new PickupDeliveryForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
-            foreach($form->getMessages() as $msg)
+            foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null)
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
+
         $admin_id           = $this->session->has('auth')['id'];
         $order_id           = $this->request->getPost('order_id');
         $pd_status          = $this->request->getPost('pd_status');
@@ -76,14 +82,17 @@ class PickupDeliveryController extends SecureController
         $pd = new PickupDelivery();
         $pd->construct($order_id,$pd_status,$pd_driver,$pd_type,$pd_time_est);
 
-        if($pd->save())
+        if(!$flag)
         {
-            $this->flashSession->success('Data Pickup Delivery berhasil ditambahkan');
-            $this->view->form = new PickupDeliveryForm();
-        }
-        else
-        {
-            $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
+            if($pd->save())
+            {
+                $this->flashSession->success('Data Pickup Delivery berhasil ditambahkan');
+                $this->view->form = new PickupDeliveryForm();
+            }
+            else
+            {
+                $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
+            }
         }
         return $this->response->redirect('pickup_delivery');
     }
@@ -96,17 +105,22 @@ class PickupDeliveryController extends SecureController
         }
 
         $form = new PickupDeliveryForm();
+        $flag = 0;
         if(!$form->isValid($this->request->getPost()))
         {
             foreach ($form->getMessages() as $msg)
             {
-                $this->flashSession->error($msg->getMessage());
+                if($msg->getMessage()!=null)
+                {
+                    $flag = 1;
+                    $this->flashSession->error($msg->getMessage());
+                }
             }
         }
 
         $pd_id      = $this->request->getPost('pd_id');
         $pd         = PickupDelivery::findFirst("pd_id='$pd_id'");
-        if($pd != null)
+        if($pd != null && !$flag)
         {
             $order_id           = $pd->getOrderId();
             $pd_status          = $this->request->getPost('pd_status');
