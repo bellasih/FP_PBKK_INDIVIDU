@@ -13,23 +13,20 @@ class UserOrderController extends SecureController
 {
     public function initialize()
     {
-        $this->beforeExecutionRouter();
+        $this->memberExecutionRouter();
         $this->setFlashSessionDesign();
     }
 
     public function createOrderAction()
     {
-        $datas      = Service::find();
+        $service             = Service::find();
+        $this->view->service = $service;
         $this->view->pick('views/order/users');
     }
 
     public function storeOrderAction()
     {
-        $service_id           = Service::findFirst(['conditions'=> 'service_name = :service_names:',
-                                                    'bind'=>[
-                                                        'service_names'=>$this->request->getPost('service_name')
-                                                    ]]);
-
+        $service_id           = $this->request->getPost('pilihan')[0];
         $user_id              = $this->session->get('auth')['id'];
         $order_total          = $this->request->getPost('order_total');
         $order_date           = date('Y-m-d');
@@ -39,7 +36,7 @@ class UserOrderController extends SecureController
         $items_type_array     = explode(",", $this->request->getPost('items_types'));
 
         $order      = new Orders();
-        $order->construct($service_id->getId(),$user_id,$order_total,$order_date,$finish_date,$order_status);
+        $order->construct($service_id,$user_id,$order_total,$order_date,$finish_date,$order_status);
         
         if($order->save())
         {

@@ -18,7 +18,6 @@ $loader->registerNamespaces(array(
 	 *  Load Common Controllers Namespace
 	 */
 	'ServiceLaundry\Common\Controllers' 	=> APP_PATH . '/controllers',
-	// 'ServiceLaundry\Common\Views' 			=> APP_PATH . '/views',
 	'ServiceLaundry\Common\Forms'			=> APP_PATH . '/form',
  ));
 

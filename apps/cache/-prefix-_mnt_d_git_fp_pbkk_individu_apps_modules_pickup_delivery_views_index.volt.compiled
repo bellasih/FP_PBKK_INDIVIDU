@@ -19,7 +19,7 @@
 <script type="text/javascript" src="<?= $this->url->get('js/tagsinput.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/Chart.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/javascript.js') ?>"></script>
-	<title>Dashboard Admin</title>
+	<title>Halaman Antar-Jemput</title>
 </head>
 <body>
 	<!-- Header Content -->
@@ -248,7 +248,7 @@
 <?php } ?>
 
 	<div class="clearfix bottom-content">
-		<div class="row" style="position: absolute; margin-top:10vh; width: 100%; color: white"> 
+		<div class="row" style="position: relative; margin-top:10vh; width: 100%; color: white"> 
 			<div class="col-md-8">
 				<p style="padding-left: 2vw;">© Copy Right by Bella Septina. Created with<span>❤</span></p>
 			</div>

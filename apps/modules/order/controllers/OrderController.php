@@ -18,7 +18,7 @@ class OrderController extends SecureController
 {
     public function initialize()
     {
-        $this->beforeExecutionRouter();
+        $this->adminExecutionRouter();
         $this->setFlashSessionDesign();
     }
     

@@ -139,8 +139,6 @@ $container->set('modelsManager',function(){
 /*
 * Event Manager for Dispatcher
 */
-
-
 $container['dispatcher'] = function() {
 
     $eventsManager = new Manager();

@@ -59,7 +59,7 @@ class AuthenticationController extends SecureController
                     $this->cookies->send();
                     setcookie("remember", $remCookies, (86400 * 15), '/');
                 }
-                $user->getRole()==1 ? (new Response())->redirect()->send() :  (new Response())->redirect("order/users")->send();
+                $user->getRole()==1 ? (new Response())->redirect()->send() :  (new Response())->redirect("home")->send();
             }
             else{
                 $this->security->hash(rand());
@@ -88,8 +88,6 @@ class AuthenticationController extends SecureController
 
     public function showAccountAction()
     {
-        $this->beforeExecutionRouter();
-
         $admin_id       = $this->request->getQuery('id');
         $data           = Users::findFirst("user_id='$admin_id'");
 

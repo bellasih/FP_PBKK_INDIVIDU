@@ -97,7 +97,11 @@
             <div class="row">
                 <div class="col-sm-8">
                     <label><b>Masukkan Nama Service</b></label>
-                    <div class="form-group"><input type="text" class="form-control" name="service_name" id="service_name"></div>
+                    <select class="selectpicker form-control" data-live-search="true" data-container="body" name="pilihan" id="pilihan">
+                        <?php foreach ($service as $s) { ?>
+                            <option  title="<?= $s->getServiceName() ?>" price="<?= $s->getServicePrice() ?>" value='<?= $s->getId() ?>'><?= $s->getServiceName() ?></option>
+                        <?php } ?>
+                    </select>
                 </div>
                 <div class="col-sm">
                     <label><b>Total Pesanan</b></label>
@@ -131,17 +135,17 @@
 </div>
 
 	<div class="clearfix bottom-content">
-		<div class="row" style="position: relative; margin-top:10vh; width: 100%; color: black"> 
+		<div class="row" style="position: relative; margin-top:10vh; width: 100%; color: white"> 
 			<div class="col-md-8">
 				<p style="padding-left: 2vw;">© Copy Right by Bella Septina. Created with<span>❤</span></p>
 			</div>
 			<div class="col-md-4">
 				<div class="row">
 				<div class="col-sm">
-                	<a type="button" class="text-dark" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com </a><br>
+                	<a type="button" class="text-light" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com</a><br>
                 </div>
 				<div class="col-sm">
-					<a type="button" class="text-dark" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
+					<a type="button" class="text-light" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
 				</div>
 				</div>
 			</div>

@@ -4,9 +4,13 @@ $(document).ready(function(){
     $("#multi-uwus").click(function() {
         let values = [];
         var params = $(this).attr('href');
+        console.log(params)
         $.each($("input[name='options']:checked"), function() {
             values.push($(this).val());
         });
+        if(params == '#hapusPembayaranModal'){
+            $('#payment_id').val(values.toString());
+        }
         if(params == '#hapusBarangModal'){
             $('#goods_id').val(values.toString());
         }
@@ -18,9 +22,6 @@ $(document).ready(function(){
         }
         if(params == '#hapusPengeluaranModal'){
             $('#expense_id').val(values.toString());
-        }
-        if(params == '#deleteOrderModal'){
-            $('#order_id').val(values.toString());
         }
     });
 
@@ -74,6 +75,12 @@ $(document).ready(function(){
     $('.prev').click(function () {
         $('.carousel').carousel('prev');
         return false;
+    });
+
+    //multi-select
+    $("#pilihan").on("change",function(){
+        values = $("#pilihan option:selected").attr("price");
+        $('#order_total').val(values.toString());
     });
 
     //chart

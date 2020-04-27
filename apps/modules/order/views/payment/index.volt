@@ -15,8 +15,8 @@
                 <div class="row">
                     <div class="col-sm-6"></div>
                     <div class="col-sm-6">
-                        <a href="#tambahPaymentModal"  class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Pembayaran</span></a>
-                        <a id="multi-uwus" href="#deletePaymentModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>						
+                        <a href="#tambahBayarModal"  class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i><span>Tambah Pembayaran</span></a>
+                        <a id="multi-uwus" href="#hapusPembayaranModal" class="btn btn-danger" data-toggle="modal"><i class="fa fa-trash-o"></i><span>Hapus</span></a>										
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
     <main>
 </div>
 
-<div id="tambahPaymentModal" class="modal fade">
+<div id="tambahBayarModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <form class="PaymentForm" action="add/payment" method="POST">
@@ -99,7 +99,7 @@
     </div>
 </div>
 
-<div id="deletePaymentModal" class="modal fade">
+<div id="hapusPembayaranModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <form action="payment" method="POST">

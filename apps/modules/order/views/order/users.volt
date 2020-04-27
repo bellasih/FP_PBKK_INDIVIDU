@@ -25,7 +25,11 @@
             <div class="row">
                 <div class="col-sm-8">
                     <label><b>Masukkan Nama Service</b></label>
-                    <div class="form-group"><input type="text" class="form-control" name="service_name" id="service_name"></div>
+                    <select class="selectpicker form-control" data-live-search="true" data-container="body" name="pilihan" id="pilihan">
+                        {% for s in service %}
+                            <option  title="{{s.getServiceName()}}" price="{{s.getServicePrice()}}" value='{{s.getId()}}'>{{s.getServiceName()}}</option>
+                        {% endfor %}
+                    </select>
                 </div>
                 <div class="col-sm">
                     <label><b>Total Pesanan</b></label>

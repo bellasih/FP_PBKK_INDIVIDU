@@ -1,6 +1,6 @@
 {% extends "../layouts/base.volt" %}
 
-{% block title %}Pengeluaran{% endblock %}
+{% block title %}Halaman Pengeluaran{% endblock %}
 
 {% block content %}
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">

@@ -6,13 +6,22 @@ use Phalcon\Mvc\Controller;
 
 class SecureController extends Controller
 {
-    public function beforeExecutionRouter()
+    public function adminExecutionRouter()
     {
-        if(!$this->session->has('auth'))
+        if($this->session->get('auth')['role'] != 1)
         {
-            return $this->response->redirect("login");
+            return $this->response->redirect("home");
         }
     }
+
+    public function memberExecutionRouter()
+    {
+        if($this->session->get('auth')['role'] != 0)
+        {
+            return $this->response->redirect("");
+        }
+    }
+
     /*
     * Styling for flasSession
     */

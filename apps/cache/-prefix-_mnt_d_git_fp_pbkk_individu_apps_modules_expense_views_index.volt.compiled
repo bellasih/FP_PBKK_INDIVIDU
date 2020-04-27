@@ -19,7 +19,7 @@
 <script type="text/javascript" src="<?= $this->url->get('js/tagsinput.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/Chart.js') ?>"></script>
 <script type="text/javascript" src="<?= $this->url->get('js/javascript.js') ?>"></script>
-	<title>Pengeluaran</title>
+	<title>Halaman Pengeluaran</title>
 </head>
 <body>
 	<!-- Header Content -->
@@ -129,12 +129,12 @@
             <div class="text-center text-lg">
                 <a href='/expense' class="btn btn-info">First</a>
                 <?php if ($page_number - 1 >= 1) { ?>
-                <a href='/expense?page=<?= $page_number - 1 ?>'class="btn btn-info">Previous</a>
+                <a href='/expense?page=<?= $page_number - 1 ?>' class="btn btn-info">Previous</a>
                 <?php } ?>
                 <?php if ($page_number + 1 <= $page_last) { ?>
-                <a href='/expense?page=<?= $page_number + 1 ?>'class="btn btn-info">Next</a>
+                <a href='/expense?page=<?= $page_number + 1 ?>' class="btn btn-info">Next</a>
                 <?php } ?>
-                <a href='/expense?page=<?= $page_last ?>'class="btn btn-info">Last</a>
+                <a href='/expense?page=<?= $page_last ?>' class="btn btn-info">Last</a>
                 <p class="text-success"><b>Anda berada di halaman <?= $page_number ?> dari <?= $page_last ?></b></p>
             </div>
             <?php } else { ?>
@@ -251,7 +251,7 @@
 
 
 	<div class="clearfix bottom-content">
-		<div class="row" style="position: absolute; margin-top:10vh; width: 100%; color: white"> 
+		<div class="row" style="position: relative; margin-top:10vh; width: 100%; color: white"> 
 			<div class="col-md-8">
 				<p style="padding-left: 2vw;">© Copy Right by Bella Septina. Created with<span>❤</span></p>
 			</div>

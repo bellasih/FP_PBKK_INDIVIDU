@@ -1,6 +1,6 @@
 {% extends "../layouts/base.volt" %}
 
-{% block title %}Dashboard Admin{% endblock %}
+{% block title %}Halaman Antar-Jemput{% endblock %}
 
 {% block content %}
 <div id="page-container" class="sidebar-inverse side-scroll page-header-fixed main-content-boxed">

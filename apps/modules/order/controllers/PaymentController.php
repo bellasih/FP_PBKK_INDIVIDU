@@ -14,7 +14,7 @@ class PaymentController extends SecureController
 {
     public function initialize()
     {
-        $this->beforeExecutionRouter();
+        $this->adminExecutionRouter();
         $this->setFlashSessionDesign();
     }
 
@@ -170,6 +170,7 @@ class PaymentController extends SecureController
                     if($payment->delete())
                     {
                         $this->flashSession->success('Data Pembayaran berhasil dihapus');
+                        $order->update();
                     }
                     else
                     {

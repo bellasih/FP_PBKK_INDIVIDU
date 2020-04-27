@@ -12,7 +12,7 @@ class ExpenseController extends SecureController
 {   
     public function initialize()
     {
-        $this->beforeExecutionRouter();
+        $this->adminExecutionRouter();
         $this->setFlashSessionDesign();
     }
 
@@ -160,9 +160,6 @@ class ExpenseController extends SecureController
 
         $expense_ids     = $this->request->getPost('expense_id');
         $expense_array  = explode(",",$expense_ids);
-        var_dump($expense_ids);
-        die();
-
 
         foreach($expense_array as $expense_id)
         { 

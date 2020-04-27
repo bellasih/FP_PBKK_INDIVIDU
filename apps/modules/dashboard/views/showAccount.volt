@@ -1,6 +1,6 @@
 {% extends "../layouts/base.volt" %}
 
-{% block title %}Profil Administrator{% endblock %}
+{% block title %}Halaman Profil{% endblock %}
 
 {% block content %}
 
@@ -54,7 +54,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">						
-                <h4 class="modal-title text-center">Edit Administrator</h4>
+                <h4 class="modal-title text-center">Edit Profil</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body" style="height:70vh; overflow-y:auto;">

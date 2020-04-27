@@ -11,6 +11,5 @@ class ErrorController extends Controller
        $this->view->setViewsDir(APP_PATH . '/views/');
        $this->view->setMainView('error404');
        $this->view->setLayout('error404');
-       $this->assets->addCss('public/css/styles.css');
     }
 }
