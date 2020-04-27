@@ -10,7 +10,7 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                <div class="col-sm-8"><h2>Kelola <b>Barang Laundry</b></h2></div>
+                <div class="col-sm-8"><h2>Kelola <b>Pesanan Laundry</b></h2></div>
             </div>
             <div class="row" style="height:2vw"></div>
             </div>

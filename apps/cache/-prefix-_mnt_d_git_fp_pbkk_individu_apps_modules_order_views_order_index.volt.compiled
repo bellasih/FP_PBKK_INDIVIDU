@@ -4,6 +4,9 @@
 	<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 
+<link rel="shortcut icon" href="<?= $this->url->get('assets/favicon.ico') ?>" type="image/x-icon">
+<link rel="icon" href="<?= $this->url->get('assets/favicon.ico') ?>" type="image/x-icon">
+
 <link href="<?= $this->url->get('css/styles.css') ?>" rel="stylesheet">
 <link href="<?= $this->url->get('css/bootstrap.min.css') ?>" rel="stylesheet">
 <link id="css-main" href="<?= $this->url->get('css/codebase.min.css') ?>" rel="stylesheet">
@@ -82,7 +85,7 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                <div class="col-sm-8"><h2>Kelola <b>Barang Laundry</b></h2></div>
+                <div class="col-sm-8"><h2>Kelola <b>Pesanan Laundry</b></h2></div>
             </div>
             <div class="row" style="height:2vw"></div>
             </div>

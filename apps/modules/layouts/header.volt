@@ -1,6 +1,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
 
+<link rel="shortcut icon" href="{{url("assets/favicon.ico")}}" type="image/x-icon">
+<link rel="icon" href="{{url("assets/favicon.ico")}}" type="image/x-icon">
+
 <link href="{{ url("css/styles.css") }}" rel="stylesheet">
 <link href="{{ url("css/bootstrap.min.css") }}" rel="stylesheet">
 <link id="css-main" href="{{ url("css/codebase.min.css") }}" rel="stylesheet">
