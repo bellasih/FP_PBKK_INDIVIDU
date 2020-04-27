@@ -25,10 +25,10 @@
 	<!-- Header Content -->
         <!-- Nav tabs -->
         <nav class="navbar navbar-dark navbar-expand-lg fixed-top" style="font-size: 16px; background-color: #6878a0">
-             <?php if ($this->session->get('auth')) { ?>
-                <?php if ($this->session->get('auth')['role'] == 1) { ?>
+             <?php if ($this->session->get('auth') && $this->session->get('auth')['role'] == 1) { ?>
                 <a class="nav-link text-light" href="<?= $this->url->get() ?>">Home</a>
-                <?php } ?>
+            <?php } else { ?>
+                 <a class="nav-link text-light" href="<?= $this->url->get('home') ?>">Home</a>
             <?php } ?>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -54,6 +54,10 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="<?= $this->url->get('payment') ?>">Pembayaran</a>
+                        </li>
+                    <?php } else { ?>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="<?= $this->url->get('order/users') ?>">Pesanan</a>
                         </li>
                     <?php } ?>
                 <?php } ?>
@@ -124,14 +128,14 @@
                 </tbody>
             </table>
             <div class="text-center text-lg">
-                <a href='/goods'>First</a>
+                <a href='/goods' class="btn btn-info">First</a>
                 <?php if ($page_number - 1 >= 1) { ?>
-                <a href='/goods?page=<?= $page_number - 1 ?>'>Previous</a>
+                <a href='/goods?page=<?= $page_number - 1 ?>' class="btn btn-info">Previous</a>
                 <?php } ?>
                 <?php if ($page_number + 1 <= $page_last) { ?>
-                <a href='/goods?page=<?= $page_number + 1 ?>'>Next</a>
+                <a href='/goods?page=<?= $page_number + 1 ?>' class="btn btn-info">Next</a>
                 <?php } ?>
-                <a href='/goods?page=<?= $page_last ?>'>Last</a>
+                <a href='/goods?page=<?= $page_last ?>' class="btn btn-info">Last</a>
                 <p class="text-success"><b>Anda berada di halaman <?= $page_number ?> dari <?= $page_last ?></b></p>
             </div>
             <?php } else { ?>
@@ -228,17 +232,17 @@
 <?php } ?>
 
 	<div class="clearfix bottom-content">
-		<div class="row" style="position: absolute; bottom:5px; width: 100%; color: white"> 
+		<div class="row" style="position: absolute; margin-top:10vh; width: 100%; color: white"> 
 			<div class="col-md-8">
 				<p style="padding-left: 2vw;">© Copy Right by Bella Septina. Created with<span>❤</span></p>
 			</div>
 			<div class="col-md-4">
 				<div class="row">
 				<div class="col-sm">
-                	<a type="button" class="text-white" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com </a><br>
+                	<a type="button" class="text-light" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com</a><br>
                 </div>
 				<div class="col-sm">
-					<a type="button" class="text-white" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
+					<a type="button" class="text-light" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
 				</div>
 				</div>
 			</div>

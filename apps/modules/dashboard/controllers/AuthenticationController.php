@@ -5,6 +5,7 @@ namespace ServiceLaundry\Dashboard\Controllers\Web;
 use ServiceLaundry\Common\Controllers\SecureController;
 use ServiceLaundry\Dashboard\Forms\Web\LoginForm;
 use ServiceLaundry\Dashboard\Models\Web\Users;
+use ServiceLaundry\Order\Models\Web\Service;
 use Phalcon\Mvc\Controller;
 use Phalcon\Http\Response;
 
@@ -20,6 +21,7 @@ class AuthenticationController extends SecureController
 
     public function homeAction()
     {
+        $this->view->service = Service::find();
         $this->view->pick('views/home');
     }
     

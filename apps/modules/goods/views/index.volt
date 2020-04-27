@@ -56,14 +56,14 @@
                 </tbody>
             </table>
             <div class="text-center text-lg">
-                <a href='/goods'>First</a>
+                <a href='/goods' class="btn btn-info">First</a>
                 {% if page_number - 1 >= 1 %}
-                <a href='/goods?page={{page_number - 1}}'>Previous</a>
+                <a href='/goods?page={{page_number - 1}}' class="btn btn-info">Previous</a>
                 {% endif %}
                 {% if page_number + 1 <= page_last %}
-                <a href='/goods?page={{page_number + 1 }}'>Next</a>
+                <a href='/goods?page={{page_number + 1 }}' class="btn btn-info">Next</a>
                 {% endif %}
-                <a href='/goods?page={{page_last}}'>Last</a>
+                <a href='/goods?page={{page_last}}' class="btn btn-info">Last</a>
                 <p class="text-success"><b>Anda berada di halaman {{page_number}} dari {{page_last}}</b></p>
             </div>
             {% else %}

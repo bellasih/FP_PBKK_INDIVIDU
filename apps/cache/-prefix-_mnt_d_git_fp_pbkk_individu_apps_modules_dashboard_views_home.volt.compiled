@@ -90,9 +90,6 @@
                     </ol>
                     <div class="carousel-inner" style="margin-left:12vw;">
                         <div class="carousel-item active">
-                            <img class="img img-fluid img-responsive" src="<?= $this->url->get('assets/gambar3.jpg') ?>" alt="Gambar 1">
-                        </div>
-                        <div class="carousel-item">
                             <img class="img img-fluid img-responsive" src="<?= $this->url->get('assets/gambar1.jpg') ?>" alt="Gambar 2">
                         </div>
                         <div class="carousel-item">
@@ -109,22 +106,77 @@
                     </a>
                 </div>
             </div>
+            <div class="ket row">
+                <div class="col-sm text-center text-success">
+                    <img src="<?= $this->url->get('assets/images3.gif') ?>" height=100>
+                    <h5>Harga Murah</h5>
+                    <p><b>Jasa laundry kami memberikan harga murah karena kepuasan pelanggan adalah kebanggaan bagi kami.</b></p>
+                </div>
+                <div class="col-sm text-center text-danger">
+                    <img src="<?= $this->url->get('assets/images2.gif') ?>" height=100>
+                    <h5>Antar Jemput</h5>
+                    <p><b>Kami siap melakukan antar jemput kepada semua calon pelanggan yang mengunakan jasa kami dengan jarak tertentu.</b></p>
+                </div>
+                <div class="col-sm text-center text-info">
+                    <img src="<?= $this->url->get('assets/images.gif') ?>" height=100>
+                    <h5>Cepat dan Bersih</h5>
+                    <p><b>Kami mencuci dengan menggunakan mesin modern sehingga menghasilkan pakaian yang bersih dan cepat selesai.</b></p>
+                </div>
+            </div>
+            <h2 class="text-center text-secondary"><br>Daftar <span class="text-info">Service Laundry</span><br></h1>
+            <div class="ket row">
+                <div class="container-fluid" style="margin-left:30vw">
+                <?php if ($this->length($service) > 0) { ?>
+                    <div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
+                        <div class="carousel-inner row w-100 mx-auto 0 text" role="listbox">
+                        <?php $v122148752771726504101iterator = $service; $v122148752771726504101incr = 0; $v122148752771726504101loop = new stdClass(); $v122148752771726504101loop->self = &$v122148752771726504101loop; $v122148752771726504101loop->length = count($v122148752771726504101iterator); $v122148752771726504101loop->index = 1; $v122148752771726504101loop->index0 = 1; $v122148752771726504101loop->revindex = $v122148752771726504101loop->length; $v122148752771726504101loop->revindex0 = $v122148752771726504101loop->length - 1; ?><?php foreach ($v122148752771726504101iterator as $s) { ?><?php $v122148752771726504101loop->first = ($v122148752771726504101incr == 0); $v122148752771726504101loop->index = $v122148752771726504101incr + 1; $v122148752771726504101loop->index0 = $v122148752771726504101incr; $v122148752771726504101loop->revindex = $v122148752771726504101loop->length - $v122148752771726504101incr; $v122148752771726504101loop->revindex0 = $v122148752771726504101loop->length - ($v122148752771726504101incr + 1); $v122148752771726504101loop->last = ($v122148752771726504101incr == ($v122148752771726504101loop->length - 1)); ?>
+                            <?php if (($v122148752771726504101loop->first)) { ?>
+                                <div class="carousel-item col-md-4 active">
+                            <?php } else { ?>
+                            <div class="carousel-item col-md-4">
+                            <?php } ?>
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <img src=<?= $s->getServicePhoto() ?> class="service" style="height:150px;">
+                                        <h4 class="card-title text-center"><?= $s->getServiceName() ?></h4>
+                                        <p class="text-center"><b>Rp. <?= $s->getServicePrice() ?></b><p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php $v122148752771726504101incr++; } ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12 text-center mt-4" style="display:block;">
+                            <a class="btn btn-outline-secondary mx-1 prev" href="javascript:void(0)" title="Previous">
+                            <i class="fa fa-lg fa-chevron-left"></i>
+                            </a>
+                            <a class="btn btn-outline-secondary mx-1 next" href="javascript:void(0)" title="Next">
+                            <i class="fa fa-lg fa-chevron-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
         </div>
     </main>
 </div>
 
 	<div class="clearfix bottom-content">
-		<div class="row" style="position: absolute; bottom:5px; width: 100%; color: white"> 
+		<div class="row" style="position: relative; margin-top:10vh; width: 100%; color: white"> 
 			<div class="col-md-8">
 				<p style="padding-left: 2vw;">© Copy Right by Bella Septina. Created with<span>❤</span></p>
 			</div>
 			<div class="col-md-4">
 				<div class="row">
 				<div class="col-sm">
-                	<a type="button" class="text-white" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com </a><br>
+                	<a type="button" class="text-light" href=""><i class="fa fa-globe" style="font-size:24px"></i>service.laundry.com</a><br>
                 </div>
 				<div class="col-sm">
-					<a type="button" class="text-white" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
+					<a type="button" class="text-light" href=""><i class="fa fa-facebook-square" style="font-size:24px"></i> Service Laundry Organizer</a><br>
 				</div>
 				</div>
 			</div>

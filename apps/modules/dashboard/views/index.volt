@@ -7,8 +7,8 @@
     <main id="main-container" style="padding-top: 5vw">
         <div class="content" style="padding-top: 0">
         <div id="hides" class="notif-block" style="height:4vh;  overflow-y: auto;">{{flashSession.output()}}</div>
-            <input type="hidden" class="dates" value="{% for a in chart %}{{a['dates']}}{% endfor %}">
-            <input type="hidden" class="totals" value="{% for b in chart %}{{a['total']}}{% endfor %}">
+            <input type="hidden" class="dates" value="{% for a in chart %}{{a['dates']}},{% endfor %}">
+            <input type="hidden" class="totals" value="{% for b in chart %}{{b['total']}},{% endfor %}">
             <h2 class="text-center text-secondary"><span class="text-danger">Selamat Datang</span> 
             <br>di Halaman Dashboard</h2>
             <hr id="line">

@@ -59,17 +59,38 @@ $(document).ready(function(){
         });
      },1000);
 
+    /*------------------- card ----------------------- */
+    // Auto-scroll
+    $('.carousel').carousel({
+        interval: 1500
+    });
+
+    // Control buttons
+    $('.next').click(function () {
+        $('.carousel').carousel('next');
+        return false;
+    });
+
+    $('.prev').click(function () {
+        $('.carousel').carousel('prev');
+        return false;
+    });
+
     //chart
     var dates   = document.getElementsByClassName('dates')[0].value;
-    var value   = parseFloat(document.getElementsByClassName('totals')[0].value/1000);
+    var date    = dates.split(",");
+
+    var value   = document.getElementsByClassName('totals')[0].value;
+    var values  = value.split(",");
+
     var ctx     = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: [dates.toString()],
+            labels: date,
             datasets: [{
-                label: '# Jumlah Order',
-                data: [value.toString()],
+                label: '# Ribu',
+                data: values,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -97,12 +118,11 @@ $(document).ready(function(){
             },
             title: {
                 display: true,
-                text: 'Jumlah Order 7 Tanggal/Waktu Terakhir (dalam Ribu)',
+                text: 'Grafik Pendapatan 5 Tanggal Terakhir (dalam Ribuan)',
                 fontSize: 20
             }
         }
     });
-
 
     // $("#uwus").click(function() {
     //     var values = $(this).val();
