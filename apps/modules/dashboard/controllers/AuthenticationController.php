@@ -91,6 +91,14 @@ class AuthenticationController extends SecureController
         $admin_id       = $this->request->getQuery('id');
         $data           = Users::findFirst("user_id='$admin_id'");
 
+        if(!$this->session->has('auth')) $this->response->redirect("home");
+
+        if($data == null)
+        {
+            $this->flashSession->error('Data Profil tidak ditemukan');
+            $this->session->get('auth')['role'] == 1 ?  $this->response->redirect() : $this->response->redirect("home");
+        }
+
         $this->view->data           = $data;
         $this->view->flashSession   = $this->flashSession;
         $this->view->pick('views/showAccount');
@@ -167,13 +175,13 @@ class AuthenticationController extends SecureController
 
                 $password       = $this->security->hash($this->request->getPost('new_password'));
                 $admin->construct($username,$password,$name,$gender,$address,$register_date,$role,$phone,$email,$profile_img);
-                if($admin->update)
+                if($admin->update())
                 {
                     $this->flashSession->success("Password berhasil diganti");
                 }
                 else
                 {
-                    $this->flashSession->success("Password gagal diganti");
+                    $this->flashSession->error("Password gagal diganti");
                 }
             }
         }

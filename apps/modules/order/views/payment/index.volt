@@ -26,6 +26,7 @@
                     <tr>
                         <th></th>
                         <th>No.</th>
+                        <th>Order Id</th>
                         <th>Kepemilikan Pesanan</th>
                         <th>Status Pembayaran</th>
                         <th>Waktu Pembayaran</th>
@@ -43,6 +44,7 @@
                                 </span>
                             </td>
                             <td>{{offset + i}}</td>
+                            <td>{{t['Payment_order_id']}}</td>
                             <td>{{t['name']}}</td>
                             <td>{{t['Payment_payment_status']}}</td>
                             <td>{{t['Payment_payment_time']}}</td>

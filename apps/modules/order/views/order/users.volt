@@ -27,7 +27,7 @@
                     <label><b>Masukkan Nama Service</b></label>
                     <select class="selectpicker form-control" data-live-search="true" data-container="body" name="pilihan" id="pilihan">
                         {% for s in service %}
-                            <option  title="{{s.getServiceName()}}" price="{{s.getServicePrice()}}" value='{{s.getId()}}'>{{s.getServiceName()}}</option>
+                            <option  title="{{s.getServiceName()}}" price="{{s.getServicePrice()}}" value="{{s.getId()}}">{{s.getServiceName()}}</option>
                         {% endfor %}
                     </select>
                 </div>

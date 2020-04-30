@@ -26,7 +26,7 @@ class UserOrderController extends SecureController
 
     public function storeOrderAction()
     {
-        $service_id           = $this->request->getPost('pilihan')[0];
+        $service_id           = $this->request->getPost('pilihan');
         $user_id              = $this->session->get('auth')['id'];
         $order_total          = $this->request->getPost('order_total');
         $order_date           = date('Y-m-d');

@@ -17,7 +17,7 @@
                     <div class="card shadow" style="height:18vh; background-color:#7ffadc">
                         <p class="text-center"><b>Pendapatan Hari Ini</b></p>
                         <div class="row">
-                            <div class="col-sm-8"><h2 class="text-right">{{income}}</h2></div>
+                            <div class="col-sm-8"><h2 class="text-center">{{income}}</h2></div>
                             <div class="col-sm text-left"><img src={{url('assets/money.png')}} alt="money" style="height:10vh;"></div>
                         </div>
                     </div>

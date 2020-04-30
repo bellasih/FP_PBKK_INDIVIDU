@@ -123,7 +123,7 @@ class IndexController extends SecureController
             {
                 $this->flashSession->error('Terjadi kesalahan saat menambahkan data. Mohon, coba ulang kembali');
             }
-            return $this->response->redirect();
         }
+        return $this->response->redirect();
     }
 }

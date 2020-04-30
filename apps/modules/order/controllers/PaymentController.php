@@ -32,7 +32,7 @@ class PaymentController extends SecureController
 
         $queries = $this
         ->modelsManager
-        ->createQuery("SELECT name, Payment.payment_id, Payment.order_id, Payment.admin_id, Payment.payment_status, Payment.payment_time
+        ->createQuery("SELECT name, Payment.order_id, Payment.payment_id, Payment.order_id, Payment.admin_id, Payment.payment_status, Payment.payment_time
                         FROM ServiceLaundry\Order\Models\Web\Payment AS Payment, ServiceLaundry\Order\Models\Web\Orders AS Orders, ServiceLaundry\Dashboard\Models\Web\Users AS Users
                         WHERE Orders.order_id = Payment.order_id AND Users.user_id = Orders.user_id
                         LIMIT ".$offset.",".$number_page);

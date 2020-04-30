@@ -36,7 +36,7 @@ class UserForm extends BaseForm
         $username->setLabel('Username');
         $username->addValidator(new PresenceOf(['message'=>'Username belum diisi']));
 
-        $password = new Text('password', 
+        $password = new Password('password', 
         [
             'placeholder'   => 'Masukkan Password',
             'class'         => 'form-control'

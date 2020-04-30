@@ -110,7 +110,7 @@ class PickupDeliveryController extends SecureController
         {
             foreach ($form->getMessages() as $msg)
             {
-                if($msg->getMessage()!=null)
+                if($msg->getMessage()!=null && $msg->getField() != 'order_id')
                 {
                     $flag = 1;
                     $this->flashSession->error($msg->getMessage());

@@ -24,7 +24,7 @@
                         <th>Nama Service</th>
                         <th>Total Pesanan</th>
                         <th>Tanggal Pesanan</th>
-                        <th>Tanggal Selesai</th>
+                        <th>Estimasi Tanggal Selesai</th>
                         <th>Status Pesanan</th>
                         <th>Aksi</th>
                     </tr>
